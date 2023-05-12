@@ -1,0 +1,84 @@
+.contactButtonStyle{
+    background-color: #00FF43;
+    padding: 10px;
+    border-top-right-radius: 15px;
+    border-top-left-radius: 15px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+/* Fim do cabeçalho */
+
+/* Começo do banner */
+.banner{
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(../img/back_contato.jpg);
+    background-position: center;
+    width: 100%;
+    height: 100vh; 
+    background-size: cover;
+    color: white;
+}
+
+.banner .container{
+    height: 100%;
+    justify-content: space-around;
+}
+
+.contato-container{
+    Font-style: Bold;
+    Font-size: 25px;
+    Line-height: 25px;
+    Line-height: 100%;
+    align-items: Left;
+    Vertical-align: Top;
+    display: flex;
+    flex-direction: column;
+}
+
+.social-contato{
+    display: flex;
+    width: 25%;
+    flex-direction: column;
+}
+
+.social-infos{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+.social-infos img{
+    object-fit: cover;
+
+    border: 3px solid white;
+    border-radius: 50%;
+}
+.map{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.mapImage{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.contato-container input {
+    margin-top: 20px;
+    border-color: #00FF43;
+    border-top-right-radius: 13px;
+    border-bottom-right-radius: 13px;
+    padding: 10px;
+}
+
+.contato-container button {
+    margin-top: 20px;
+    background-color: #0CE876;
+    border: none;
+    border-top-right-radius: 13px;
+    border-bottom-right-radius: 13px;
+    border-top-left-radius: 13px;
+    border-bottom-left-radius: 13px ;
+    padding: 8px;
+}

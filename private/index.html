@@ -1,0 +1,284 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="http://www.chartjs.org/dist/2.7.1/Chart.js"></script>
+    <script src="http://www.chartjs.org/samples/latest/utils.js"></script>
+    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="CSS/dashboard.css">
+</head>
+
+<body>
+    <nav id="navbar">
+        <div class="collapse" onclick="collapse()">
+            <span class="material-symbols-rounded" id="collapse_text">
+                chevron_left
+            </span>
+        </div>
+
+        <div class="head">
+            <img src="img/Logo.png">
+            <h3>SMFP<br><span>Sistema de Mapeamento de Fluxo de Pessoas</span></h3>
+        </div>
+        <div class="menu">
+            <ul>
+                <li class="active"><a href="#">DashBoard</a></li>
+                <li><a href="#">Mapa de Calor</a></li>
+                <li><a href="#">Ambientes</a></li>
+                <li><a href="#">Sensores</a></li>
+                <li><a href="#">Configurações</a></li>
+            </ul>
+        </div>
+        <div class="account">
+            <span class="material-symbols-rounded">
+                account_circle
+            </span>
+            <div class="perfil">
+                <h3>Nome do Usuário</h3>
+                <a href="#">Sair</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-title container">
+        <h1>Dashboard Empresa</h1>
+        <div></div>
+    </div>
+
+    <div class="areaGrafico container">
+        <div class="divGraf1">
+            <h1 id="chave1A">Ambiente</h1><br><br>
+            <section style="width: 90%;" id="ambiente1">
+                <canvas id="chave1"></canvas>
+            </section>
+        </div>
+
+        <div class="divGraf2">
+            <h1 id="chave1B">Geral</h1><br><br>
+            <section style="width: 100%;" id="ambiente2">
+                <canvas id="chave2"></canvas>
+            </section>
+        </div>
+    </div>
+
+    <div class="areaKPI container">
+        <div class="kpi">
+            <h4>Média de Fluxo da semana</h4>
+            <span id="span_med_fluxo"></span>
+        </div>
+        <div class="kpi">
+            <h4>Maior Fluxo</h4>
+            <span id="span_max_fluxo"></span>
+        </div>
+        <div class="kpi">
+            <h4>Aumento do Fluxo</h4>
+            <span id="span_porcent_aum_fluxo"></span>
+        </div>
+
+    </div>
+    
+    <script>
+        /*Dados de Testes*/
+        const label_sem = ['Domingo', 'Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado'];
+        const dado_sem = [354, 540, 245, 424, 350, 348, 451];
+        var soma = 0;
+        var max_pos = 0;
+
+        for (var i = 0; i < dado_sem.length; i++){
+            var dado = dado_sem[i];
+            soma += dado;
+            if(dado > dado_sem[max_pos]){max_pos = i}
+        }
+
+        span_med_fluxo.innerHTML = (soma/dado_sem.length).toFixed(2);
+        span_max_fluxo.innerHTML = `${label_sem[max_pos]} teve o maior fluxo da semana com ${dado_sem[max_pos]} pontos`;
+        var dif_dia1_maiorDia = dado_sem[max_pos]-dado_sem[0];
+        /* 354 --- 100%
+           186 --- X%
+        */
+        span_porcent_aum_fluxo.innerHTML = `O aumento foi de ${((dif_dia1_maiorDia * 100)/ dado_sem[0]).toFixed(2)}% comparado ao primeiro dia da semana`;
+
+
+
+        /* -- chave */
+        var contextoChave = document.getElementById('chave1').getContext('2d');
+        contextoChave.canvas.width = 1000;
+        contextoChave.canvas.height = 300;
+        /* definindo o tamano e a criacao do grafico*/
+        var chave = new Chart(
+            contextoChave,
+            {
+                type: 'line',
+                /*definindo o tipo do grafico*/
+                data: {
+                    //labels: ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00'],
+                    datasets: [{
+                        label: 'Chave', /*Nome do grafico*/
+                        type: 'line',
+                        //data: [10, 90, 10, 145, 122, 93],
+                        borderColor: ['#FFFFFF'],/* cor da borda*/
+                        backgroundColor: ['#00ff43']/* cor do fundo do grafico*/
+                    }]
+                },
+                options: {
+                    legend: {
+                        labels: {
+                            fontColor: "#FFFFFF"/*cor da fonte do grafico*/
+                        },
+                    },
+                    plugins: {
+                        customCanvasBackgroundColor: {
+                            color: 'LightGreen',
+                        }
+                    },
+                    scales: {
+                        xAxes: [{
+                            distribution: 'series',
+                            ticks: {
+                                fontColor: 'FFF',
+                                beginAtZero: true
+                            }
+                        }],
+                        yAxes: [{
+                            scaleLabel: {
+                                fontColor: ['#fffff'],
+                                display: true,
+                                labelString: 'Chave'
+                            },
+                            ticks: {
+                                fontColor: ['#fffff'],
+                                beginAtZero: true
+                            }
+                        }]
+                    },
+                    animation: {
+                        duration: 0
+                    }
+                }
+            }
+        );
+        /* -- chave */
+        var contextoChave = document.getElementById('chave2').getContext('2d');
+        contextoChave.canvas.width = 1000;
+        contextoChave.canvas.height = 300;
+        var chave2 = new Chart(
+            contextoChave,
+            {
+                type: 'line',
+                data: {
+                    labels: ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00'],
+                    datasets: [{
+                        label: 'Chave',
+                        type: 'line',
+                        data: [10, 90, 10, 45, 122, 93],
+                        borderColor: ['#FFFFFF'],
+                        backgroundColor: ['#00ff43']
+                    }]
+                },
+                options: {
+                    legend: {
+                        labels: {
+                            fontColor: "#FFFFFF"
+                        },
+                    },
+                    plugins: {
+                        customCanvasBackgroundColor: {
+                            color: 'LightGreen',
+                        }
+                    },
+                    scales: {
+                        xAxes: [{
+                            distribution: 'series',
+                            ticks: {
+                                fontColor: 'FFF',
+                                beginAtZero: true
+                            }
+                        }],
+                        yAxes: [{
+                            scaleLabel: {
+                                fontColor: ['#fffff'],
+                                display: true,
+                                labelString: 'Chave'
+                            },
+                            ticks: {
+                                fontColor: ['#fffff'],
+                                beginAtZero: true
+                            }
+                        }]
+                    },
+                    animation: {
+                        duration: 0
+                    }
+                }
+            }
+        );
+        
+
+        var paginacao = {};
+        var tempo = {};
+        function obterDados(grafico, endpoint) {
+            var http = new XMLHttpRequest();
+            http.open('GET', 'http://localhost:3000/sensores/' + endpoint, false);
+            http.send(null);
+            var valores = JSON.parse(http.responseText);
+            if (paginacao[endpoint] == null) {
+                paginacao[endpoint] = 0;
+            }
+            if (tempo[endpoint] == null) {
+                tempo[endpoint] = 0;
+            }
+            // Exibir à partir do último elemento exibido anteriormente
+            var ultimaPaginacao = paginacao[endpoint];
+            paginacao[endpoint] = valores.length;
+            var valores = valores.slice(ultimaPaginacao);//http://localhost:3000/sensores/
+            valores.forEach((valor) => {
+
+
+                for (var i = 0; i <= valores.length; i++) {
+                    grafico.data.labels.push
+                }
+                //Máximo de 60 itens exibidos no gráfico
+                if (grafico.data.labels.length == 10 && grafico.data.datasets[0].data.length == 10) {
+                    grafico.data.labels.shift();
+                    grafico.data.datasets[0].data.shift();
+                }
+
+                grafico.data.labels.push(tempo[endpoint]++);
+                grafico.data.datasets[0].data.push(parseFloat(valor));
+                grafico.update();
+            })
+        }
+
+
+        setInterval(() => {
+            obterDados(chave, 'chave');
+        }, 1000);
+
+    </script>
+</body>
+
+</html>
+<script>
+    var isCollapsed = false;
+    // Com lambda
+    /*function collapse(collapse_button){
+        navbar.style.left = isCollapsed ? '0px' : '-260px';
+        collapse_text.style.transform = isCollapsed ? 'rotate(0deg)' : 'rotate(180deg)';
+        isCollapsed = !isCollapsed;
+    }*/
+
+    // Sem lambda
+    function collapse(collapse_button){
+        if(isCollapsed){
+            navbar.style.left = '0px';
+            collapse_text.style.transform = 'rotate(0deg)';
+            isCollapsed = false;
+        }else{
+            navbar.style.left = '-260px';
+            collapse_text.style.transform = 'rotate(180deg)';
+            isCollapsed = true;
+        }
+    }
+</script>

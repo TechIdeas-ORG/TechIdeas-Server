@@ -1,0 +1,84 @@
+.areaGrafico{
+    width: 80%;
+    margin: auto;
+    padding: 15px;
+    border-radius: 10px;
+    color: white;
+    display: flex;
+    justify-content: space-evenly;
+}
+#div_API{
+    height: 60vh;
+    width: 80%;
+    margin: auto;
+    padding: 15px;
+    border-radius: 10px;
+    color: white;
+
+}
+.div_botao{
+    width: 20%;
+    height: 10%;
+    margin-top: 50px;
+    margin-left: 50%;
+   text-align: center;
+    display: flex;
+}
+.bt11{
+    border-radius: 15px;
+    width: 50%;
+    height: 40%;
+    margin-right: 2%;
+    background-color: #3BDB43;
+}
+.bt22{
+    border-radius: 15px;
+    width: 50%;
+    height: 40%;
+    margin-right: 2%;
+    background-color: #3BDB43;
+}
+.areaGrafico container{
+    display: flex;
+}
+.divGraf1{
+    width: 50%;
+    height: auto;
+    display: block;
+}
+.divGraf2{
+    width: 50%;
+    height: auto;
+    display: block;
+}
+.areaKPI{
+    width: 50%;
+    height: 40vh;
+
+    display: flex;
+
+    gap: 80px;
+}
+.kpi{
+    width: 200px;
+    height: 200px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    background-color: #3BDB43;
+
+    color: white;
+
+    box-shadow: -9px 9px 0px 0px #0a600e;
+
+    border-radius: 33px;
+}
+
+.kpi h4, span{
+    text-align: center;
+
+    margin-bottom: 10px;
+}

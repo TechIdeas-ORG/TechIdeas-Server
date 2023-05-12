@@ -1,0 +1,201 @@
+.produto{
+    justify-content: space-between;
+}
+
+.left-container .overview{
+    margin-top: 61px;
+
+    color: #FFFFFF;
+}
+
+.overview h1{
+    font-weight: 400;
+    font-size: 48px;
+    line-height: 58px;
+
+    margin-bottom: 37px;
+}
+
+.overview p{
+    font-size: 17px;
+    line-height: 21px;
+
+    text-align: justify;
+
+}
+
+.overview .text-line{
+    display: flex;
+    justify-content: space-between;
+
+    margin-bottom: 8px;
+    margin-top: 46px;
+}
+
+.overview .separator {
+    height: 4px;
+
+    background: #1C1C1C;
+
+    opacity: 0.5;
+
+    border-radius: 20px;
+}
+
+.overview p, .overview .text-line, .overview .separator{
+    width: 357px;
+}
+
+.produto .right-container{
+    flex-direction: column;
+    align-items: center;
+}
+
+.right-container .flex {
+    column-gap: 21px;
+
+    margin-bottom: 32px;
+}
+
+.right-container .ambiente{
+    position: relative;
+    z-index: 1;
+
+    width: 169px;
+    height: 108px;
+
+    background: #fcfcfc;
+    border-radius: 33px;
+}
+
+.ambiente .num{
+    position: absolute;
+    top: -10px;
+
+    background-color: #0f0f0f;
+
+    width: 47px;
+    height: 43px;
+
+    border-radius: 33px;
+}
+
+.num.right-num {
+    right: -10px;
+}
+
+.num.left-num{
+    left: -10px;
+}
+
+.ambiente .ball{
+    width: 85px;
+    height: 85px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 50%;
+    background-color: black;
+
+    transition: 1s;
+}
+
+.light-room {
+    background-image: url('../img/light.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+
+    width: 140%;
+    height: 600px;
+
+    position: relative;
+    top: -30%;
+    
+}
+
+.light-room span, .num span, .ambiente .ball{
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+    text-align: center;
+
+    color: #FFFFFF;
+}
+
+.grafY{
+    position: absolute;
+
+    left: 15%;
+    margin-top: 160px;
+
+    width: 13px;
+
+    word-wrap: break-word;
+    
+}
+
+.grafX{
+    position: absolute;
+
+    bottom: 10%;
+}
+
+.grafico{
+    position: relative;
+    bottom: -90px;
+
+    width: 20px;
+    height: 166px; /*100%*/
+
+    background: #0A600E;
+    box-shadow: 6px 0px 0px #084F0C;
+
+    display: flex;
+    align-items: end;
+
+    transition: 1s;
+}
+
+/*.grafico::before{
+    content: '';
+    position: absolute;
+    z-index: 1;
+
+    width: 26px;
+    height: 40%;
+
+    transform: skew(-44deg);
+    transform-origin: bottom;
+
+    background: rgba(0, 0, 0, 0.25);
+}
+
+.grafico::after{
+    content: '';
+
+    position: absolute;
+    z-index: 2;
+
+    width: 100%;
+    height: 100%;
+
+    background: #0A600E;
+    box-shadow: 6px 0px 0px #084F0C;
+}*/
+
+.grafico span {
+    color: white;
+    
+    position: relative;
+    top: 29px;
+
+    width: 100%;
+
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 29px;
+    text-align: center;
+}

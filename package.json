@@ -1,0 +1,20 @@
+{
+    "name": "sistema-techideas",
+    "version": "1.0.0",
+    "description": "",
+    "main": "main.js",
+    "scripts": {
+      "start": "node main.js",
+      "dev": "nodemon --exec node main.js"
+    },
+    "author": "Feito e desenvolvido pela Techideas",
+    "license": "UNLICENSE",
+    "dependencies": {
+      "cors": "^2.8.5",
+      "express": "^4.17.1",
+      "mssql": "^7.1.3",
+      "mysql2": "^2.2.5",
+      "nodemon": "^2.0.7",
+      "path": "^0.12.7"
+    }
+  }
