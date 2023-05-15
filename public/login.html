@@ -45,10 +45,13 @@
 </body>
 </html>
 <script>
+    var email, senha;
+
     function verify(){
         email = ipt_email.value;
         senha = ipt_senha.value;
-        erro = false;
+        var erro = false;
+
         if(email.startsWith('@gmail.com') || email.startsWith('@outlook.com') || email.startsWith('@hotmail.com') || email.length < 10){
             alert("Por favor, insira um email válido")
             erro = true;
@@ -57,8 +60,51 @@
             alert("Insira um senha válida");
             erro = true;
         }
-        if(email == 'admin@techideas.com' && senha == 'admin123' && !erro){
-            window.location.href = '../SMFP/index.html';
+
+        if(!erro){
+            login_auth();
         }
     }
+
+
+    function login_auth(){
+        fetch("/usuario/auth", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                emailServer: email,
+                senhaServer: senha
+            })
+        }).then(function (resposta) {
+            if (resposta.ok) {
+                console.log(resposta);
+
+                resposta.json().then(json => {
+                    console.log(json);
+
+                    sessionStorage.EMAIL_USUARIO = json.emailUsuario;
+                    sessionStorage.NOME_USUARIO = json.nomeUsuario;
+                    sessionStorage.ID_USUARIO = json.idUsuario;
+
+                    window.location = '/dashboard';
+
+                });
+
+            } else {
+
+                console.log("Houve um erro ao tentar realizar o login!");
+
+                resposta.text().then(texto => {
+                    console.error(texto);
+                    alert(texto);
+                });
+            }
+
+        }).catch(function (erro) {
+            console.log(erro);
+        })
+    }
+
 </script>

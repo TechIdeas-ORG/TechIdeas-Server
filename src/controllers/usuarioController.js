@@ -1,11 +1,7 @@
 var usuarioModel = require("../models/usuarioModel");
+const bcrypt = require('bcrypt');
 
-var sessoes = [];
-
-function testar(req, res) {
-    console.log("ENTRAMOS NA usuarioController");
-    res.json("ESTAMOS FUNCIONANDO!");
-}
+const session = require('express-session');
 
 function listar(req, res) {
     usuarioModel.listar()
@@ -33,20 +29,28 @@ function entrar(req, res) {
     } else if (senha == undefined) {
         res.status(400).send("Sua senha está indefinida!");
     } else {
-        
-        usuarioModel.entrar(email, senha)
+        usuarioModel.entrar(email)
             .then(
                 function (resultado) {
-                    console.log(`\nResultados encontrados: ${resultado.length}`);
-                    console.log(`Resultados: ${JSON.stringify(resultado)}`); // transforma JSON em String
-
-                    if (resultado.length == 1) {
-                        console.log(resultado);
-                        res.json(resultado[0]);
-                    } else if (resultado.length == 0) {
-                        res.status(403).send("Email e/ou senha inválido(s)");
-                    } else {
-                        res.status(403).send("Mais de um usuário com o mesmo login e senha!");
+                    var usuario = resultado[0];
+                    if((resultado.length-1) == 0){
+                        bcrypt.compare(senha, usuario['senhaUsuario'], function(err, result) {
+                            console.log(usuario['senhaUsuario'],result);
+                            if(result){
+                                //LOGIN APROVADO
+                                req.session.EMAIL_USUARIO = usuario.emailUsuario;
+                                req.session.NOME_USUARIO = usuario.nomeUsuario;
+                                req.session.ID_USUARIO = usuario.idUsuario;                       
+                                res.json(usuario);
+                            }else{
+                                //ERRO
+                                res.status(403).send('Email e/ou senha inválido(s)');
+                            }
+                        });
+                    }else if((resultado.length-1) < 0){
+                        res.status(403).send('Email e/ou senha inválido(s)');
+                    }else{
+                        res.status(403).send('Mais de um usuário com o mesmo login e senha! Entre em contato com o suporte!');
                     }
                 }
             ).catch(
@@ -97,6 +101,5 @@ function cadastrar(req, res) {
 module.exports = {
     entrar,
     cadastrar,
-    listar,
-    testar
+    listar
 }
