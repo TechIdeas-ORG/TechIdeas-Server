@@ -19,7 +19,7 @@ CREATE TABLE tbEmpresa (
 );
 
 CREATE TABLE tbUsuario(
-    idUsuario INT
+    idUsuario INT AUTO_INCREMENT
     ,fkEmpresa INT
     ,nomeUsuario VARCHAR(50) NOT NULL
     ,emailUsuario VARCHAR(100) NOT NULL UNIQUE
