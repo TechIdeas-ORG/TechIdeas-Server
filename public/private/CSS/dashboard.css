@@ -82,3 +82,12 @@
 
     margin-bottom: 10px;
 }
+
+#boxAmbiente{
+height: 4vh ;
+width: 20vh;
+display: flex;
+align-items: center;
+font-size: 20px;
+border-radius: 15px;
+}

@@ -12,6 +12,7 @@ var app = express();
 var indexRouter = require("./src/routes/index");
 var usuarioRouter = require("./src/routes/usuario");
 var dashboardRouter = require("./src/routes/dashboard");
+const ambienteRouter = require("./src/routes/ambiente")
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -27,7 +28,7 @@ app.use(session({
 app.use("/", indexRouter);
 app.use("/usuario", usuarioRouter);
 app.use("/dashboard", dashboardRouter);
-
+app.use("/ambiente",ambienteRouter);
 app.listen(PORTA, function () {
     console.log(`Servidor Rodando Em: http://localhost:${PORTA} \n
     Ambiente: ${process.env.AMBIENTE_PROCESSO}`);
