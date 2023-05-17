@@ -19,14 +19,14 @@ function entrar(email) {
 }
 
 // Coloque os mesmos parâmetros aqui. Vá para a var instrucao
-function cadastrar(nome, cnpj, email, senha, token) {
-    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", nome, email, senha);
+function cadastrar(nomeEmpresa, cnpj, email, senha, token) {
+    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function cadastrar():", nomeEmpresa, cnpj, email, senha, token);
     
     // Insira exatamente a query do banco aqui, lembrando da nomenclatura exata nos valores
     //  e na ordem de inserção dos dados.
     var instrucao = `
-        INSERT INTO tbEmpresa (fkToken, nomeEmpresa, cnpj) VALUES ('${fkToken}', '${nomeEmpresa}', '${cnpj}');
-        INSERT INTO tbusuario (fkEmpresa, nomeUsuario, emailUsuario, senhaUsuario) VALUES ('LAST_INSERT_ID()','Admin', '${email}', '${senha}');`;
+        INSERT INTO tbEmpresa (fkToken, nomeEmpresa, cnpj) VALUES (LAST_INSERT_ID(), '${nomeEmpresa}', '${cnpj}');
+        INSERT INTO tbusuario (fkEmpresa, nomeUsuario, emailUsuario, senhaUsuario) VALUES (LAST_INSERT_ID(),'Admin', '${email}', '${senha}');`;
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
 }
