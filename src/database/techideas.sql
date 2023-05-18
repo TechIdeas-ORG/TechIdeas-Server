@@ -4,6 +4,10 @@ CREATE DATABASE bd_SMFP;
 
 USE bd_SMFP;
 
+select * from tbEmpresa;
+
+select * from tbUsuario;
+
 CREATE TABLE tbToken(
     idToken INT PRIMARY KEY AUTO_INCREMENT
     ,tokenHash VARCHAR(64) UNIQUE

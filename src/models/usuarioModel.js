@@ -25,10 +25,24 @@ function cadastrar(nomeEmpresa, cnpj, email, senha, token) {
     // Insira exatamente a query do banco aqui, lembrando da nomenclatura exata nos valores
     //  e na ordem de inserção dos dados.
     var instrucao = `
-        INSERT INTO tbEmpresa (fkToken, nomeEmpresa, cnpj) VALUES (LAST_INSERT_ID(), '${nomeEmpresa}', '${cnpj}');
-        INSERT INTO tbusuario (fkEmpresa, nomeUsuario, emailUsuario, senhaUsuario) VALUES (LAST_INSERT_ID(),'Admin', '${email}', '${senha}');`;
+    INSERT INTO tbEmpresa (fkToken, nomeEmpresa, cnpjEmpresa) VALUES (3, '${nomeEmpresa}', '${cnpj}');`;
+
+    
     console.log("Executando a instrução SQL: \n" + instrucao);
-    return database.executar(instrucao);
+    var retorno = database.executar(instrucao);
+    retorno.then(function(result){
+        console.log("Executando a instrução SQL: \n" + instrucao2);
+        
+        var last_id = result.insertId;
+        console.log(last_id);
+        var instrucao2 = `INSERT INTO tbUsuario (fkEmpresa, nomeUsuario, emailUsuario, senhaUsuario) VALUES (${last_id},'Admin', '${email}', '${senha}');`;
+
+        return database.executar(instrucao2);
+
+    }).catch(function(){
+        console.log(retorno);
+        return new Promise((reject)=> {reject("erro")});
+    })
 }
 
 module.exports = {

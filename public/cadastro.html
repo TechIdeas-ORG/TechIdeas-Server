@@ -68,7 +68,7 @@
         if (cnpj.length != 18) {
             alert("Por favor, insira um cnpj válido")
             erro = true;
-        } if (email.startsWith('@gmail.com') || email.startsWith('@outlook.com') || email.startsWith('@hotmail.com') || email.length < 10) {
+        } if (email.indexOf('@') == -1 || email.length < 10) {
             alert("Por favor, insira um email válido")
             erro = true;
         }
@@ -81,16 +81,18 @@
             erro = true;
         }
         if (erro == false) {
-            alert('Cadastro feito\nPor Favor Faça Login');
-            window.location.href = 'login.html';
-        }
-        if (!erro) {
             cadastrar_auth();
         }
     }
 
     function cadastrar_auth() {
-        fetch("/usuarios/cadastrar", {
+        var nomeEmpresa = ipt_nomeEmpresa.value;
+        var cnpj = ipt_cnpj.value;
+        var email = ipt_email.value;
+        var senha = ipt_senha.value;
+        var token = ipt_token.value;
+     
+        fetch("/usuario/cadastrar", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -98,11 +100,11 @@
             body: JSON.stringify({
                 // crie um atributo que recebe o valor recuperado aqui
                 // Agora vá para o arquivo routes/usuario.js
-                nomeEmpresaServer: nomeEmpresaVar,
-                cnpjServer: cnpjVar,
-                emailServer: emailVar,
-                senhaServer: senhaVar,
-                tokenServer: tokenVar
+                nomeEmpresaServer: nomeEmpresa,
+                cnpjServer: cnpj,
+                emailServer: email,
+                senhaServer: senha,
+                tokenServer: token
             })
         }).then(function (resposta) {
 
@@ -111,20 +113,14 @@
             if (resposta.ok) {
                 cardErro.style.display = "block";
 
-                mensagem_erro.innerHTML = "Cadastro realizado com sucesso! Redirecionando para tela de Login...";
+                alert('Cadastro feito\nPor Favor Faça Login');
+                window.location.href = 'login.html';
 
-                setTimeout(() => {
-                    window.location = "login.html";
-                }, "2000")
-
-                limparFormulario();
-                finalizarAguardar();
             } else {
                 throw ("Houve um erro ao tentar realizar o cadastro!");
             }
         }).catch(function (resposta) {
             console.log(`#ERRO: ${resposta}`);
-            finalizarAguardar();
         });
 
         return false;
