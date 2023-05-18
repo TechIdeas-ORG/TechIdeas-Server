@@ -1,6 +1,7 @@
 const express = require('express');
 const session = require('express-session');
 const routerAuth = express.Router();
+const ambienteController = require('../controllers/ambienteController')
 
 routerAuth.use(session({
     secret: 'techideas_secret_key',
@@ -18,12 +19,16 @@ routerAuth.use((req, res, next) => {
 });
 
 
-routerAuth.get("/", function (req, res) {
-    res.redirect("../private/index.html");
+routerAuth.get("/listar/:idAmbiente", function (req, res) {
+    
+    ambienteController.listar(req, res);
+});
+routerAuth.get("/consultaAmbiente/:idUsuario", function (req, res) {
+    
+    ambienteController.consultaAmbiente(req, res);
 });
 
-routerAuth.get("/:idAmbiente", function (req, res) {
-    res.redirect("../private/index.html?idAmbiente=" + req.params['idAmbiente']);
-});
+
+
 
 module.exports = routerAuth;

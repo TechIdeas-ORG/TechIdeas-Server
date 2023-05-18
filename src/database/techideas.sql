@@ -97,23 +97,23 @@ VALUES
     
 INSERT INTO tbUsuario (`fkEmpresa`, `idUsuario`,`nomeUsuario`,`emailUsuario`,`senhaUsuario`,`fkAdministrador`)
 VALUES
-	 (1, 1, 'Administrador', 'admin@techideas.com', '$2b$10$M/CbWCDYZcYYDnTUs1nfPOu/U665hzfQDSBucm56MxAy4ldau2YAi', NULL)
-    ,(2, 1, 'João Silva', 'joao.silva@exemplo.com', SHA2('senha123', 256), NULL)
-    ,(2, 2, 'Maria Santos', 'maria.santos@exemplo.com', SHA2('senha456', 256), 1)
-    ,(3, 1, 'Pedro Oliveira', 'pedro.oliveira@exemplo.com', SHA2('senha789', 256), NULL)
-    ,(3, 2, 'Carla Ferreira', 'carla.ferreira@exemplo.com', SHA2('senhaabc', 256), 1)
-    ,(4, 1, 'Lucas Costa', 'lucas.costa@exemplo.com', SHA2('senhaxyz', 256), NULL)
-    ,(4, 2, 'Ana Souza', 'ana.souza@exemplo.com', SHA2('senha123', 256), 1)
-    ,(5, 1, 'Paulo Rodrigues', 'paulo.rodrigues@exemplo.com', SHA2('senha456', 256), NULL)
-    ,(5, 2, 'Fernanda Alves', 'fernanda.alves@exemplo.com', SHA2('senha789', 256), 1)
-    ,(6, 1, 'Rafaela Pereira', 'rafaela.pereira@exemplo.com', SHA2('senhaabc', 256), NULL)
-    ,(6, 2, 'Marcelo Santos', 'marcelo.santos@exemplo.com', SHA2('senhaxyz', 256), 1)
-    ,(7, 1, 'Amanda Ferreira', 'amanda.ferreira@exemplo.com', SHA2('senha123', 256), NULL)
-    ,(7, 2, 'Thiago Costa', 'thiago.costa@exemplo.com', SHA2('senha456', 256), 1)
-    ,(8, 1, 'Gabriela Oliveira', 'gabriela.oliveira@exemplo.com', SHA2('senha789', 256), NULL)
-    ,(8, 2, 'Marina Souza', 'marina.souza@exemplo.com', SHA2('senhaabc', 256), 1)
-    ,(9, 1, 'Vinícius Rodrigues', 'vinicius.rodrigues@exemplo.com', SHA2('senhaxyz', 256), NULL)
-    ,(9, 2, 'Bruna Alves', 'bruna.alves@exemplo.com', SHA2('senha123', 256), 1);
+	 (1, NULL, 'Administrador', 'admin@techideas.com', '$2b$10$M/CbWCDYZcYYDnTUs1nfPOu/U665hzfQDSBucm56MxAy4ldau2YAi', NULL)
+    ,(2, NULL, 'João Silva', 'joao.silva@exemplo.com', SHA2('senha123', 256), NULL)
+    ,(2, NULL, 'Maria Santos', 'maria.santos@exemplo.com', SHA2('senha456', 256), 1)
+    ,(3, NULL, 'Pedro Oliveira', 'pedro.oliveira@exemplo.com', SHA2('senha789', 256), NULL)
+    ,(3, NULL, 'Carla Ferreira', 'carla.ferreira@exemplo.com', SHA2('senhaabc', 256), 1)
+    ,(4, NULL, 'Lucas Costa', 'lucas.costa@exemplo.com', SHA2('senhaxyz', 256), NULL)
+    ,(4, NULL, 'Ana Souza', 'ana.souza@exemplo.com', SHA2('senha123', 256), 1)
+    ,(5, NULL, 'Paulo Rodrigues', 'paulo.rodrigues@exemplo.com', SHA2('senha456', 256), NULL)
+    ,(5, NULL, 'Fernanda Alves', 'fernanda.alves@exemplo.com', SHA2('senha789', 256), 1)
+    ,(6, NULL, 'Rafaela Pereira', 'rafaela.pereira@exemplo.com', SHA2('senhaabc', 256), NULL)
+    ,(6, NULL, 'Marcelo Santos', 'marcelo.santos@exemplo.com', SHA2('senhaxyz', 256), 1)
+    ,(7, NULL, 'Amanda Ferreira', 'amanda.ferreira@exemplo.com', SHA2('senha123', 256), NULL)
+    ,(7, NULL, 'Thiago Costa', 'thiago.costa@exemplo.com', SHA2('senha456', 256), 1)
+    ,(8, NULL, 'Gabriela Oliveira', 'gabriela.oliveira@exemplo.com', SHA2('senha789', 256), NULL)
+    ,(8, NULL, 'Marina Souza', 'marina.souza@exemplo.com', SHA2('senhaabc', 256), 1)
+    ,(9, NULL, 'Vinícius Rodrigues', 'vinicius.rodrigues@exemplo.com', SHA2('senhaxyz', 256), NULL)
+    ,(9, NULL, 'Bruna Alves', 'bruna.alves@exemplo.com', SHA2('senha123', 256), 1);
 
 INSERT INTO tbSetor (`nomeSetor`)
 VALUES
@@ -175,7 +175,18 @@ VALUES
     ,(1, NOW(), 1)
     ,(1, NOW(), 1)
     ,(1, NOW(), 1)
-    ,(1, NOW(), 1);
+    ,(1, NOW(), 1), 
+    (2, NOW(), 1)
+    ,(2, NOW(), 1)
+    ,(2, NOW(), 1)
+    ,(2, NOW(), 1)
+    ,(2, NOW(), 1)
+    ,(2, NOW(), 1)
+    ,(2, NOW(), 1)
+    ,(2, NOW(), 1)
+    ,(2, NOW(), 1)
+    ,(2, NOW(), 1)
+    ,(2, NOW(), 1);
 
     
 /* SELECTS */
