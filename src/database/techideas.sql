@@ -1,4 +1,5 @@
-DROP DATABASE bd_smfp;
+-- Active: 1683809550115@@127.0.0.1@3306@bd_SMFP
+DROP DATABASE bd_SMFP;
 
 CREATE DATABASE bd_SMFP;
 
@@ -26,6 +27,7 @@ CREATE TABLE tbUsuario(
     ,senhaUsuario VARCHAR(64) NOT NULL
     ,CONSTRAINT fk_tbUsuario_tbEmpresa FOREIGN KEY (fkEmpresa) REFERENCES tbEmpresa(idEmpresa)
     ,PRIMARY KEY(idUsuario, fkEmpresa)
+    ,fkAdministrador INT, FOREIGN KEY (fkAdministrador) REFERENCES tbUsuario(idUsuario)
 );
 
 CREATE TABLE tbSetor(
@@ -40,6 +42,9 @@ CREATE TABLE tbAmbiente(
     ,tempoDispersao INT
     ,nomeAmbiente VARCHAR(50)
     ,descAmbiente VARCHAR(150)
+    ,minimoPessoas INT
+    ,mediaPessoas INT
+    ,maximoPessoas INT
     ,CONSTRAINT fk_tbAmbiente_tbEmpresa FOREIGN KEY (fkEmpresa) REFERENCES tbEmpresa(idEmpresa)
     ,CONSTRAINT fk_tbAmbiente_tbSetor FOREIGN KEY (fkSetor) REFERENCES tbSetor(idSetor)
     ,PRIMARY KEY(idAmbiente, fkEmpresa, fkSetor)
@@ -56,11 +61,12 @@ CREATE TABLE tbSensor(
 CREATE TABLE tbMetricas (
     idMetrica INT AUTO_INCREMENT
     ,fkSensor INT
-    ,dateMetrica TIMESTAMP NOT NULL
+    ,dateMetrica TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     ,valMetrica INT
     ,CONSTRAINT fk_tbMetricas_fkSensor FOREIGN KEY (fkSensor) REFERENCES tbSensor(idSensor)
     ,PRIMARY KEY(idMetrica, fkSensor)
 );
+
 
 /* INSERTS */
 
@@ -73,37 +79,41 @@ INSERT INTO tbToken(tokenHash)
         ,(SHA2(UUID(), 256))
         ,(SHA2(UUID(), 256))
         ,(SHA2(UUID(), 256))
+        ,(SHA2(UUID(), 256))
         ,(SHA2(UUID(), 256));
+        
 
 INSERT INTO tbEmpresa(`fkToken`, `nomeEmpresa`, `cnpjEmpresa`)
 VALUES
-    (1, 'Shopping A', '11.111.111/0001-11')
-    ,(2, 'Shopping B', '22.222.222/0001-22')
-    ,(3, 'Shopping C', '33.333.333/0001-33')
-    ,(4, 'Shopping D', '44.444.444/0001-44')
-    ,(5, 'Shopping E', '55.555.555/0001-55')
-    ,(6, 'Shopping F', '66.666.666/0001-66')
-    ,(7, 'Shopping G', '77.777.777/0001-77')
-    ,(8, 'Shopping H', '88.888.888/0001-88');
-
-INSERT INTO tbUsuario (`fkEmpresa`, `idUsuario`,`nomeUsuario`,`emailUsuario`,`senhaUsuario`)
+	(1, 'TechIdeas', '00.000.000/0000-00')
+    ,(2, 'Shopping A', '11.111.111/0001-11')
+    ,(3, 'Shopping B', '22.222.222/0001-22')
+    ,(4, 'Shopping C', '33.333.333/0001-33')
+    ,(5, 'Shopping D', '44.444.444/0001-44')
+    ,(6, 'Shopping E', '55.555.555/0001-55')
+    ,(7, 'Shopping F', '66.666.666/0001-66')
+    ,(8, 'Shopping G', '77.777.777/0001-77')
+    ,(9, 'Shopping H', '88.888.888/0001-88');
+    
+INSERT INTO tbUsuario (`fkEmpresa`, `idUsuario`,`nomeUsuario`,`emailUsuario`,`senhaUsuario`,`fkAdministrador`)
 VALUES
-    (1, 1, 'João Silva', 'joao.silva@exemplo.com', SHA2('senha123', 256))
-    ,(1, 2, 'Maria Santos', 'maria.santos@exemplo.com', SHA2('senha456', 256))
-    ,(2, 1, 'Pedro Oliveira', 'pedro.oliveira@exemplo.com', SHA2('senha789', 256))
-    ,(2, 2, 'Carla Ferreira', 'carla.ferreira@exemplo.com', SHA2('senhaabc', 256))
-    ,(3, 1, 'Lucas Costa', 'lucas.costa@exemplo.com', SHA2('senhaxyz', 256))
-    ,(3, 2, 'Ana Souza', 'ana.souza@exemplo.com', SHA2('senha123', 256))
-    ,(4, 1, 'Paulo Rodrigues', 'paulo.rodrigues@exemplo.com', SHA2('senha456', 256))
-    ,(4, 2, 'Fernanda Alves', 'fernanda.alves@exemplo.com', SHA2('senha789', 256))
-    ,(5, 1, 'Rafaela Pereira', 'rafaela.pereira@exemplo.com', SHA2('senhaabc', 256))
-    ,(5, 2, 'Marcelo Santos', 'marcelo.santos@exemplo.com', SHA2('senhaxyz', 256))
-    ,(6, 1, 'Amanda Ferreira', 'amanda.ferreira@exemplo.com', SHA2('senha123', 256))
-    ,(6, 2, 'Thiago Costa', 'thiago.costa@exemplo.com', SHA2('senha456', 256))
-    ,(7, 1, 'Gabriela Oliveira', 'gabriela.oliveira@exemplo.com', SHA2('senha789', 256))
-    ,(7, 2, 'Marina Souza', 'marina.souza@exemplo.com', SHA2('senhaabc', 256))
-    ,(8, 1, 'Vinícius Rodrigues', 'vinicius.rodrigues@exemplo.com', SHA2('senhaxyz', 256))
-    ,(8, 2, 'Bruna Alves', 'bruna.alves@exemplo.com', SHA2('senha123', 256));
+	 (1, 1, 'Administrador', 'admin@techideas.com', '$2b$10$M/CbWCDYZcYYDnTUs1nfPOu/U665hzfQDSBucm56MxAy4ldau2YAi', NULL)
+    ,(2, 1, 'João Silva', 'joao.silva@exemplo.com', SHA2('senha123', 256), NULL)
+    ,(2, 2, 'Maria Santos', 'maria.santos@exemplo.com', SHA2('senha456', 256), 1)
+    ,(3, 1, 'Pedro Oliveira', 'pedro.oliveira@exemplo.com', SHA2('senha789', 256), NULL)
+    ,(3, 2, 'Carla Ferreira', 'carla.ferreira@exemplo.com', SHA2('senhaabc', 256), 1)
+    ,(4, 1, 'Lucas Costa', 'lucas.costa@exemplo.com', SHA2('senhaxyz', 256), NULL)
+    ,(4, 2, 'Ana Souza', 'ana.souza@exemplo.com', SHA2('senha123', 256), 1)
+    ,(5, 1, 'Paulo Rodrigues', 'paulo.rodrigues@exemplo.com', SHA2('senha456', 256), NULL)
+    ,(5, 2, 'Fernanda Alves', 'fernanda.alves@exemplo.com', SHA2('senha789', 256), 1)
+    ,(6, 1, 'Rafaela Pereira', 'rafaela.pereira@exemplo.com', SHA2('senhaabc', 256), NULL)
+    ,(6, 2, 'Marcelo Santos', 'marcelo.santos@exemplo.com', SHA2('senhaxyz', 256), 1)
+    ,(7, 1, 'Amanda Ferreira', 'amanda.ferreira@exemplo.com', SHA2('senha123', 256), NULL)
+    ,(7, 2, 'Thiago Costa', 'thiago.costa@exemplo.com', SHA2('senha456', 256), 1)
+    ,(8, 1, 'Gabriela Oliveira', 'gabriela.oliveira@exemplo.com', SHA2('senha789', 256), NULL)
+    ,(8, 2, 'Marina Souza', 'marina.souza@exemplo.com', SHA2('senhaabc', 256), 1)
+    ,(9, 1, 'Vinícius Rodrigues', 'vinicius.rodrigues@exemplo.com', SHA2('senhaxyz', 256), NULL)
+    ,(9, 2, 'Bruna Alves', 'bruna.alves@exemplo.com', SHA2('senha123', 256), 1);
 
 INSERT INTO tbSetor (`nomeSetor`)
 VALUES
@@ -124,19 +134,19 @@ VALUES
     ,('Fast-food')
     ,('Cinema');
 
-INSERT INTO tbAmbiente (`fkEmpresa`, `fkSetor`, `tempoDispersao`, `nomeAmbiente`, `descAmbiente`) 
+INSERT INTO tbAmbiente (`fkEmpresa`, `fkSetor`, `tempoDispersao`, `nomeAmbiente`, `descAmbiente`, `minimoPessoas`, `mediaPessoas`, `maximoPessoas`) 
 VALUES 
-   (1,  1, 30, 'Loja de Roupa 1', 'Ambiente para lojas de roupas femininas')
-    ,(1, 1, 25, 'Loja de Roupa 2', 'Ambiente para lojas de roupas masculinas')
-    ,(2, 1, 28, 'Loja de Roupa 3', 'Ambiente para lojas de roupas infantis')
-    ,(2, 15, 10, 'Fast Food', 'Ambiente para estabelecimentos de fast food')
-    ,(3, 14, 60, 'Restaurantes', 'Ambiente para restaurantes')
-    ,(3, 8, 120, 'Parque de Diversões', 'Ambiente para o parque de diversões')
-    ,(4, 16, 120, 'Salas de Cinema', 'Ambiente para salas de cinema')
-    ,(4, 2, 18, 'Lojas de Calçados', 'Ambiente para lojas de calçados')
-    ,(5, 3, 13, 'Lojas de Acessórios', 'Ambiente para lojas de acessórios')
-    ,(5, 9, 10, 'Lojas de Eletrônicos', 'Ambiente para lojas de eletrônicos')
-    ,(6, 11, 12,'Lojas de Eletrodomésticos', 'Ambiente para lojas de eletrodomésticos');
+   (1,  1, 30, 'Loja de Roupa 1', 'Ambiente para lojas de roupas femininas', 33, 56, 96)
+    ,(1, 1, 25, 'Loja de Roupa 2', 'Ambiente para lojas de roupas masculinas', 27, 43, 83)
+    ,(2, 1, 28, 'Loja de Roupa 3', 'Ambiente para lojas de roupas infantis', 16, 28, 49)
+    ,(2, 15, 10, 'Fast Food', 'Ambiente para estabelecimentos de fast food', 100, 200, 300)
+    ,(3, 14, 60, 'Restaurantes', 'Ambiente para restaurantes', 79, 100, 172)
+    ,(3, 8, 120, 'Parque de Diversões', 'Ambiente para o parque de diversões', 72, 90, 133)
+    ,(4, 16, 120, 'Salas de Cinema', 'Ambiente para salas de cinema', 79, 95, 159)
+    ,(4, 2, 18, 'Lojas de Calçados', 'Ambiente para lojas de calçados', 50, 72, 90)
+    ,(5, 3, 13, 'Lojas de Acessórios', 'Ambiente para lojas de acessórios', 40, 69, 82)
+    ,(5, 9, 10, 'Lojas de Eletrônicos', 'Ambiente para lojas de eletrônicos', 50, 78, 91)
+    ,(6, 11, 12,'Lojas de Eletrodomésticos', 'Ambiente para lojas de eletrodomésticos', 68, 88, 117);
 
 
 INSERT INTO tbSensor (`fkAmbiente`, `portaSensor`)
