@@ -37,7 +37,7 @@
             </span>
             <div class="perfil">
                 <h3>Nome do Usuário</h3>
-                <a href="#">Sair</a>
+                <a href="logout.html">Sair</a>
             </div>
         </div>
     </nav>
@@ -257,28 +257,9 @@
         }, 1000);
 
     </script>
+
+    <script src="js/navbar.js"></script>
 </body>
 
 </html>
-<script>
-    var isCollapsed = false;
-    // Com lambda
-    /*function collapse(collapse_button){
-        navbar.style.left = isCollapsed ? '0px' : '-260px';
-        collapse_text.style.transform = isCollapsed ? 'rotate(0deg)' : 'rotate(180deg)';
-        isCollapsed = !isCollapsed;
-    }*/
 
-    // Sem lambda
-    function collapse(collapse_button){
-        if(isCollapsed){
-            navbar.style.left = '0px';
-            collapse_text.style.transform = 'rotate(0deg)';
-            isCollapsed = false;
-        }else{
-            navbar.style.left = '-260px';
-            collapse_text.style.transform = 'rotate(180deg)';
-            isCollapsed = true;
-        }
-    }
-</script>

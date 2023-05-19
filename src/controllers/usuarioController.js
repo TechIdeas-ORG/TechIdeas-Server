@@ -1,8 +1,6 @@
 var usuarioModel = require("../models/usuarioModel");
 const bcrypt = require('bcrypt');
 
-const session = require('express-session');
-
 function listar(req, res) {
     usuarioModel.listar()
         .then(function (resultado) {
@@ -37,10 +35,7 @@ function entrar(req, res) {
                         bcrypt.compare(senha, usuario['senhaUsuario'], function(err, result) {
                             console.log(usuario['senhaUsuario'],result);
                             if(result){
-                                //LOGIN APROVADO
-                                req.session.EMAIL_USUARIO = usuario.emailUsuario;
-                                req.session.NOME_USUARIO = usuario.nomeUsuario;
-                                req.session.ID_USUARIO = usuario.idUsuario;                       
+                                //LOGIN APROVADO                     
                                 res.json(usuario);
                             }else{
                                 //ERRO
