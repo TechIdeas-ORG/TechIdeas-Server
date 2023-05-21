@@ -54,12 +54,14 @@
 
 </html>
 <script>
+    var nomeEmpresa, cnpj, email, senha, token;
+
     function verify() {
-        var nomeEmpresa = ipt_nomeEmpresa.value;
-        var cnpj = ipt_cnpj.value;
-        var email = ipt_email.value;
-        var senha = ipt_senha.value;
-        var token = ipt_token.value;
+        nomeEmpresa = ipt_nomeEmpresa.value;
+        cnpj = ipt_cnpj.value;
+        email = ipt_email.value;
+        senha = ipt_senha.value;
+        token = ipt_token.value;
         var erro = false;
         if (nomeEmpresa.length < 3) {
             alert("Por favor, insira um nome de uma empresa válido")
@@ -85,44 +87,63 @@
         }
     }
 
-    function cadastrar_auth() {
-        var nomeEmpresa = ipt_nomeEmpresa.value;
-        var cnpj = ipt_cnpj.value;
-        var email = ipt_email.value;
-        var senha = ipt_senha.value;
-        var token = ipt_token.value;
-     
-        fetch("/usuario/cadastrar", {
+    async function requisicao(URL, dados) {
+        return new Promise((resolve, reject) => {
+            fetch(URL, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify({
-                // crie um atributo que recebe o valor recuperado aqui
-                // Agora vá para o arquivo routes/usuario.js
-                nomeEmpresaServer: nomeEmpresa,
-                cnpjServer: cnpj,
-                emailServer: email,
-                senhaServer: senha,
-                tokenServer: token
+            body: JSON.stringify(dados)
             })
-        }).then(function (resposta) {
-
-            console.log("resposta: ", resposta);
-
-            if (resposta.ok) {
-                cardErro.style.display = "block";
-
-                alert('Cadastro feito\nPor Favor Faça Login');
-                window.location.href = 'login.html';
-
-            } else {
-                throw ("Houve um erro ao tentar realizar o cadastro!");
-            }
-        }).catch(function (resposta) {
-            console.log(`#ERRO: ${resposta}`);
+            .then(function (resposta) {
+                resolve(resposta);
+            })
+            .catch(function (resposta) {
+                reject(resposta);
+            });
         });
+    }
 
-        return false;
+    async function cadastrar_auth() {
+        /*TOKEN EXISTE?
+            ↳ CADASTRAR EMPRESA
+                ↳ CADASTRAR USUÁRIO (empresaModel)
+        MSG ERRO*/
+        var dados = {
+            nomeEmpresaServer: nomeEmpresa,
+            cnpjServer: cnpj,
+            emailServer: email,
+            senhaServer: senha,
+            tokenServer: token
+        };
+
+        var req_verifToken = await requisicao('/token', dados);
+
+        if(req_verifToken.ok){
+            req_verifToken.json().then(async (json) =>{
+                var idToken = json[0].idToken;
+
+                dados.tokenServer = idToken;
+
+                var req_cadEmpresa = await requisicao('/empresa', dados);
+
+                if(req_cadEmpresa.ok){
+                    alert('Cadastro feito\nPor Favor Faça Login');
+                    window.location.href = 'login.html';
+                }else{
+                    console.log('ERRO', req_cadEmpresa);
+                }
+
+            }).catch((erro)=>{
+                //SELECT VAZIO = TOKEN INVÁLIDO
+                alert('Esse Token não existe ou já está sendo usado!')
+            });
+        }else{
+            //ERRO
+            console.log('ERRO', req_verifToken);
+        }
+
+
     }
 </script>

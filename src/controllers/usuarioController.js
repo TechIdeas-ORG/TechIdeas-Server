@@ -1,7 +1,7 @@
 var usuarioModel = require("../models/usuarioModel");
 const bcrypt = require('bcrypt');
 
-const session = require('express-session');
+const saltRounds = 10;
 
 function listar(req, res) {
     usuarioModel.listar()
@@ -35,7 +35,6 @@ function entrar(req, res) {
                     var usuario = resultado[0];
                     if((resultado.length-1) == 0){
                         bcrypt.compare(senha, usuario['senhaUsuario'], function(err, result) {
-                            console.log(usuario['senhaUsuario'],result);
                             if(result){
                                 //LOGIN APROVADO
                                 req.session.EMAIL_USUARIO = usuario.emailUsuario;
@@ -66,41 +65,42 @@ function entrar(req, res) {
 
 function cadastrar(req, res) {
     // Crie uma variável que vá recuperar os valores do arquivo cadastro.html
-    var nomeEmpresa = req.body.nomeEmpresaServer;
-    var cnpj = req.body.cnpjServer;
-    var email = req.body.emailServer;
-    var senha = req.body.senhaServer;
-    var token = req.body.tokenServer;
+    var nomeUsuario = req.body.nomeUsuario;
+    var emailUsuario = req.body.emailServer;
+    var senhaUsuario = req.body.senhaServer;
+    var fkEmpresa = req.body.fkEmpresa;
 
     // Faça as validações dos valores
-    if (nomeEmpresa == undefined) {
-        res.status(400).send("O nome da sua empresa está undefined!");
-    } else if (cnpj == undefined) {
+    if (cnpj == undefined) {
         res.status(400).send("Seu cnpj está undefined!");
-    } else if (email == undefined) {
+    } else if (emailUsuario == undefined) {
         res.status(400).send("Seu email está undefined!");
-    } else if (senha == undefined) {
+    } else if (senhaUsuario == undefined) {
         res.status(400).send("Sua senha está undefined!");
     } else if (token == undefined) {
         res.status(400).send("Seu token está undefined!");
     } else {
         
-        // Passe os valores como parâmetro e vá para o arquivo usuarioModel.js
-        usuarioModel.cadastrar(nomeEmpresa, cnpj, email, senha, token)
-            .then(
-                function (resultado) {
-                    res.json(resultado);
-                }
-            ).catch(
-                function (erro) {
-                    console.log(erro);
-                    console.log(
-                        "\nHouve um erro ao realizar o cadastro! Erro: ",
-                        erro.sqlMessage
-                    );
-                    res.status(500).json(erro.sqlMessage);
-                }
+        bcrypt.hash(senhaUsuario, saltRounds, (err, senha_criptografada) =>{
+
+            usuarioModel.cadastrar(fkEmpresa, nomeUsuario, emailUsuario, senhaUsuario)
+                .then(
+                    function (resultado) {
+                        res.json(resultado);
+                    }
+                ).catch(
+                    function (erro) {
+                        console.log(erro);
+                        console.log(
+                            "\nHouve um erro ao realizar o cadastro! Erro: ",
+                            erro.sqlMessage
+                        );
+                        res.status(500).json(erro.sqlMessage);
+                    }
             );
+
+        });
+
     }
 }
 

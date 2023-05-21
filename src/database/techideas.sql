@@ -1,12 +1,9 @@
+-- Active: 1679521204876@@127.0.0.1@3306@bd_smfp
 DROP DATABASE bd_smfp;
 
 CREATE DATABASE bd_SMFP;
 
 USE bd_SMFP;
-
-select * from tbEmpresa;
-
-select * from tbUsuario;
 
 CREATE TABLE tbToken(
     idToken INT PRIMARY KEY AUTO_INCREMENT
@@ -87,8 +84,7 @@ VALUES
     ,(4, 'Shopping D', '44.444.444/0001-44')
     ,(5, 'Shopping E', '55.555.555/0001-55')
     ,(6, 'Shopping F', '66.666.666/0001-66')
-    ,(7, 'Shopping G', '77.777.777/0001-77')
-    ,(8, 'Shopping H', '88.888.888/0001-88');
+    ,(7, 'Shopping G', '77.777.777/0001-77');
 
 INSERT INTO tbUsuario (`fkEmpresa`, `idUsuario`,`nomeUsuario`,`emailUsuario`,`senhaUsuario`)
 VALUES
@@ -202,3 +198,5 @@ SELECT tbMetricas.`valMetrica`, tbMetricas.`dateMetrica`
 SELECT idToken, count(idEmpresa) FROM tbToken
     INNER JOIN tbEmpresa ON fkToken = idEmpresa AND fkToken = idToken
     WHERE tokenHash = '43785e89508865813596518a211809f5606532c11aa54314f379814c3b360e90';
+
+SELECT idToken FROM tbToken WHERE tokenHash = 'd1b5d35e4931e28a53c70ba8ae34b1a9ac6922a02f5348bc8ebbbc48eae29ecc' AND NOT EXISTS (SELECT NULL FROM tbEmpresa WHERE `fkToken` = `idToken`)
