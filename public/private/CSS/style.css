@@ -167,6 +167,17 @@ nav .head {
     text-transform: uppercase;
 }
 
+.consultaDia{
+    margin-left: -25%;
+    margin-bottom: 50px;
+    position: absolute;
+}
+
+.consultaDia input{
+    background-color: #00FF43;
+    border: 6px white;
+}
+
 .page-title div{
     width: 35%;
     height: 9px;
