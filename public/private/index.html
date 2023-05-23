@@ -95,6 +95,7 @@
         const dado_sem = [354, 540, 245, 424, 350, 348, 451];
         var soma = 0;
         var max_pos = 0;
+        var somatotal = 0;
 
         for (var i = 0; i < dado_sem.length; i++) {
             var dado = dado_sem[i];
@@ -251,9 +252,7 @@
                             alert(JSON.stringify(novoRegistro))
                             let avisoCaptura = document.getElementById(`avisoCaptura${idSensor}`)
                             somatotal = 0;
-                            for(var h = 0; h < novoRegistro.length; h++){
-                                somatotal += Number(novoRegistro[h].valMetrica);
-                            }
+                            
                             plotarGrafico(novoRegistro, fkAmbiente, somatotal);
 
 
@@ -318,11 +317,10 @@
             };
             for (i = 0; i < resposta.length; i++) {
                 var registro = resposta[i];
-                labels.push(registro.horario);
+                labels.push(registro.horario + " minutos");
                 console.log(registro.horario)
                 console.log(dados.datasets[0].data)
-                dados.datasets[0].data.push(registro.valMetrica);
-                dados.datasets[0].data.push(soma)
+                dados.datasets[0].data.push(registro.soma);
             }
             const config = {
                 type: 'bar',
@@ -385,8 +383,8 @@
                         console.log(`Dados atuais do gráfico:`);
                         console.log(dados);
 
-
-                        if (novoRegistro[0].horario == dados.labels[dados.labels.length - 1]) {
+                        
+                        if (novoRegistro[0].horario == dados.labels[dados.labels.length - 1] || (getMinutes() )) {
                             console.log("---------------------------------------------------------------")
                             console.log("Como não há dados novos para captura, o gráfico não atualizará.")
                             console.log("Horário do novo dado capturado:")
