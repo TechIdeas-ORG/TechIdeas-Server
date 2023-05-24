@@ -16,7 +16,7 @@ CREATE TABLE tbEmpresa (
     ,nomeEmpresa VARCHAR(50) NOT NULL
     ,cnpjEmpresa VARCHAR(18) NOT NULL
     ,PRIMARY KEY(idEmpresa, fkToken)
-    ,CONSTRAINT fk_tbEmpresa_tbToken FOREIGN KEY (fkToken) REFERENCES tbToken(idToken)
+    ,CONSTRAINT fk_tbEmpresa_tbToken FOREIGN KEY (fkToken) REFERENCES tbToken(idToken) ON DELETE CASCADE
 );
 
 CREATE TABLE tbUsuario(
@@ -25,9 +25,9 @@ CREATE TABLE tbUsuario(
     ,nomeUsuario VARCHAR(50) NOT NULL
     ,emailUsuario VARCHAR(100) NOT NULL UNIQUE
     ,senhaUsuario VARCHAR(64) NOT NULL
-    ,CONSTRAINT fk_tbUsuario_tbEmpresa FOREIGN KEY (fkEmpresa) REFERENCES tbEmpresa(idEmpresa)
+    ,CONSTRAINT fk_tbUsuario_tbEmpresa FOREIGN KEY (fkEmpresa) REFERENCES tbEmpresa(idEmpresa) ON DELETE CASCADE
     ,PRIMARY KEY(idUsuario, fkEmpresa)
-    ,fkAdministrador INT, FOREIGN KEY (fkAdministrador) REFERENCES tbUsuario(idUsuario)
+    ,fkAdministrador INT, FOREIGN KEY (fkAdministrador) REFERENCES tbUsuario(idUsuario) ON DELETE CASCADE
 );
 
 CREATE TABLE tbSetor(
@@ -45,8 +45,8 @@ CREATE TABLE tbAmbiente(
     ,minimoPessoas INT
     ,mediaPessoas INT
     ,maximoPessoas INT
-    ,CONSTRAINT fk_tbAmbiente_tbEmpresa FOREIGN KEY (fkEmpresa) REFERENCES tbEmpresa(idEmpresa)
-    ,CONSTRAINT fk_tbAmbiente_tbSetor FOREIGN KEY (fkSetor) REFERENCES tbSetor(idSetor)
+    ,CONSTRAINT fk_tbAmbiente_tbEmpresa FOREIGN KEY (fkEmpresa) REFERENCES tbEmpresa(idEmpresa) ON DELETE CASCADE
+    ,CONSTRAINT fk_tbAmbiente_tbSetor FOREIGN KEY (fkSetor) REFERENCES tbSetor(idSetor) ON DELETE CASCADE
     ,PRIMARY KEY(idAmbiente, fkEmpresa, fkSetor)
 );
 
@@ -54,7 +54,7 @@ CREATE TABLE tbSensor(
     idSensor INT AUTO_INCREMENT
     ,fkAmbiente INT
     ,portaSensor VARCHAR(6) NOT NULL
-    ,CONSTRAINT fk_tbSensor_fkAmbiente FOREIGN KEY (fkAmbiente) REFERENCES tbAmbiente(idAmbiente)
+    ,CONSTRAINT fk_tbSensor_fkAmbiente FOREIGN KEY (fkAmbiente) REFERENCES tbAmbiente(idAmbiente) ON DELETE CASCADE
     ,PRIMARY KEY(idSensor, fkAmbiente)
 );
 
@@ -63,8 +63,8 @@ CREATE TABLE tbMetricas (
     ,fkSensor INT
     ,dateMetrica TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     ,valMetrica INT
-    ,CONSTRAINT fk_tbMetricas_fkSensor FOREIGN KEY (fkSensor) REFERENCES tbSensor(idSensor)
-    ,PRIMARY KEY(idMetrica, fkSensor)
+    ,CONSTRAINT fk_tbMetricas_fkSensor FOREIGN KEY (fkSensor) REFERENCES tbSensor(idSensor) ON DELETE CASCADE
+    ,PRIMARY KEY(idMetrica, fkSensor) 
 );
 
 
