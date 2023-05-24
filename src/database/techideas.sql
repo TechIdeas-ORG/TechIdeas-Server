@@ -42,6 +42,7 @@ CREATE TABLE tbAmbiente(
     ,tempoDispersao INT
     ,nomeAmbiente VARCHAR(50)
     ,descAmbiente VARCHAR(150)
+    ,setorAmbiente VARCHAR(35)
     ,minimoPessoas INT
     ,mediaPessoas INT
     ,maximoPessoas INT
