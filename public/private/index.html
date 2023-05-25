@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="CSS/dashboard.css">
 </head>
 
-<body onload="obterDadosGrafico(), plotarGrafico()" onloadstart="CarregarBox()">
+<body onload="obterDadosGrafico(), plotarGrafico(), consultarTudo()" onloadstart="CarregarBox()">
     <nav id="navbar">
         <div class="collapse" onclick="collapse()">
             <span class="material-symbols-rounded" id="collapse_text">
@@ -73,7 +73,7 @@
         </div>
     </div>
 
-    <div class="areaKPI container">
+    <div class="areaKPI container" id="dv_ambientes">
         <div class="kpi">
             <h4>Média de Fluxo da semana</h4>
             <span id="span_med_fluxo"></span>
@@ -86,7 +86,6 @@
             <h4>Aumento do Fluxo</h4>
             <span id="span_porcent_aum_fluxo"></span>
         </div>
-
     </div>
 
     <script>
@@ -96,6 +95,8 @@
         var soma = 0;
         var max_pos = 0;
         var somatotal = 0;
+        var qtdeAmb = 0;
+        var fluxoAmbs = [];
 
         for (var i = 0; i < dado_sem.length; i++) {
             var dado = dado_sem[i];
@@ -249,7 +250,6 @@
                             console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
                             console.log(`Dados atuais do gráfico:`);
                             console.log(dados);
-                            alert(JSON.stringify(novoRegistro))
                             let avisoCaptura = document.getElementById(`avisoCaptura${idSensor}`)
                             somatotal = 0;
                             
@@ -354,8 +354,14 @@
                             for (var i = 0; i < novoRegistro.length; i++) {
                                 console.log("entrei no for")
                                 boxAmbiente.innerHTML += ` <option id="caixasBox" value="${novoRegistro[i].idAmbiente}">${novoRegistro[i].nomeAmbiente}</option>`
+                                dv_ambientes.innerHTML += `
+                                    <div class="kpi">
+                                        <h4 id="ambiente${i}">${novoRegistro[i].nomeAmbiente}</h4>
+                                        <span id="span_qtde_amb${i}">${novoRegistro[i].soma}</span>
+                                    </div>
+                                `
+                                qtdeAmb++;
                             }
-
                         });
                     } else {
                         console.error('Nenhum dado encontrado ou erro na API');
@@ -384,7 +390,7 @@
                         console.log(dados);
 
                         
-                        if (novoRegistro[0].horario == dados.labels[dados.labels.length - 1] || (getMinutes() )) {
+                        if (novoRegistro[0].horario == dados.labels[dados.labels.length - 1] || true) {
                             console.log("---------------------------------------------------------------")
                             console.log("Como não há dados novos para captura, o gráfico não atualizará.")
                             console.log("Horário do novo dado capturado:")
@@ -420,7 +426,49 @@
 
 
 
+        function consultarTudo(){
+            var fkUser = sessionStorage.ID_USUARIO;
+            if (fkUser != null) {
+                fetch(`/ambiente/consultaTodos/${fkUser}`, { cache: 'no-store' }).then(function (response) {
+                    if (response.ok) {
+                        console.log(response)
+                        response.json().then(function (novoRegistro) {
+                            console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
 
+                            console.log("Mapa de calor: " + novoRegistro)
+
+
+                            for (var i = 0; i < qtdeAmb; i++) {
+                                fluxoAmbs[i] = 0;
+                            }
+                            for (var i = 0; i < novoRegistro.length; i++) {
+                                for(var h = 0; h<fluxoAmbs.length; h++){
+                                    if(novoRegistro[i].idAmbiente == h){
+                                        fluxoAmbs[h] += novoRegistro[i].soma;
+                                    }
+                                }
+                                qtdeAmb++;
+                            }
+                            console.log(fluxoAmbs)
+                            for(var i = 0; i < fluxoAmbs.length; i++){
+                                document.getElementById("span_qtde_amb"+[i]).innerHTML = fluxoAmbs[i]
+                                console.log("quantidade ambiente "+ i + " "+  fluxoAmbs[i])
+                            }
+                        });
+                    } else {
+                        console.error('Nenhum dado encontrado ou erro na API');
+                        // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
+                        //proximaAtualizacao = setTimeout(() => atualizarGrafico(idSensor, dados, myChart), 2000);
+                    }
+                })
+
+                    .catch(function (error) {
+                        console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+                    });
+            }
+
+        }
+        consultarTudo()
     </script>
 </body>
 

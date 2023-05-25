@@ -27,8 +27,26 @@ function buscarAmbientes(idUsuario) {
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
 }
+function buscarTodos(idUsuario) {
+    console.log("ACESSEI O AMBIENTE MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listar() \n\n " + idUsuario);
+    var instrucao = `
+    select SUM(valMetrica) as soma, minute(dateMetrica) as horario, idAmbiente
+    from tbMetricas
+    join tbSensor on fkSensor = idSensor
+    join tbAmbiente on fkAmbiente = idAmbiente
+    join tbEmpresa on tbAmbiente.fkEmpresa = idEmpresa
+    JOIN tbUsuario ON idEmpresa = tbUsuario.fkEmpresa
+    where DATEDIFF(dateMetrica, now()) = "00:30:00" and idUsuario = ${idUsuario}
+    GROUP BY minute(dateMetrica)
+    order by minute(dateMetrica);
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
+
 
 module.exports = { 
     listar1,
-    buscarAmbientes
+    buscarAmbientes,
+    buscarTodos
 };

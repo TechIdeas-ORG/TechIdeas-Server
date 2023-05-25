@@ -29,6 +29,8 @@ routerAuth.get("/consultaAmbiente/:idUsuario", function (req, res) {
 });
 
 
-
+routerAuth.get("/consultaTodos/:fkUser", (req, res) => {
+    ambienteController.consultaTodos(req,res)
+})
 
 module.exports = routerAuth;
