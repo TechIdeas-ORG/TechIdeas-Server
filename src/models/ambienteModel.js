@@ -3,13 +3,13 @@ var database = require("../database/connection")
 function listar1(idAmbiente) {
     console.log("ACESSEI O AMBIENTE MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listar() \n\n " + idAmbiente);
     var instrucao = `
-    select SUM(valMetrica) as soma, HOUR(dateMetrica) as horario
-    from tbMetricas
-    join tbSensor on fkSensor = idSensor
-    join tbAmbiente on fkAmbiente = idAmbiente
-	where idAmbiente = 1 and DATEDIFF(dateMetrica, now()) = "00:30:00" 
-    GROUP BY HOUR(dateMetrica)
-	order by HOUR(dateMetrica) DESC;
+        select SUM(valMetrica) as soma, HOUR(dateMetrica) as horario, dateMetrica 
+        from tbMetricas
+        join tbSensor on fkSensor = idSensor
+        join tbAmbiente on fkAmbiente = idAmbiente
+        where idAmbiente = ${idAmbiente} and YEAR(dateMetrica) = YEAR(now()) and DAY(now()) = DAY(dateMetrica) 
+        GROUP BY HOUR(dateMetrica)
+        order by HOUR(dateMetrica) asc;
 
     `;
     console.log("Executando a instrução SQL: \n" + instrucao);

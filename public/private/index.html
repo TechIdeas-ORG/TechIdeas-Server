@@ -252,7 +252,7 @@
                             console.log(dados);
                             let avisoCaptura = document.getElementById(`avisoCaptura${idSensor}`)
                             somatotal = 0;
-                            
+
                             plotarGrafico(novoRegistro, fkAmbiente, somatotal);
 
 
@@ -312,12 +312,12 @@
                     borderColor: '#FFFFFF',
                     backgroundColor: '#00ff43',
                     tension: 0.1
-    
+
                 }]
             };
             for (i = 0; i < resposta.length; i++) {
                 var registro = resposta[i];
-                labels.push(registro.horario + " minutos");
+                labels.push(registro.horario)
                 console.log(registro.horario)
                 console.log(dados.datasets[0].data)
                 dados.datasets[0].data.push(registro.soma);
@@ -325,6 +325,16 @@
             const config = {
                 type: 'bar',
                 data: dados,
+                options: {
+                    animation: false,
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
             };
             let myChart = new Chart(
                 document.getElementById(`chave2`),
@@ -380,7 +390,7 @@
         CarregarBox();
         function atualizarGrafico(fkAmbiente, dados, myChart) {
 
-
+            var fkAmbiente = boxAmbiente.value;
             fetch(`/ambiente/listar/${fkAmbiente}`, { cache: 'no-store' }).then(function (response) {
                 if (response.ok) {
                     response.json().then(function (novoRegistro) {
@@ -388,9 +398,9 @@
                         console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
                         console.log(`Dados atuais do gráfico:`);
                         console.log(dados);
-                        
-                        
-                        if (novoRegistro[0].horario == dados.labels[dados.labels.length - 1] && novoRegistro[0].soma == dados.datasets[0].data[dados.datasets[0].data.length-1]) {
+
+
+                        if (novoRegistro[0].horario == dados.labels[dados.labels.length - 1] && novoRegistro[0].soma == dados.datasets[0].data[dados.datasets[0].data.length - 1]) {
                             console.log("---------------------------------------------------------------")
                             console.log("Como não há dados novos para captura, o gráfico não atualizará.")
                             console.log("Horário do novo dado capturado:")
@@ -399,13 +409,17 @@
                             console.log(dados.labels[dados.labels.length - 1])
                             console.log("---------------------------------------------------------------")
                         } else {
-                            for(var i = 0; i<novoRegistro.length;i++){
-                                dados.labels.shift(); // apagar o primeiro
-                            dados.labels.push(novoRegistro[i].horario); // incluir um novo momento
+                            for (var i = 0; i < novoRegistro.length; i++) {
 
-                            dados.datasets[i].data.shift();  // apagar o primeiro de umidade
-                            dados.datasets[i].data.push(novoRegistro[i].soma); // incluir uma nova medida de umidade
-                            }    
+                                dados.labels.shift(); // apagar o primeiro
+                                dados.labels.push(Number(novoRegistro[i].horario)); // incluir um novo momento
+
+                                dados.datasets[0].data.shift();  // apagar o primeiro de umidade
+                                dados.datasets[0].data.push(Number(novoRegistro[i].soma)); // incluir uma nova medida de umidade
+
+
+
+                            }
 
                             myChart.update();
                         }
@@ -427,7 +441,7 @@
 
 
 
-        function consultarTudo(){
+        function consultarTudo() {
             var fkUser = sessionStorage.ID_USUARIO;
             if (fkUser != null) {
                 fetch(`/ambiente/consultaTodos/${fkUser}`, { cache: 'no-store' }).then(function (response) {
@@ -443,17 +457,17 @@
                                 fluxoAmbs[i] = 0;
                             }
                             for (var i = 0; i < novoRegistro.length; i++) {
-                                for(var h = 0; h<fluxoAmbs.length; h++){
-                                    if(novoRegistro[i].idAmbiente == h){
+                                for (var h = 0; h < fluxoAmbs.length; h++) {
+                                    if (novoRegistro[i].idAmbiente == h) {
                                         fluxoAmbs[h] += novoRegistro[i].soma;
                                     }
                                 }
                                 qtdeAmb++;
                             }
                             console.log(fluxoAmbs)
-                            for(var i = 0; i < fluxoAmbs.length; i++){
-                                document.getElementById("span_qtde_amb"+[i]).innerHTML = fluxoAmbs[i]
-                                console.log("quantidade ambiente "+ i + " "+  fluxoAmbs[i])
+                            for (var i = 0; i < fluxoAmbs.length; i++) {
+                                document.getElementById("span_qtde_amb" + [i]).innerHTML = fluxoAmbs[i]
+                                console.log("quantidade ambiente " + i + " " + fluxoAmbs[i])
                             }
                         });
                     } else {
