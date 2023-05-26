@@ -388,9 +388,9 @@
                         console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
                         console.log(`Dados atuais do gráfico:`);
                         console.log(dados);
-
                         
-                        if (novoRegistro[0].horario == dados.labels[dados.labels.length - 1] || true) {
+                        
+                        if (novoRegistro[0].horario == dados.labels[dados.labels.length - 1] && novoRegistro[0].soma == dados.datasets[0].data[dados.datasets[0].data.length-1]) {
                             console.log("---------------------------------------------------------------")
                             console.log("Como não há dados novos para captura, o gráfico não atualizará.")
                             console.log("Horário do novo dado capturado:")
@@ -399,12 +399,13 @@
                             console.log(dados.labels[dados.labels.length - 1])
                             console.log("---------------------------------------------------------------")
                         } else {
-                            // tirando e colocando valores no gráfico
-                            dados.labels.shift(); // apagar o primeiro
-                            dados.labels.push(novoRegistro[0].horario); // incluir um novo momento
+                            for(var i = 0; i<novoRegistro.length;i++){
+                                dados.labels.shift(); // apagar o primeiro
+                            dados.labels.push(novoRegistro[i].horario); // incluir um novo momento
 
-                            dados.datasets[0].data.shift();  // apagar o primeiro de umidade
-                            dados.datasets[0].data.push(novoRegistro[0].valMetrica); // incluir uma nova medida de umidade
+                            dados.datasets[i].data.shift();  // apagar o primeiro de umidade
+                            dados.datasets[i].data.push(novoRegistro[i].soma); // incluir uma nova medida de umidade
+                            }    
 
                             myChart.update();
                         }
