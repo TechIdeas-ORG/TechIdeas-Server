@@ -20,6 +20,27 @@ function listar(req, res) {
         );
 }
 
+function consultar(req, res){
+    var idEmpresa = req.params.idEmpresa
+
+    if (idEmpresa == undefined) {
+        res.status(400).send("Seu idEmpresa está undefined!");
+    } else {
+        usuarioModel.consultar(idEmpresa)
+            .then(
+                function (resultado) {                      
+                    res.json(resultado);
+                }
+            ).catch(
+                function (erro) {
+                    console.log(erro);
+                    console.log("\nHouve um erro ao realizar o login! Erro: ", erro.sqlMessage);
+                    res.status(500).json(erro.sqlMessage);
+                }
+            );
+    }
+}
+
 function entrar(req, res) {
     var email = req.body.emailServer;
     var senha = req.body.senhaServer;
@@ -97,8 +118,10 @@ function cadastrar(req, res) {
     }
 }
 
+
 module.exports = {
     entrar,
     cadastrar,
-    listar
+    listar,
+    consultar
 }
