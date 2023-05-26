@@ -66,8 +66,9 @@
         </div>
 
         <div class = "consultaDia">
-            Data início: <input id="primeiro_dia" placeholder = "24-04-2004"><br><br>
-            Data fim: <input id="primeiro_dia" placeholder = "19-08-2004"><br>
+        <input id="primeiro_dia" placeholder = "dd-MM-AAAA"><br><br>
+        <h1>-</h1>
+        <input id="ultimo_dia" placeholder = "dd-MM-AAAA"><br>
         </div>
 
         <div class="divGraf2">
@@ -367,4 +368,13 @@
         }
     }
     
+</script>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<script src="js/jquery.mask.js"></script>
+
+<script>
+    $('#primeiro_dia').mask('00-00-0000');
+    $('#ultimo_dia').mask('00-00-0000');
 </script>
