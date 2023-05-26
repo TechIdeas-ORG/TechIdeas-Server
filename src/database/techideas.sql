@@ -1,4 +1,4 @@
--- Active: 1679521204876@@127.0.0.1@3306@bd_smfp
+-- Active: 1683809550115@@127.0.0.1@3306@sptech
 DROP DATABASE bd_SMFP;
 
 CREATE DATABASE bd_SMFP;
@@ -67,7 +67,7 @@ CREATE TABLE tbMetricas (
     ,PRIMARY KEY(idMetrica, fkSensor)
 );
 
-
+SELECT * FROM tbUsuario;
 /* INSERTS */
 
 /* GENERATE TOKEN */

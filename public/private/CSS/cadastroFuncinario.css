@@ -1,5 +1,24 @@
-.body{
-    overflow:visible;
+.div_botao{
+    width: 20%;
+    height: 10%;
+    margin-top: 50px;
+    margin-left: 50%;
+   text-align: center;
+    display: flex;
+}
+.bt11{
+    border-radius: 15px;
+    width: 50%;
+    height: 40%;
+    margin-right: 2%;
+    background-color: #3BDB43;
+}
+.bt22{
+    border-radius: 15px;
+    width: 50%;
+    height: 40%;
+    margin-right: 2%;
+    background-color: #3BDB43;
 }
 .formulario{
     margin: auto;

@@ -36,10 +36,7 @@ function entrar(req, res) {
                     if((resultado.length-1) == 0){
                         bcrypt.compare(senha, usuario['senhaUsuario'], function(err, result) {
                             if(result){
-                                //LOGIN APROVADO
-                                req.session.EMAIL_USUARIO = usuario.emailUsuario;
-                                req.session.NOME_USUARIO = usuario.nomeUsuario;
-                                req.session.ID_USUARIO = usuario.idUsuario;                       
+                                //LOGIN APROVADO                      
                                 res.json(usuario);
                             }else{
                                 //ERRO
@@ -65,20 +62,16 @@ function entrar(req, res) {
 
 function cadastrar(req, res) {
     // Crie uma variável que vá recuperar os valores do arquivo cadastro.html
-    var nomeUsuario = req.body.nomeUsuario;
+    var nomeUsuario = req.body.nomeFuncionarioServer;
     var emailUsuario = req.body.emailServer;
     var senhaUsuario = req.body.senhaServer;
-    var fkEmpresa = req.body.fkEmpresa;
+    var fkEmpresa = req.body.fkEmpresaServer;
 
     // Faça as validações dos valores
-    if (cnpj == undefined) {
-        res.status(400).send("Seu cnpj está undefined!");
-    } else if (emailUsuario == undefined) {
+    if (emailUsuario == undefined) {
         res.status(400).send("Seu email está undefined!");
     } else if (senhaUsuario == undefined) {
         res.status(400).send("Sua senha está undefined!");
-    } else if (token == undefined) {
-        res.status(400).send("Seu token está undefined!");
     } else {
         
         bcrypt.hash(senhaUsuario, saltRounds, (err, senha_criptografada) =>{
