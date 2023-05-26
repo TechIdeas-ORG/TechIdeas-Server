@@ -65,6 +65,13 @@
             </section>
         </div>
 
+        <div class = "consultaDia">
+            <input id="primeiro_dia" placeholder = "dd-MM-AAAA"><br><br>
+            <h1>-</h1>
+            <input id="ultimo_dia" placeholder = "dd-MM-AAAA"><br>
+            </div>
+            <button onclick="onInput()">Filtrar</button>
+
         <div class="divGraf2">
             <h1 id="chave1B">Geral</h1><br><br>
             <section style="width: 100%;" id="ambiente2">
@@ -342,7 +349,7 @@
             );
 
 
-            setTimeout(() => atualizarGrafico(fkAmbiente, dados, myChart), 2000);
+            setTimeout(() => atualizarGrafico(fkAmbiente, dados, myChart, undefined), 2000);
 
 
         }
@@ -388,10 +395,15 @@
 
         }
         CarregarBox();
-        function atualizarGrafico(fkAmbiente, dados, myChart) {
+        function atualizarGrafico(fkAmbiente, dados, myChart, primeiro_dia, ultimo_dia) {
 
             var fkAmbiente = boxAmbiente.value;
-            fetch(`/ambiente/listar/${fkAmbiente}`, { cache: 'no-store' }).then(function (response) {
+            var url = `/ambiente/listar/${fkAmbiente}`;
+            if(primeiro_dia != undefined){
+                url = `/consultaDia/listar/${fkAmbiente}/${primeiro_dia}/${ultimo_dia}`
+            }
+
+            fetch(url, { cache: 'no-store' }).then(function (response) {
                 if (response.ok) {
                     response.json().then(function (novoRegistro) {
 
@@ -425,12 +437,12 @@
                         }
 
                         // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
-                        proximaAtualizacao = setTimeout(() => atualizarGrafico(fkAmbiente, dados, myChart), 2000);
+                        proximaAtualizacao = setTimeout(() => atualizarGrafico(fkAmbiente, dados, myChart, undefined), 2000);
                     });
                 } else {
                     console.error('Nenhum dado encontrado ou erro na API');
                     // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
-                    proximaAtualizacao = setTimeout(() => atualizarGrafico(fkAmbiente, dados, myChart), 2000);
+                    proximaAtualizacao = setTimeout(() => atualizarGrafico(fkAmbiente, dados, myChart, undefined), 2000);
                 }
             })
                 .catch(function (error) {
@@ -439,7 +451,17 @@
 
         }
 
+        function onInput(){
 
+            var primeiro_dia_val = primeiro_dia.value;
+            var ultimo_dia_val = ultimo_dia.value;
+            var fkAmbiente = boxAmbiente.value;
+
+
+            if(ultimo_dia_val.length == 10){
+            atualizarGrafico(fkAmbiente, dados, myChart, primeiro_dia_val, ultimo_dia_val);
+        }
+    }
 
         function consultarTudo() {
             var fkUser = sessionStorage.ID_USUARIO;
@@ -509,4 +531,13 @@
             isCollapsed = true;
         }
     }
+</script>
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<script src="js/jquery.mask.js"></script>
+
+<script>
+    $('#primeiro_dia').mask('00-00-0000');
+    $('#ultimo_dia').mask('00-00-0000');
 </script>

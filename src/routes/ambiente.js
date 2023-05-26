@@ -33,4 +33,8 @@ routerAuth.get("/consultaTodos/:fkUser", (req, res) => {
     ambienteController.consultaTodos(req,res)
 })
 
+routerAuth.get("/consultaDia/:idAmbiente/:primeiro_dia/:ultimo_dia", function (req, res) {
+    
+    ambienteController.consultaDia(req, res);
+});
 module.exports = routerAuth;

@@ -7,7 +7,8 @@ function listar1(idAmbiente) {
         from tbMetricas
         join tbSensor on fkSensor = idSensor
         join tbAmbiente on fkAmbiente = idAmbiente
-        where idAmbiente = ${idAmbiente} and YEAR(dateMetrica) = YEAR(now()) and DAY(now()) = DAY(dateMetrica) 
+        where idAmbiente = ${idAmbiente} and YEAR(dateMetrica) = YEAR(now()) and DAY(now()) = DAY(dateMetrica) and 
+        MONTH(dateMetrica) = MONTH(now())
         GROUP BY HOUR(dateMetrica)
         order by HOUR(dateMetrica) asc;
 
@@ -44,9 +45,30 @@ function buscarTodos(idUsuario) {
     return database.executar(instrucao);
 }
 
+function buscarDia(primeiro_dia, ultimo_dia) {
+    /*
+    var arrayPrimeiroDia = primeiro_dia.split('-');
+    var diaPrimeiro = arrayPrimeiroDia[0];
+    var mesPrimeiro = arrayPrimeiroDia[1];
+    var anoPrimeiro = arrayPrimeiroDia[2];
+    */
 
+    console.log("ACESSEI O AMBIENTE MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listar() \n\n " + idUsuario);
+    var instrucao = `
+    select SUM(valMetrica) as soma, DAY(dateMetrica) as horario, dateMetrica 
+        from tbMetricas
+        join tbSensor on fkSensor = idSensor
+        join tbAmbiente on fkAmbiente = idAmbiente
+        where idAmbiente = ${idAmbiente} and between '${primeiro_dia}' AND '${ultimo_dia}'
+        GROUP BY DAY(dateMetrica)
+        order by DAY(dateMetrica) asc;
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
 module.exports = { 
     listar1,
     buscarAmbientes,
-    buscarTodos
+    buscarTodos,
+    buscarDia
 };
