@@ -65,7 +65,7 @@ function consultaDia(req, res) {
     var primeiro_dia = req.params.primeiro_dia;
     var ultimo_dia = req.params.ultimo_dia;
     var idAmbiente = req.params.idAmbiente;
-    AmbienteModel.consultaDia(idAmbiente, primeiro_dia, ultimo_dia)
+    AmbienteModel.buscarDia(idAmbiente, primeiro_dia, ultimo_dia)
         .then(function (resultado) {
             if (resultado.length > 0) {
                 console.log(resultado)

@@ -3,7 +3,7 @@ var database = require("../database/connection")
 function listar1(idAmbiente) {
     console.log("ACESSEI O AMBIENTE MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listar() \n\n " + idAmbiente);
     var instrucao = `
-        select SUM(valMetrica) as soma, HOUR(dateMetrica) as horario, dateMetrica 
+        select SUM(valMetrica) as soma, HOUR(dateMetrica) as horario 
         from tbMetricas
         join tbSensor on fkSensor = idSensor
         join tbAmbiente on fkAmbiente = idAmbiente
@@ -45,7 +45,7 @@ function buscarTodos(idUsuario) {
     return database.executar(instrucao);
 }
 
-function buscarDia(primeiro_dia, ultimo_dia) {
+function buscarDia(idAmbiente, primeiro_dia, ultimo_dia) {
     /*
     var arrayPrimeiroDia = primeiro_dia.split('-');
     var diaPrimeiro = arrayPrimeiroDia[0];
@@ -53,13 +53,13 @@ function buscarDia(primeiro_dia, ultimo_dia) {
     var anoPrimeiro = arrayPrimeiroDia[2];
     */
 
-    console.log("ACESSEI O AMBIENTE MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listar() \n\n " + idUsuario);
+    console.log("ACESSEI O AMBIENTE MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listar() \n\n ");
     var instrucao = `
-    select SUM(valMetrica) as soma, DAY(dateMetrica) as horario, dateMetrica 
+    select SUM(valMetrica) as soma, DAY(dateMetrica) as horario
         from tbMetricas
         join tbSensor on fkSensor = idSensor
         join tbAmbiente on fkAmbiente = idAmbiente
-        where idAmbiente = ${idAmbiente} and between '${primeiro_dia}' AND '${ultimo_dia}'
+        where idAmbiente = ${idAmbiente} between '${primeiro_dia}' AND '${ultimo_dia}'
         GROUP BY DAY(dateMetrica)
         order by DAY(dateMetrica) asc;
     `;

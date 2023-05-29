@@ -307,6 +307,8 @@
 
         }
 
+        var myChart_global, dados_global;
+
         function plotarGrafico(resposta, fkAmbiente, soma) {
 
             let labels = [];
@@ -348,6 +350,8 @@
                 config
             );
 
+            myChart_global = myChart;
+            dados_global = dados;
 
             setTimeout(() => atualizarGrafico(fkAmbiente, dados, myChart, undefined), 2000);
 
@@ -400,7 +404,7 @@
             var fkAmbiente = boxAmbiente.value;
             var url = `/ambiente/listar/${fkAmbiente}`;
             if(primeiro_dia != undefined){
-                url = `/consultaDia/listar/${fkAmbiente}/${primeiro_dia}/${ultimo_dia}`
+                url = `/ambiente/consultaDia/${fkAmbiente}/${primeiro_dia}/${ultimo_dia}`
             }
 
             fetch(url, { cache: 'no-store' }).then(function (response) {
@@ -458,8 +462,9 @@
             var fkAmbiente = boxAmbiente.value;
 
 
+
             if(ultimo_dia_val.length == 10){
-            atualizarGrafico(fkAmbiente, dados, myChart, primeiro_dia_val, ultimo_dia_val);
+            atualizarGrafico(fkAmbiente, dados_global, myChart_global, primeiro_dia_val, ultimo_dia_val);
         }
     }
 

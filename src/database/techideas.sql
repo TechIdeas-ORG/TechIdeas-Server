@@ -1,4 +1,4 @@
--- Active: 1679521204876@@127.0.0.1@3306@bd_smfp
+-- Active: 1677852416029@@127.0.0.1@3306@bd_SMFP
 DROP DATABASE bd_SMFP;
 
 CREATE DATABASE bd_SMFP;
@@ -220,3 +220,11 @@ SELECT tbMetricas.`valMetrica`, tbMetricas.`dateMetrica`
 SELECT idToken, count(idEmpresa) FROM tbToken
     INNER JOIN tbEmpresa ON fkToken = idEmpresa AND fkToken = idToken
     WHERE tokenHash = '43785e89508865813596518a211809f5606532c11aa54314f379814c3b360e90';
+select SUM(valMetrica) as soma, HOUR(dateMetrica) as horario 
+        from tbMetricas
+        join tbSensor on fkSensor = idSensor
+        join tbAmbiente on fkAmbiente = idAmbiente
+        where idAmbiente = ${idAmbiente} and YEAR(dateMetrica) = YEAR(now()) and DAY(now()) = DAY(dateMetrica) and 
+        MONTH(dateMetrica) = MONTH(now())
+        GROUP BY HOUR(dateMetrica)
+        order by HOUR(dateMetrica) asc;
