@@ -105,6 +105,7 @@
         var somatotal = 0;
         var qtdeAmb = 0;
         var fluxoAmbs = [];
+        var proximaAtualizacao;
 
         for (var i = 0; i < dado_sem.length; i++) {
             var dado = dado_sem[i];
@@ -433,7 +434,7 @@
                                 dados.datasets[0].data.shift();  // apagar o primeiro de umidade
                                 dados.datasets[0].data.push(Number(novoRegistro[i].soma)); // incluir uma nova medida de umidade
 
-
+                                dados_global = dados;
 
                             }
 
@@ -441,12 +442,12 @@
                         }
 
                         // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
-                        proximaAtualizacao = setTimeout(() => atualizarGrafico(fkAmbiente, dados, myChart, undefined), 2000);
+                        proximaAtualizacao = setTimeout(() => atualizarGrafico(fkAmbiente, dados, myChart, primeiro_dia, ultimo_dia), 2000);
                     });
                 } else {
                     console.error('Nenhum dado encontrado ou erro na API');
                     // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
-                    proximaAtualizacao = setTimeout(() => atualizarGrafico(fkAmbiente, dados, myChart, undefined), 2000);
+                    proximaAtualizacao = setTimeout(() => atualizarGrafico(fkAmbiente, dados, myChart, primeiro_dia, ultimo_dia), 2000);
                 }
             })
                 .catch(function (error) {
@@ -464,7 +465,8 @@
 
 
             if(ultimo_dia_val.length == 10){
-            atualizarGrafico(fkAmbiente, dados_global, myChart_global, primeiro_dia_val, ultimo_dia_val);
+                clearTimeout(proximaAtualizacao);
+                atualizarGrafico(fkAmbiente, dados_global, myChart_global, primeiro_dia_val, ultimo_dia_val);
         }
     }
 
