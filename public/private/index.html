@@ -61,6 +61,7 @@
             </h1>
             <br><br>
             <section style="width: 90%;" id="ambiente1">
+                <h1 id="chave1B">Geral</h1><br><br>
                 <canvas id="chave1"></canvas>
             </section>
         </div>
@@ -73,7 +74,7 @@
             <button onclick="onInput()">Filtrar</button>
 
         <div class="divGraf2">
-            <h1 id="chave1B">Geral</h1><br><br>
+           
             <section style="width: 100%;" id="ambiente2">
                 <canvas id="chave2"></canvas>
             </section>
@@ -122,7 +123,7 @@
 
 
         /* -- chave */
-        var contextoChave = document.getElementById('chave1').getContext('2d');
+        var contextoChave = document.getElementById('chave2').getContext('2d');
         contextoChave.canvas.width = 1000;
         contextoChave.canvas.height = 300;
         /* definindo o tamano e a criacao do grafico*/
@@ -346,7 +347,7 @@
                 }
             };
             let myChart = new Chart(
-                document.getElementById(`chave2`),
+                document.getElementById(`chave1`),
                 config
             );
 
@@ -371,14 +372,13 @@
 
 
                             boxAmbiente.innerHTML = ""
-
                             for (var i = 0; i < novoRegistro.length; i++) {
                                 console.log("entrei no for")
                                 boxAmbiente.innerHTML += ` <option id="caixasBox" value="${novoRegistro[i].idAmbiente}">${novoRegistro[i].nomeAmbiente}</option>`
                                 dv_ambientes.innerHTML += `
-                                    <div class="kpi">
+                                    <div class="kpi" id='dvAmbiente${i}'>
                                         <h4 id="ambiente${i}">${novoRegistro[i].nomeAmbiente}</h4>
-                                        <span id="span_qtde_amb${i}">${novoRegistro[i].soma}</span>
+                                        <span id="span_qtde_amb${i}"></span>
                                     </div>
                                 `
                                 qtdeAmb++;
@@ -479,22 +479,21 @@
 
                             console.log("Mapa de calor: " + novoRegistro)
 
-
-                            for (var i = 0; i < qtdeAmb; i++) {
-                                fluxoAmbs[i] = 0;
-                            }
                             for (var i = 0; i < novoRegistro.length; i++) {
-                                for (var h = 0; h < fluxoAmbs.length; h++) {
-                                    if (novoRegistro[i].idAmbiente == h) {
-                                        fluxoAmbs[h] += novoRegistro[i].soma;
-                                    }
+                                if(novoRegistro[i].minimoPessoas > novoRegistro[i].soma){
+                                    document.getElementById(`dvAmbiente${i}`).classList. remove('kpi');
+                                    document.getElementById(`dvAmbiente${i}`).classList.add('kpiRuim');
                                 }
-                                qtdeAmb++;
-                            }
-                            console.log(fluxoAmbs)
-                            for (var i = 0; i < fluxoAmbs.length; i++) {
-                                document.getElementById("span_qtde_amb" + [i]).innerHTML = fluxoAmbs[i]
-                                console.log("quantidade ambiente " + i + " " + fluxoAmbs[i])
+                                else if(novoRegistro[i].maximoPessoas < novoRegistro[i].soma){
+                                    document.getElementById(`dvAmbiente${i}`).classList. remove('kpi');
+                                    document.getElementById(`dvAmbiente${i}`).classList.add('kpiRuim');
+                                }
+                                else{
+                                    document.getElementById(`dvAmbiente${i}`).classList. remove('kpi');
+                                    document.getElementById(`dvAmbiente${i}`).classList.add('kpiMedia')
+                                }
+                                document.getElementById(`span_qtde_amb${i}`).innerHTML = novoRegistro[i].soma + " de total de fluxo"
+                                console.log("quantidade ambiente " + i + " " + novoRegistro[i].soma)
                             }
                         });
                     } else {
@@ -509,6 +508,10 @@
                     });
             }
 
+        }
+
+        function configs(){
+            fetch()
         }
         consultarTudo()
     </script>

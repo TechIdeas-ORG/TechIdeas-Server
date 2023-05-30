@@ -31,7 +31,7 @@ function buscarAmbientes(idUsuario) {
 function buscarTodos(idUsuario) {
     console.log("ACESSEI O AMBIENTE MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listar() \n\n " + idUsuario);
     var instrucao = `
-    select SUM(valMetrica) as soma, minute(dateMetrica) as horario, idAmbiente
+    select SUM(valMetrica) as soma, minute(dateMetrica) as horario, idAmbiente, tbAmbiente.*
     from tbMetricas
     join tbSensor on fkSensor = idSensor
     join tbAmbiente on fkAmbiente = idAmbiente
