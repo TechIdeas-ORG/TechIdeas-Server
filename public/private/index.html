@@ -52,7 +52,7 @@
             <h1 id="chave1A">
                 <select id="boxAmbiente" name="Ambiente" onchange="obterDadosGrafico()">
 
-                    <option id="caixasBox" value="1">Ambiente 1</option>
+                    <option id="caixasBox" value="1">Geral</option>
                     <option id="caixasBox" value="2">
                         Ambiente 2
                     </option>
@@ -61,7 +61,7 @@
             </h1>
             <br><br>
             <section style="width: 90%;" id="ambiente1">
-                <h1 id="chave1B">Geral</h1><br><br>
+                <h1 id="chave1B">Ambiente </h1><br><br>
                 <canvas id="chave1"></canvas>
             </section>
         </div>
@@ -120,122 +120,6 @@
         */
         span_porcent_aum_fluxo.innerHTML = `O aumento foi de ${((dif_dia1_maiorDia * 100) / dado_sem[0]).toFixed(2)}% comparado ao primeiro dia da semana`;
 
-
-
-        /* -- chave */
-        var contextoChave = document.getElementById('chave2').getContext('2d');
-        contextoChave.canvas.width = 1000;
-        contextoChave.canvas.height = 300;
-        /* definindo o tamano e a criacao do grafico*/
-        var chave = new Chart(
-            contextoChave,
-            {
-                type: 'bar',
-                /*definindo o tipo do grafico*/
-                data: {
-                    labels: ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00'],
-                    datasets: [{
-                        label: 'Chave', /*Nome do grafico*/
-                        type: 'bar',
-                        data: [10, 90, 10, 145, 122, 93],
-                        borderColor: '#FFFFFF',/* cor da borda*/
-                        backgroundColor: '#00ff43'/* cor do fundo do grafico*/
-                    }]
-                },
-                options: {
-                    legend: {
-                        labels: {
-                            fontColor: "#FFFFFF"/*cor da fonte do grafico*/
-                        },
-                    },
-                    plugins: {
-                        customCanvasBackgroundColor: {
-                            color: 'LightGreen',
-                        }
-                    },
-                    scales: {
-                        xAxes: [{
-                            distribution: 'series',
-                            ticks: {
-                                fontColor: 'FFF',
-                                beginAtZero: true
-                            }
-                        }],
-                        yAxes: [{
-                            scaleLabel: {
-                                fontColor: ['#fffff'],
-                                display: true,
-                                labelString: 'Chave'
-                            },
-                            ticks: {
-                                fontColor: ['#fffff'],
-                                beginAtZero: true
-                            }
-                        }]
-                    },
-                    animation: {
-                        duration: 0
-                    }
-                }
-            }
-        );
-        /* -- chave */
-        /* var contextoChave = document.getElementById('chave2').getContext('2d');
-         contextoChave.canvas.width = 1000;
-         contextoChave.canvas.height = 300;
-         let labels = [];
- 
-         var chave2 = new Chart(
-             contextoChave,
-             {
-                 type: 'bar',
-                 data: {
-                     labels: ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00'],
-                     datasets: [{
-                         label: 'Chave',
-                         type: 'bar',
-                         data: [10, 90, 10, 45, 122, 93],
-                         borderColor: '#FFFFFF',
-                         backgroundColor: '#00ff43'
-                     }]
-                 },
-                 options: {
-                     legend: {
-                         labels: {
-                             fontColor: "#FFFFFF"
-                         },
-                     },
-                     plugins: {
-                         customCanvasBackgroundColor: {
-                             color: 'LightGreen',
-                         }
-                     },
-                     scales: {
-                         xAxes: [{
-                             distribution: 'series',
-                             ticks: {
-                                 fontColor: 'FFF',
-                                 beginAtZero: true
-                             }
-                         }],
-                         yAxes: [{
-                             scaleLabel: {
-                                 fontColor: ['#fffff'],
-                                 display: true,
-                                 labelString: 'Chave'
-                             },
-                             ticks: {
-                                 fontColor: ['#fffff'],
-                                 beginAtZero: true
-                             }
-                         }]
-                     },
-                     animation: {
-                         duration: 0
-                     }
-                 }
-             }
-         );*/
 
         window.onload = obterDadosGraficos();
 
@@ -311,7 +195,8 @@
         var myChart_global, dados_global;
 
         function plotarGrafico(resposta, fkAmbiente, soma) {
-
+            
+// grafico ambiente
             let labels = [];
             let dados = {
                 labels: labels,
@@ -353,6 +238,42 @@
 
             myChart_global = myChart;
             dados_global = dados;
+
+            // grafico geral
+            
+            let labels2 = [];
+            let dados2 = {
+                labels2: labels2,
+                datasets: [{
+                    label: 'fluxo',
+                    data: [],
+                    fill: false,
+                    borderColor: '#FFFFFF',
+                    backgroundColor: '#00ff43',
+                    tension: 0.1
+
+                }]
+            };
+            
+            const config2 = {
+                type: 'bar',
+                data: dados2,
+                options: {
+                    animation: false,
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            };
+            let myChart2 = new Chart(
+                document.getElementById(`chave2`),
+                config2
+            );
+
 
             setTimeout(() => atualizarGrafico(fkAmbiente, dados, myChart, undefined), 2000);
 
@@ -478,7 +399,7 @@
                             console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
 
                             console.log("Mapa de calor: " + novoRegistro)
-
+                            alert(JSON.stringify(novoRegistro))
                             for (var i = 0; i < novoRegistro.length; i++) {
                                 if(novoRegistro[i].minimoPessoas > novoRegistro[i].soma){
                                     document.getElementById(`dvAmbiente${i}`).classList. remove('kpi');

@@ -16,6 +16,23 @@ function listar1(idAmbiente) {
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
 }
+function listar2(idAmbiente) {
+    console.log("ACESSEI O AMBIENTE MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listar() \n\n " + idAmbiente);
+    var instrucao = `
+    select SUM(valMetrica) as soma, HOUR(dateMetrica) as horario 
+    from tbMetricas
+    join tbSensor on fkSensor = idSensor
+    join tbAmbiente on fkAmbiente = idAmbiente
+    where YEAR(dateMetrica) = YEAR(now()) and DAY(now()) = DAY(dateMetrica) and 
+    MONTH(dateMetrica) = MONTH(now())
+    GROUP BY HOUR(dateMetrica)
+    order by HOUR(dateMetrica) asc;
+
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
+
 
 function buscarAmbientes(idUsuario) {
     console.log("ACESSEI O AMBIENTE MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listar() \n\n " + idUsuario);
@@ -28,6 +45,8 @@ function buscarAmbientes(idUsuario) {
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
 }
+
+
 function buscarTodos(idUsuario) {
     console.log("ACESSEI O AMBIENTE MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listar() \n\n " + idUsuario);
     var instrucao = `
