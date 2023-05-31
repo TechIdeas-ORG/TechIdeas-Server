@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="CSS/dashboard.css">
 </head>
 
-<body onload="obterDadosGrafico(), plotarGrafico(), consultarTudo()" onloadstart="CarregarBox()">
+<body onload=" plotarGrafico(), obterDadosGrafico(), consultarTudo()" onloadstart="CarregarBox()">
     <nav id="navbar">
         <div class="collapse" onclick="collapse()">
             <span class="material-symbols-rounded" id="collapse_text">
@@ -66,15 +66,15 @@
             </section>
         </div>
 
-        <div class = "consultaDia">
-            <input id="primeiro_dia" placeholder = "dd-MM-AAAA"><br><br>
+        <div class="consultaDia">
+            <input id="primeiro_dia" placeholder="dd-MM-AAAA"><br><br>
             <h1>-</h1>
-            <input id="ultimo_dia" placeholder = "dd-MM-AAAA"><br>
-            </div>
-            <button onclick="onInput()">Filtrar</button>
+            <input id="ultimo_dia" placeholder="dd-MM-AAAA"><br>
+        </div>
+        <button onclick="onInput()">Filtrar</button>
 
         <div class="divGraf2">
-           
+
             <section style="width: 100%;" id="ambiente2">
                 <canvas id="chave2"></canvas>
             </section>
@@ -196,8 +196,8 @@
         var myChart_global, dados_global;
 
         function plotarGrafico(resposta, fkAmbiente, soma) {
-            
-// grafico ambiente
+
+            // grafico ambiente
             let labels = [];
             let dados = {
                 labels: labels,
@@ -241,7 +241,7 @@
             dados_global = dados;
 
             // grafico geral
-            
+
             let labels2 = [];
             let dados2 = {
                 labels2: labels2,
@@ -255,7 +255,7 @@
 
                 }]
             };
-            
+
             const config2 = {
                 type: 'bar',
                 data: dados2,
@@ -275,109 +275,109 @@
                 config2
             );
 
-
+            alert('cheguei aqui')
             setTimeout(() => atualizarGrafico(fkAmbiente, dados, myChart, undefined), 2000);
-
+            setTimeout(() => consultarGraficoDireita(myChart2, dados2), 2000);
 
         }
         function CarregarBox() {
             var fkUser = sessionStorage.ID_USUARIO;
-            if (fkUser != null) {
-                fetch(`/ambiente/consultaAmbiente/${fkUser}`, { cache: 'no-store' }).then(function (response) {
-                    if (response.ok) {
-                        console.log(response)
-                        response.json().then(function (novoRegistro) {
-                            console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
+            // if (fkUser != null) {
+            //     fetch(`/ambiente/consultaAmbiente/${fkUser}`, { cache: 'no-store' }).then(function (response) {
+            //         if (response.ok) {
+            //             console.log(response)
+            //             response.json().then(function (novoRegistro) {
+            //                 console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
 
-                            console.log(novoRegistro)
+            //                 console.log(novoRegistro)
 
 
 
-                            boxAmbiente.innerHTML = ""
-                            for (var i = 0; i < novoRegistro.length; i++) {
-                                console.log("entrei no for")
-                                boxAmbiente.innerHTML += ` <option id="caixasBox" value="${novoRegistro[i].idAmbiente}">${novoRegistro[i].nomeAmbiente}</option>`
-                                dv_ambientes.innerHTML += `
-                                    <div class="kpi" id='dvAmbiente${i}'>
-                                        <h4 id="ambiente${i}">${novoRegistro[i].nomeAmbiente}</h4>
-                                        <span id="span_qtde_amb${i}"></span>
-                                    </div>
-                                `
-                                qtdeAmb++;
-                            }
-                        });
-                    } else {
-                        console.error('Nenhum dado encontrado ou erro na API');
-                        // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
-                        //proximaAtualizacao = setTimeout(() => atualizarGrafico(idSensor, dados, myChart), 2000);
-                    }
-                })
+            //                 boxAmbiente.innerHTML = ""
+            //                 for (var i = 0; i < novoRegistro.length; i++) {
+            //                     console.log("entrei no for")
+            //                     boxAmbiente.innerHTML += ` <option id="caixasBox" value="${novoRegistro[i].idAmbiente}">${novoRegistro[i].nomeAmbiente}</option>`
+            //                     dv_ambientes.innerHTML += `
+            //                         <div class="kpi" id='dvAmbiente${i}'>
+            //                             <h4 id="ambiente${i}">${novoRegistro[i].nomeAmbiente}</h4>
+            //                             <span id="span_qtde_amb${i}"></span>
+            //                         </div>
+            //                     `
+            //                     qtdeAmb++;
+            //                 }
+            //             });
+            //         } else {
+            //             console.error('Nenhum dado encontrado ou erro na API');
+            //             // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
+            //             //proximaAtualizacao = setTimeout(() => atualizarGrafico(idSensor, dados, myChart), 2000);
+            //         }
+            //     })
 
-                    .catch(function (error) {
-                        console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
-                    });
-            }
+            //         .catch(function (error) {
+            //             console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+            //         });
+            //}
 
 
         }
         CarregarBox();
         function atualizarGrafico(fkAmbiente, dados, myChart, primeiro_dia, ultimo_dia) {
-
+        
             var fkAmbiente = boxAmbiente.value;
             var url = `/ambiente/listar/${fkAmbiente}`;
-            if(primeiro_dia != undefined){
+            if (primeiro_dia != undefined) {
                 url = `/ambiente/consultaDia/${fkAmbiente}/${primeiro_dia}/${ultimo_dia}`
             }
 
-            fetch(url, { cache: 'no-store' }).then(function (response) {
-                if (response.ok) {
-                    response.json().then(function (novoRegistro) {
+            // fetch(url, { cache: 'no-store' }).then(function (response) {
+            //     if (response.ok) {
+            //         response.json().then(function (novoRegistro) {
 
-                        console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
-                        console.log(`Dados atuais do gráfico:`);
-                        console.log(dados);
+            //             console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
+            //             console.log(`Dados atuais do gráfico:`);
+            //             console.log(dados);
 
 
-                        if (novoRegistro[0].horario == dados.labels[dados.labels.length - 1] && novoRegistro[0].soma == dados.datasets[0].data[dados.datasets[0].data.length - 1]) {
-                            console.log("---------------------------------------------------------------")
-                            console.log("Como não há dados novos para captura, o gráfico não atualizará.")
-                            console.log("Horário do novo dado capturado:")
-                            console.log(novoRegistro[0].horario)
-                            console.log("Horário do último dado capturado:")
-                            console.log(dados.labels[dados.labels.length - 1])
-                            console.log("---------------------------------------------------------------")
-                        } else {
-                            for (var i = 0; i < novoRegistro.length; i++) {
+            //             if (novoRegistro[0].horario == dados.labels[dados.labels.length - 1] && novoRegistro[0].soma == dados.datasets[0].data[dados.datasets[0].data.length - 1]) {
+            //                 console.log("---------------------------------------------------------------")
+            //                 console.log("Como não há dados novos para captura, o gráfico não atualizará.")
+            //                 console.log("Horário do novo dado capturado:")
+            //                 console.log(novoRegistro[0].horario)
+            //                 console.log("Horário do último dado capturado:")
+            //                 console.log(dados.labels[dados.labels.length - 1])
+            //                 console.log("---------------------------------------------------------------")
+            //             } else {
+            //                 for (var i = 0; i < novoRegistro.length; i++) {
 
-                                dados.labels.shift(); // apagar o primeiro
-                                dados.labels.push(Number(novoRegistro[i].horario)); // incluir um novo momento
+            //                     dados.labels.shift(); // apagar o primeiro
+            //                     dados.labels.push(Number(novoRegistro[i].horario)); // incluir um novo momento
 
-                                dados.datasets[0].data.shift();  // apagar o primeiro de umidade
-                                dados.datasets[0].data.push(Number(novoRegistro[i].soma)); // incluir uma nova medida de umidade
+            //                     dados.datasets[0].data.shift();  // apagar o primeiro de umidade
+            //                     dados.datasets[0].data.push(Number(novoRegistro[i].soma)); // incluir uma nova medida de umidade
 
-                                dados_global = dados;
+            //                     dados_global = dados;
 
-                            }
+            //                 }
 
-                            myChart.update();
-                        }
+            //                 myChart.update();
+            //             }
 
-                        // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
-                        proximaAtualizacao = setTimeout(() => atualizarGrafico(fkAmbiente, dados, myChart, primeiro_dia, ultimo_dia), 2000);
-                    });
-                } else {
-                    console.error('Nenhum dado encontrado ou erro na API');
-                    // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
-                    proximaAtualizacao = setTimeout(() => atualizarGrafico(fkAmbiente, dados, myChart, primeiro_dia, ultimo_dia), 2000);
-                }
-            })
-                .catch(function (error) {
-                    console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
-                });
+            //             // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
+            //             proximaAtualizacao = setTimeout(() => atualizarGrafico(fkAmbiente, dados, myChart, primeiro_dia, ultimo_dia), 2000);
+            //         });
+            //     } else {
+            //         console.error('Nenhum dado encontrado ou erro na API');
+            //         // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
+            //         proximaAtualizacao = setTimeout(() => atualizarGrafico(fkAmbiente, dados, myChart, primeiro_dia, ultimo_dia), 2000);
+            //     }
+            // })
+            //     .catch(function (error) {
+            //         console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+            //     });
 
         }
 
-        function onInput(){
+        function onInput() {
 
             var primeiro_dia_val = primeiro_dia.value;
             var ultimo_dia_val = ultimo_dia.value;
@@ -385,58 +385,88 @@
 
 
 
-            if(ultimo_dia_val.length == 10){
+            if (ultimo_dia_val.length == 10) {
                 clearTimeout(proximaAtualizacao);
                 atualizarGrafico(fkAmbiente, dados_global, myChart_global, primeiro_dia_val, ultimo_dia_val);
-        }
-    }
-
-        function consultarTudo() {
-            var fkUser = sessionStorage.ID_USUARIO;
-            if (fkUser != null) {
-                fetch(`/ambiente/consultaTodos/${fkUser}`, { cache: 'no-store' }).then(function (response) {
-                    if (response.ok) {
-                        console.log(response)
-                        response.json().then(function (novoRegistro) {
-                            console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
-
-                            console.log("Mapa de calor: " + novoRegistro)
-                            alert(JSON.stringify(novoRegistro))
-                            for (var i = 0; i < novoRegistro.length; i++) {
-                                if(novoRegistro[i].minimoPessoas > novoRegistro[i].soma){
-                                    document.getElementById(`dvAmbiente${i}`).classList. remove('kpi');
-                                    document.getElementById(`dvAmbiente${i}`).classList.add('kpiRuim');
-                                }
-                                else if(novoRegistro[i].maximoPessoas < novoRegistro[i].soma){
-                                    document.getElementById(`dvAmbiente${i}`).classList. remove('kpi');
-                                    document.getElementById(`dvAmbiente${i}`).classList.add('kpiRuim');
-                                }
-                                else{
-                                    document.getElementById(`dvAmbiente${i}`).classList. remove('kpi');
-                                    document.getElementById(`dvAmbiente${i}`).classList.add('kpiMedia')
-                                }
-                                document.getElementById(`span_qtde_amb${i}`).innerHTML = novoRegistro[i].soma + " de total de fluxo"
-                                console.log("quantidade ambiente " + i + " " + novoRegistro[i].soma)
-                            }
-                        });
-                    } else {
-                        console.error('Nenhum dado encontrado ou erro na API');
-                        // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
-                        //proximaAtualizacao = setTimeout(() => atualizarGrafico(idSensor, dados, myChart), 2000);
-                    }
-                })
-
-                    .catch(function (error) {
-                        console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
-                    });
             }
-
         }
 
-        function configs(){
-            fetch()
+        // function consultarTudo() {
+        //     var fkUser = sessionStorage.ID_USUARIO;
+        //     if (fkUser != null) {
+        //         fetch(`/ambiente/consultaTodos/${fkUser}`, { cache: 'no-store' }).then(function (response) {
+        //             if (response.ok) {
+        //                 console.log(response)
+        //                 response.json().then(function (novoRegistro) {
+        //                     console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
+
+        //                     console.log("Mapa de calor: " + novoRegistro)
+        //                     for (var i = 0; i < novoRegistro.length; i++) {
+        //                         if (novoRegistro[i].minimoPessoas > novoRegistro[i].soma) {
+        //                             document.getElementById(`dvAmbiente${i}`).classList.remove('kpi');
+        //                             document.getElementById(`dvAmbiente${i}`).classList.add('kpiRuim');
+        //                         }
+        //                         else if (novoRegistro[i].maximoPessoas < novoRegistro[i].soma) {
+        //                             document.getElementById(`dvAmbiente${i}`).classList.remove('kpi');
+        //                             document.getElementById(`dvAmbiente${i}`).classList.add('kpiRuim');
+        //                         }
+        //                         else {
+        //                             document.getElementById(`dvAmbiente${i}`).classList.remove('kpi');
+        //                             document.getElementById(`dvAmbiente${i}`).classList.add('kpiMedia')
+        //                         }
+        //                         document.getElementById(`span_qtde_amb${i}`).innerHTML = novoRegistro[i].soma + " de total de fluxo"
+        //                         console.log("quantidade ambiente " + i + " " + novoRegistro[i].soma)
+        //                     }
+        //                 });
+        //             } else {
+        //                 console.error('Nenhum dado encontrado ou erro na API');
+        //                 // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
+        //                 //proximaAtualizacao = setTimeout(() => atualizarGrafico(idSensor, dados, myChart), 2000);
+        //             }
+        //         })
+
+        //             .catch(function (error) {
+        //                 console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+        //             });
+        //     }
+
+        // }
+
+        function consultarGraficoDireita(Chart, dados) {
+            var fkUser = sessionStorage.ID_USUARIO;
+            alert('cheguei na function')
+            fetch(`/ambiente/listarDireita/${fkUser}`, { cache: 'no-store' }).then(function (response) {
+                console.log(response)
+                if (response.ok) {
+                    console.log(response)
+                    response.json().then(function (novoRegistro) {
+                        alert(`Dados recebidos direita: ${JSON.stringify(novoRegistro)}`);
+
+                        for (var i = 0; i < novoRegistro.length; i++) {
+                            dados.labels.push(Number(novoRegistro[i].horario)); // incluir um novo momento
+                            dados.datasets[0].data.push(Number(novoRegistro[i].soma)); // incluir uma nova medida de umidade
+
+                            dados_global = dados;
+
+                        }
+
+                        Chart.update();
+                    });
+                } else {
+                    console.error('Nenhum dado encontrado ou erro na API');
+                    // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
+                    //proximaAtualizacao = setTimeout(() => atualizarGrafico(idSensor, dados, myChart), 2000);
+                }
+            })
+
+                .catch(function (error) {
+                    console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+                });
         }
-        consultarTudo()
+
+
+
+        //consultarTudo()
     </script>
 </body>
 

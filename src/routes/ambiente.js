@@ -37,4 +37,7 @@ routerAuth.get("/consultaDia/:idAmbiente/:primeiro_dia/:ultimo_dia", function (r
     
     ambienteController.consultaDia(req, res);
 });
+routerAuth.get("/listarDireita/:idUsuario", function (req, res) {
+    ambienteController.listarDireita(req, res);
+});
 module.exports = routerAuth;

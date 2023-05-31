@@ -15,18 +15,16 @@ function listar1(idAmbiente) {
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
 }
-function listar2(idAmbiente) {
-    console.log("ACESSEI O AMBIENTE MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listar() \n\n " + idAmbiente);
+function listarDireita(idUsuario) {
+    console.log("ACESSEI O AMBIENTE MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listar() \n\n " + idUsuario);
     var instrucao = `
-    select SUM(valMetrica) as soma, HOUR(dateMetrica) as horario 
-    from tbMetricas
+    SELECT SUM(valMetrica) as soma, hour(dateMetrica) as horario from tbMetricas
     join tbSensor on fkSensor = idSensor
     join tbAmbiente on fkAmbiente = idAmbiente
-    where YEAR(dateMetrica) = YEAR(now()) and DAY(now()) = DAY(dateMetrica) and 
-    MONTH(dateMetrica) = MONTH(now())
-    GROUP BY HOUR(dateMetrica)
-    order by HOUR(dateMetrica) asc;
-
+    join tbEmpresa on tbAmbiente.fkEmpresa = idEmpresa
+    JOIN tbUsuario on tbUsuario.fkEmpresa = idEmpresa
+    WHERE idUsuario = ${Number(idUsuario)} and DATEDIFF(dateMetrica, now()) < "23:30:00"
+    group by hour(dateMetrica);
     `;
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
@@ -88,5 +86,6 @@ module.exports = {
     listar1,
     buscarAmbientes,
     buscarTodos,
-    buscarDia
+    buscarDia,
+    listarDireita
 };
