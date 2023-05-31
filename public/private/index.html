@@ -122,7 +122,7 @@
         */
         span_porcent_aum_fluxo.innerHTML = `O aumento foi de ${((dif_dia1_maiorDia * 100) / dado_sem[0]).toFixed(2)}% comparado ao primeiro dia da semana`;
 
-
+        
         window.onload = obterDadosGraficos();
 
         function obterDadosGraficos() {
@@ -446,7 +446,7 @@
                         console.log(response)
                         response.json().then(function (novoRegistro) {
                             console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
-
+                            alert(JSON.stringify(novoRegistro))
                             console.log("Mapa de calor: " + novoRegistro)
                             for (var i = 0; i < novoRegistro.length; i++) {
                                 if (novoRegistro[i].minimoPessoas > novoRegistro[i].soma) {
@@ -538,6 +538,7 @@
             isCollapsed = true;
         }
     }
+    consultarTudo()
 </script>
 
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
