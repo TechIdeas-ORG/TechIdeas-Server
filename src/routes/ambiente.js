@@ -23,23 +23,21 @@ routerAuth.get("/listar/:idAmbiente", function (req, res) {
     
     ambienteController.listar(req, res);
 });
-
 routerAuth.get("/consultaAmbiente/:idUsuario", function (req, res) {
     
     ambienteController.consultaAmbiente(req, res);
 });
 
-routerAuth.get("/consultaDia/:primeiro_dia", function (req, res) {
+
+routerAuth.get("/consultaTodos/:fkUser", (req, res) => {
+    ambienteController.consultaTodos(req,res)
+})
+
+routerAuth.get("/consultaDia/:idAmbiente/:primeiro_dia/:ultimo_dia", function (req, res) {
     
     ambienteController.consultaDia(req, res);
 });
-
-routerAuth.get("/consultaDia/:ultimo_dia", function (req, res) {
-    
-    ambienteController.consultaDia(req, res);
+routerAuth.get("/listarDireita/:idUsuario", function (req, res) {
+    ambienteController.listarDireita(req, res);
 });
-
-
-
-
 module.exports = routerAuth;

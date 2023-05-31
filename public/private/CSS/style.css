@@ -194,6 +194,10 @@ nav .head {
     color: #7B7B7B;
 }
 
+.consultaDia input:focus{
+    outline: none;
+}
+
 .page-title div{
     width: 35%;
     height: 9px;

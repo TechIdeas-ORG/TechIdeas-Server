@@ -10,8 +10,8 @@
     <link rel="stylesheet" href="CSS/dashboard.css">
 </head>
 
-<body onload="obterDadosGrafico()" onloadstart="CarregarBox()">
-    <nav id="navbar" >
+<body onload=" plotarGrafico(), obterDadosGrafico(), consultarTudo()" onloadstart="CarregarBox()">
+    <nav id="navbar">
         <div class="collapse" onclick="collapse()">
             <span class="material-symbols-rounded" id="collapse_text">
                 chevron_left
@@ -47,12 +47,12 @@
         <div></div>
     </div>
 
-    <div class="areaGrafico container" >
+    <div class="areaGrafico container">
         <div class="divGraf1">
             <h1 id="chave1A">
                 <select id="boxAmbiente" name="Ambiente" onchange="obterDadosGrafico()">
 
-                    <option id="caixasBox" value="1">Ambiente 1</option>
+                    <option id="caixasBox" value="1">Geral</option>
                     <option id="caixasBox" value="2">
                         Ambiente 2
                     </option>
@@ -61,25 +61,27 @@
             </h1>
             <br><br>
             <section style="width: 90%;" id="ambiente1">
+                <h1 id="chave1B">Ambiente </h1><br><br>
                 <canvas id="chave1"></canvas>
             </section>
         </div>
 
-        <div class = "consultaDia">
-        <input id="primeiro_dia" placeholder = "dd-MM-AAAA"><br><br>
-        <h1>-</h1>
-        <input id="ultimo_dia" placeholder = "dd-MM-AAAA"><br>
+        <div class="consultaDia">
+            <input id="primeiro_dia" placeholder="dd-MM-AAAA"><br><br>
+            <h1>-</h1>
+            <input id="ultimo_dia" placeholder="dd-MM-AAAA"><br>
         </div>
+        <button onclick="plotar_filtro()">Filtrar</button>
 
         <div class="divGraf2">
-            <h1 id="chave1B">Geral</h1><br><br>
+
             <section style="width: 100%;" id="ambiente2">
                 <canvas id="chave2"></canvas>
             </section>
         </div>
     </div>
 
-    <div class="areaKPI container">
+    <div class="areaKPI container" id="dv_ambientes">
         <div class="kpi">
             <h4>Média de Fluxo da semana</h4>
             <span id="span_med_fluxo"></span>
@@ -92,7 +94,6 @@
             <h4>Aumento do Fluxo</h4>
             <span id="span_porcent_aum_fluxo"></span>
         </div>
-
     </div>
 
     <script>
@@ -101,6 +102,11 @@
         const dado_sem = [354, 540, 245, 424, 350, 348, 451];
         var soma = 0;
         var max_pos = 0;
+        var somatotal = 0;
+        var qtdeAmb = 0;
+        var fluxoAmbs = [];
+        var proximaAtualizacao;
+        var filtroAplicado = false;
 
         for (var i = 0; i < dado_sem.length; i++) {
             var dado = dado_sem[i];
@@ -117,130 +123,14 @@
         span_porcent_aum_fluxo.innerHTML = `O aumento foi de ${((dif_dia1_maiorDia * 100) / dado_sem[0]).toFixed(2)}% comparado ao primeiro dia da semana`;
 
 
-
-        /* -- chave */
-        var contextoChave = document.getElementById('chave1').getContext('2d');
-        contextoChave.canvas.width = 1000;
-        contextoChave.canvas.height = 300;
-        /* definindo o tamano e a criacao do grafico*/
-        var chave = new Chart(
-            contextoChave,
-            {
-                type: 'line',
-                /*definindo o tipo do grafico*/
-                data: {
-                    //labels: ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00'],
-                    datasets: [{
-                        label: 'Chave', /*Nome do grafico*/
-                        type: 'line',
-                        //data: [10, 90, 10, 145, 122, 93],
-                        borderColor: ['#FFFFFF'],/* cor da borda*/
-                        backgroundColor: ['#00ff43']/* cor do fundo do grafico*/
-                    }]
-                },
-                options: {
-                    legend: {
-                        labels: {
-                            fontColor: "#FFFFFF"/*cor da fonte do grafico*/
-                        },
-                    },
-                    plugins: {
-                        customCanvasBackgroundColor: {
-                            color: 'LightGreen',
-                        }
-                    },
-                    scales: {
-                        xAxes: [{
-                            distribution: 'series',
-                            ticks: {
-                                fontColor: 'FFF',
-                                beginAtZero: true
-                            }
-                        }],
-                        yAxes: [{
-                            scaleLabel: {
-                                fontColor: ['#fffff'],
-                                display: true,
-                                labelString: 'Chave'
-                            },
-                            ticks: {
-                                fontColor: ['#fffff'],
-                                beginAtZero: true
-                            }
-                        }]
-                    },
-                    animation: {
-                        duration: 0
-                    }
-                }
-            }
-        );
-        /* -- chave */
-        var contextoChave = document.getElementById('chave2').getContext('2d');
-        contextoChave.canvas.width = 1000;
-        contextoChave.canvas.height = 300;
-        var chave2 = new Chart(
-            contextoChave,
-            {
-                type: 'line',
-                data: {
-                    labels: ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00'],
-                    datasets: [{
-                        label: 'Chave',
-                        type: 'line',
-                        data: [10, 90, 10, 45, 122, 93],
-                        borderColor: ['#FFFFFF'],
-                        backgroundColor: ['#00ff43']
-                    }]
-                },
-                options: {
-                    legend: {
-                        labels: {
-                            fontColor: "#FFFFFF"
-                        },
-                    },
-                    plugins: {
-                        customCanvasBackgroundColor: {
-                            color: 'LightGreen',
-                        }
-                    },
-                    scales: {
-                        xAxes: [{
-                            distribution: 'series',
-                            ticks: {
-                                fontColor: 'FFF',
-                                beginAtZero: true
-                            }
-                        }],
-                        yAxes: [{
-                            scaleLabel: {
-                                fontColor: ['#fffff'],
-                                display: true,
-                                labelString: 'Chave'
-                            },
-                            ticks: {
-                                fontColor: ['#fffff'],
-                                beginAtZero: true
-                            }
-                        }]
-                    },
-                    animation: {
-                        duration: 0
-                    }
-                }
-            }
-        );
-
-
         window.onload = obterDadosGraficos();
 
         function obterDadosGraficos() {
             obterDadosGrafico(1)
 
         }
-
-
         function obterDadosGrafico(idSensor, dados, myChart) {
+
             const queryStr = window.location.search;
             const urlParam = new URLSearchParams(queryStr);
             var fkAmbiente = boxAmbiente.value;
@@ -254,9 +144,9 @@
                             console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
                             console.log(`Dados atuais do gráfico:`);
                             console.log(dados);
-                            alert(JSON.stringify(novoRegistro))
                             let avisoCaptura = document.getElementById(`avisoCaptura${idSensor}`)
-                            avisoCaptura.innerHTML = ""
+
+                            plotarGrafico(novoRegistro, fkAmbiente);
 
 
                             /*if (novoRegistro[0].momento_grafico == dados.labels[dados.labels.length - 1]) {
@@ -296,36 +186,141 @@
                         console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
                     });
             }
-            else{
+            else {
                 alert("opa")
             }
 
 
         }
 
-        function CarregarBox(){
-            var fkUser= sessionStorage.ID_USUARIO;
+
+        var myChart_global;
+        const dados = {
+            labels: [],
+            datasets: [{
+                label: 'fluxo',
+                data: [],
+                fill: false,
+                borderColor: '#FFFFFF',
+                backgroundColor: '#00ff43',
+                tension: 0.1
+
+            }]
+        };
+
+        const config = {
+            type: 'bar',
+            data: dados,
+            options: {
+                animation: false,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        };
+
+        myChart_global = new Chart(
+            document.getElementById(`chave1`),
+            config
+        );
+        function plotarGrafico(resposta, fkAmbiente) {
+            
+            // grafico ambiente
+            //RESET DO GRÁFICO
+            myChart_global.data = {
+                labels: [],
+                datasets: [{
+                    label: 'fluxo',
+                    data: [],
+                    fill: false,
+                    borderColor: '#FFFFFF',
+                    backgroundColor: '#00ff43',
+                    tension: 0.1
+
+                }]
+            };
+            myChart_global.update();
+
+            for (i = 0; i < resposta.length; i++) {
+                var registro = resposta[i];
+                myChart_global.data.labels.push(registro.horario)
+                console.log(registro.horario)
+                console.log(dados.datasets[0].data)
+                myChart_global.data.datasets[0].data.push(registro.soma);
+            }
+            
+            myChart_global.update();
+
+            // grafico geral
+
+            let labels2 = [];
+            let dados2 = {
+                labels2: labels2,
+                datasets: [{
+                    label: 'fluxo',
+                    data: [],
+                    fill: false,
+                    borderColor: '#FFFFFF',
+                    backgroundColor: '#00ff43',
+                    tension: 0.1
+
+                }]
+            };
+
+            const config2 = {
+                type: 'bar',
+                data: dados2,
+                options: {
+                    animation: false,
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            };
+
+            let myChart2 = new Chart(
+                document.getElementById(`chave2`),
+                config2
+            );
+
+            alert('cheguei aqui')
+            setTimeout(() => atualizarGrafico(fkAmbiente, dados, myChart_global, undefined, undefined), 2000);
+            setTimeout(() => consultarGraficoDireita(myChart2, dados2), 2000);
+
+        }
+        function CarregarBox() {
+            var fkUser = sessionStorage.ID_USUARIO;
             if (fkUser != null) {
                 fetch(`/ambiente/consultaAmbiente/${fkUser}`, { cache: 'no-store' }).then(function (response) {
                     if (response.ok) {
                         console.log(response)
                         response.json().then(function (novoRegistro) {
                             console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
-        
+
                             console.log(novoRegistro)
 
-                           
+
 
                             boxAmbiente.innerHTML = ""
-
-                            for(var i = 0; i < novoRegistro.length; i++){
+                            for (var i = 0; i < novoRegistro.length; i++) {
                                 console.log("entrei no for")
                                 boxAmbiente.innerHTML += ` <option id="caixasBox" value="${novoRegistro[i].idAmbiente}">${novoRegistro[i].nomeAmbiente}</option>`
+                                dv_ambientes.innerHTML += `
+                                    <div class="kpi" id='dvAmbiente${i}'>
+                                        <h4 id="ambiente${i}">${novoRegistro[i].nomeAmbiente}</h4>
+                                        <span id="span_qtde_amb${i}"></span>
+                                    </div>
+                                `
+                                qtdeAmb++;
                             }
-
-                            let avisoCaptura = document.getElementById(`avisoCaptura${idSensor}`)
-                            avisoCaptura.innerHTML = ""
-
                         });
                     } else {
                         console.error('Nenhum dado encontrado ou erro na API');
@@ -337,11 +332,187 @@
                     .catch(function (error) {
                         console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
                     });
-        }
-        
+            }
 
-    }
-    CarregarBox()
+
+        }
+        CarregarBox();
+        function atualizarGrafico(fkAmbiente, dados, myChart) {
+            //SAI DA FUNÇÃO E TENTA PARAR O TIMEOUT
+            if(filtroAplicado){return clearTimeout(proximaAtualizacao)};
+
+            var fkAmbiente = boxAmbiente.value;
+            var url = `/ambiente/listar/${fkAmbiente}`;
+
+            fetch(url, { cache: 'no-store' }).then(function (response) {
+                if (response.ok) {
+                    response.json().then(function (novoRegistro) {
+
+                        console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
+                        console.log(`Dados atuais do gráfico:`);
+                        console.log(dados);
+
+
+                        if (novoRegistro[0].horario == myChart_global.data.labels[myChart_global.data.labels.length - 1] && novoRegistro[0].soma == myChart_global.data.datasets[0].data[myChart_global.data.datasets[0].data.length - 1]) {
+                            console.log("---------------------------------------------------------------")
+                            console.log("Como não há myChart_global.data novos para captura, o gráfico não atualizará.")
+                            console.log("Horário do novo dado capturado:")
+                            console.log(novoRegistro[0].horario)
+                            console.log("Horário do último dado capturado:")
+                            console.log(myChart_global.data.labels[dados.labels.length - 1])
+                            console.log("---------------------------------------------------------------")
+                        } else {
+
+                            for (var i = 0; i < novoRegistro.length; i++) {
+                                
+                                myChart_global.data.labels.shift(); // apagar o primeiro
+                                myChart_global.data.labels.push(Number(novoRegistro[i].horario)); // incluir um novo momento
+
+                                myChart_global.data.datasets[0].data.shift();  // apagar o primeiro de umidade
+                                myChart_global.data.datasets[0].data.push(Number(novoRegistro[i].soma)); // incluir uma nova medida de umidade
+
+
+                            }
+
+
+                            myChart_global.update();
+                        }
+
+                        // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
+                        proximaAtualizacao = setTimeout(() => atualizarGrafico(fkAmbiente, dados, myChart, primeiro_dia, ultimo_dia), 2000);
+                    });
+                } else {
+                    console.error('Nenhum dado encontrado ou erro na API');
+                    // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
+                    proximaAtualizacao = setTimeout(() => atualizarGrafico(fkAmbiente, dados, myChart, primeiro_dia, ultimo_dia), 2000);
+                }
+            })
+                .catch(function (error) {
+                    console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+                });
+
+        }
+
+        function plotar_filtro() {
+
+            var primeiro_dia_val = primeiro_dia.value;
+            var ultimo_dia_val = ultimo_dia.value;
+            var fkAmbiente = boxAmbiente.value;
+
+
+
+            if (ultimo_dia_val.length == 10) {
+                filtroAplicado = true;
+                myChart_global.data = {
+                    labels: [],
+                    datasets: [{
+                        label: 'fluxo',
+                        data: [],
+                        fill: false,
+                        borderColor: '#FFFFFF',
+                        backgroundColor: '#00ff43',
+                        tension: 0.1
+                    }]
+                };
+                myChart_global.update();
+                var url = `/ambiente/consultaDia/${fkAmbiente}/${primeiro_dia_val}/${ultimo_dia_val}`
+
+                fetch(url, { cache: 'no-store' }).then(function (response) {
+                    if (response.ok) {
+                        response.json().then(function (resposta) {
+                            console.warn('Filtro aplicado', resposta);
+
+                            for (i = 0; i < resposta.length; i++) {
+                                var registro = resposta[i];
+                                myChart_global.data.labels.push(registro.horario)
+                                myChart_global.data.datasets[0].data.push(registro.soma);
+                            }
+                            
+                            myChart_global.update();
+                        })
+                    }
+
+                }).catch(function (error) {
+                    console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+                });
+            }
+        }
+
+        function consultarTudo() {
+            var fkUser = sessionStorage.ID_USUARIO;
+            if (fkUser != null) {
+                fetch(`/ambiente/consultaTodos/${fkUser}`, { cache: 'no-store' }).then(function (response) {
+                    if (response.ok) {
+                        console.log(response)
+                        response.json().then(function (novoRegistro) {
+                            console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
+
+                            console.log("Mapa de calor: " + novoRegistro)
+                            for (var i = 0; i < novoRegistro.length; i++) {
+                                if (novoRegistro[i].minimoPessoas > novoRegistro[i].soma) {
+                                    document.getElementById(`dvAmbiente${i}`).classList.remove('kpi');
+                                    document.getElementById(`dvAmbiente${i}`).classList.add('kpiRuim');
+                                }
+                                else if (novoRegistro[i].maximoPessoas < novoRegistro[i].soma) {
+                                    document.getElementById(`dvAmbiente${i}`).classList.remove('kpi');
+                                    document.getElementById(`dvAmbiente${i}`).classList.add('kpiRuim');
+                                }
+                                else {
+                                    document.getElementById(`dvAmbiente${i}`).classList.remove('kpi');
+                                    document.getElementById(`dvAmbiente${i}`).classList.add('kpiMedia')
+                                }
+                                document.getElementById(`span_qtde_amb${i}`).innerHTML = novoRegistro[i].soma + " de total de fluxo"
+                                console.log("quantidade ambiente " + i + " " + novoRegistro[i].soma)
+                            }
+                        });
+                    } else {
+                        console.error('Nenhum dado encontrado ou erro na API');
+                        // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
+                        //proximaAtualizacao = setTimeout(() => atualizarGrafico(idSensor, dados, myChart), 2000);
+                    }
+                })
+
+                    .catch(function (error) {
+                        console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+                    });
+            }
+
+        }
+
+        function consultarGraficoDireita(Chart, dados) {
+            var fkUser = sessionStorage.ID_USUARIO;
+            alert('cheguei na function')
+            fetch(`/ambiente/listarDireita/${fkUser}`, { cache: 'no-store' }).then(function (response) {
+                console.log(response)
+                if (response.ok) {
+                    console.log(response)
+                    response.json().then(function (novoRegistro) {
+                        alert(`Dados recebidos direita: ${JSON.stringify(novoRegistro)}`);
+
+                        for (var i = 0; i < novoRegistro.length; i++) {
+                            dados.labels.push(Number(novoRegistro[i].horario)); // incluir um novo momento
+                            dados.datasets[0].data.push(Number(novoRegistro[i].soma)); // incluir uma nova medida de umidade
+
+
+                        }
+
+                        Chart.update();
+                    });
+                } else {
+                    console.error('Nenhum dado encontrado ou erro na API');
+                    // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
+                    //proximaAtualizacao = setTimeout(() => atualizarGrafico(idSensor, dados, myChart), 2000);
+                }
+            })
+
+                .catch(function (error) {
+                    console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+                });
+        }
+
+
+
+        //consultarTudo()
     </script>
 </body>
 
@@ -367,7 +538,6 @@
             isCollapsed = true;
         }
     }
-    
 </script>
 
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>

@@ -76,6 +76,40 @@
 
     border-radius: 33px;
 }
+.kpiRuim{
+    width: 200px;
+    height: 200px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    background-color: #db3b3b;
+
+    color: white;
+
+    box-shadow: -9px 9px 0px 0px #600a0a;
+
+    border-radius: 33px;
+}
+.kpiMedia{
+    width: 200px;
+    height: 200px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    background-color: #4e3bdb;
+
+    color: white;
+
+    box-shadow: -9px 9px 0px 0px #0a0a60;
+
+    border-radius: 33px;
+}
 
 .kpi h4, span{
     text-align: center;

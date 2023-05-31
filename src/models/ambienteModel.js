@@ -3,15 +3,33 @@ var database = require("../database/connection")
 function listar1(idAmbiente) {
     console.log("ACESSEI O AMBIENTE MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listar() \n\n " + idAmbiente);
     var instrucao = `
-    select idMetrica,dateMetrica,valMetrica 
+    select SUM(valMetrica) as soma, HOUR(dateMetrica) as horario 
     from tbMetricas
     join tbSensor on fkSensor = idSensor
     join tbAmbiente on fkAmbiente = idAmbiente
-    where idAmbiente = ${idAmbiente};
+    where idAmbiente =  ${idAmbiente} and DATEDIFF(dateMetrica, now()) < "23:30:00"
+    GROUP BY HOUR(dateMetrica)
+    order by HOUR(dateMetrica) asc;
+
     `;
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
 }
+function listarDireita(idUsuario) {
+    console.log("ACESSEI O AMBIENTE MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listar() \n\n " + idUsuario);
+    var instrucao = `
+    SELECT SUM(valMetrica) as soma, hour(dateMetrica) as horario from tbMetricas
+    join tbSensor on fkSensor = idSensor
+    join tbAmbiente on fkAmbiente = idAmbiente
+    join tbEmpresa on tbAmbiente.fkEmpresa = idEmpresa
+    JOIN tbUsuario on tbUsuario.fkEmpresa = idEmpresa
+    WHERE idUsuario = ${Number(idUsuario)} and DATEDIFF(dateMetrica, now()) < "23:30:00"
+    group by hour(dateMetrica);
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
+
 
 function buscarAmbientes(idUsuario) {
     console.log("ACESSEI O AMBIENTE MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listar() \n\n " + idUsuario);
@@ -25,17 +43,49 @@ function buscarAmbientes(idUsuario) {
     return database.executar(instrucao);
 }
 
-function buscarDia(primeiro_dia, ultimo_dia) {
+
+function buscarTodos(idUsuario) {
     console.log("ACESSEI O AMBIENTE MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listar() \n\n " + idUsuario);
     var instrucao = `
-    select * from tbMetricas where DAY(dateMetrica) between '${primeiro_dia}' AND '${ultimo_dia}';
+    select SUM(valMetrica) as soma, minute(dateMetrica) as horario, idAmbiente, minimoPessoas, maximoPessoas
+    from tbMetricas
+    join tbSensor on fkSensor = idSensor
+    join tbAmbiente on fkAmbiente = idAmbiente
+    join tbEmpresa on tbAmbiente.fkEmpresa = idEmpresa
+    JOIN tbUsuario ON idEmpresa = tbUsuario.fkEmpresa
+    where DATEDIFF(dateMetrica, now()) < "23:30:00" and idUsuario = ${idUsuario}
+    GROUP BY idAmbiente
+    order by minute(dateMetrica);
     `;
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
 }
 
+function buscarDia(idAmbiente, primeiro_dia, ultimo_dia) {
+    /*
+    var arrayPrimeiroDia = primeiro_dia.split('-');
+    var diaPrimeiro = arrayPrimeiroDia[0];
+    var mesPrimeiro = arrayPrimeiroDia[1];
+    var anoPrimeiro = arrayPrimeiroDia[2];
+    */
+
+    console.log("ACESSEI O AMBIENTE MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listar() \n\n ");
+    var instrucao = `
+    select SUM(valMetrica) as soma, DAY(dateMetrica) as horario
+    from tbMetricas
+    join tbSensor on fkSensor = idSensor
+    join tbAmbiente on fkAmbiente = idAmbiente
+    where idAmbiente = ${idAmbiente} AND DAY(dateMetrica) BETWEEN '${primeiro_dia}' AND '${ultimo_dia}'
+    GROUP BY DAY(dateMetrica)
+    order by DAY(dateMetrica) asc;
+    `;
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
 module.exports = { 
     listar1,
     buscarAmbientes,
-    buscarDia
+    buscarTodos,
+    buscarDia,
+    listarDireita
 };
