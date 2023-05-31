@@ -118,10 +118,63 @@ function cadastrar(req, res) {
     }
 }
 
+function excluir(req, res){
+
+    var idUsuario = req.params.idUsuario;
+
+    if (idUsuario == undefined) {
+        res.status(400).send("O ID está undefined!");
+    } else{
+        usuarioModel.excluir(idUsuario)
+        .then(
+            function (resultado) {
+                res.json(resultado);
+            }
+        ).catch(
+            function (erro) {
+                console.log(erro);
+                console.log(
+                    "\nHouve um erro ao realizar a exclusão! Erro: ",
+                    erro.sqlMessage
+                );
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+    }
+}
+
+function atualizar(req, res){
+    var idUsuario = req.params.idUsuario;
+    var emailUsuario = req.params.emailUsuario;
+    var nomeUsuario = req.params.nomeUsuario;
+
+    if (idUsuario == undefined) {
+        res.status(400).send("O ID está undefined!");
+    } else{
+        usuarioModel.atualizar(idUsuario, emailUsuario, nomeUsuario)
+        .then(
+            function (resultado) {
+                res.json(resultado);
+            }
+        ).catch(
+            function (erro) {
+                console.log(erro);
+                console.log(
+                    "\nHouve um erro ao realizar a atualização! Erro: ",
+                    erro.sqlMessage
+                );
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+    }
+}
+
 
 module.exports = {
     entrar,
     cadastrar,
     listar,
-    consultar
+    consultar,
+    atualizar,
+    excluir
 }

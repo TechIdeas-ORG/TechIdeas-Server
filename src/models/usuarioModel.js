@@ -32,9 +32,25 @@ function cadastrar(fkEmpresa, nomeUsuario, emailUsuario, senhaUsuario) {
     return database.executar(instrucao);
 }
 
+function excluir(idUsuario){
+   var instrucao = `DELETE FROM tbUsuario WHERE idUsuario = ${idUsuario};`
+
+   console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
+
+function atualizar(idUsuario, emailUsuario, nomeUsuario){
+    var instrucao = `UPDATE tbUsuario SET nomeUsuario = '${nomeUsuario}', emailUsuario = '${emailUsuario}' WHERE idUsuario = ${idUsuario}`
+    
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
+
 module.exports = {
     entrar,
     cadastrar,
     listar,
-    consultar
+    consultar,
+    atualizar,
+    excluir
 };

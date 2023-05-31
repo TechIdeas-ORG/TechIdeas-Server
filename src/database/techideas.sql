@@ -1,4 +1,4 @@
--- Active: 1685127975326@@127.0.0.1@3306@aquatech
+-- Active: 1685562660322@@127.0.0.1@3306@bd_smfp
 
 DROP DATABASE bd_SMFP;
 
@@ -96,6 +96,7 @@ VALUES
     ,(8, 'Shopping G', '77.777.777/0001-77')
     ,(9, 'Shopping H', '88.888.888/0001-88');
     
+    SELECT * from tbUsuario;
 INSERT INTO tbUsuario (`fkEmpresa`, `idUsuario`,`nomeUsuario`,`emailUsuario`,`senhaUsuario`,`fkAdministrador`)
 VALUES
 	 (1, 1, 'Administrador', 'admin@techideas.com', '$2b$10$M/CbWCDYZcYYDnTUs1nfPOu/U665hzfQDSBucm56MxAy4ldau2YAi', NULL)
