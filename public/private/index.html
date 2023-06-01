@@ -6,6 +6,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script src="http://www.chartjs.org/dist/2.7.1/Chart.js"></script>
     <script src="http://www.chartjs.org/samples/latest/utils.js"></script>
+    <script src="js/popUps.js"></script>
     <link rel="stylesheet" href="CSS/style.css">
     <link rel="stylesheet" href="CSS/dashboard.css">
 </head>
@@ -41,7 +42,7 @@
             </div>
         </div>
     </nav>
-
+    <div id="alerta"></div>
     <div class="page-title container">
         <h1>Dashboard Empresa</h1>
         <div></div>
@@ -122,7 +123,7 @@
         */
         span_porcent_aum_fluxo.innerHTML = `O aumento foi de ${((dif_dia1_maiorDia * 100) / dado_sem[0]).toFixed(2)}% comparado ao primeiro dia da semana`;
 
-        
+        obterdados()
         window.onload = obterDadosGraficos();
 
         function obterDadosGraficos() {
