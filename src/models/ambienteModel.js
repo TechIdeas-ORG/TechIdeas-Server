@@ -55,30 +55,19 @@ function buscarTodos(idUsuario) {
     where HOUR(dateMetrica) = HOUR(NOW()) and idUsuario = ${idUsuario}
     GROUP BY fkSensor, HOUR(dateMetrica),idAmbiente, maximoPessoas, minimoPessoas
     ORDER BY HOUR(dateMetrica);
-<<<<<<< HEAD
-=======
-
->>>>>>> b9cac44c281db22a1b1b087fa4496b5d21ade596
     `;
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
 }
 
 function buscarDia(idAmbiente, primeiro_dia, ultimo_dia) {
-    /*
-    var arrayPrimeiroDia = primeiro_dia.split('-');
-    var diaPrimeiro = arrayPrimeiroDia[0];
-    var mesPrimeiro = arrayPrimeiroDia[1];
-    var anoPrimeiro = arrayPrimeiroDia[2];
-    */
-
     console.log("ACESSEI O AMBIENTE MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listar() \n\n ");
     var instrucao = `
     select SUM(valMetrica) as soma, DAY(dateMetrica) as horario
     from tbMetricas
     join tbSensor on fkSensor = idSensor
     join tbAmbiente on fkAmbiente = idAmbiente
-    where idAmbiente = ${idAmbiente} AND DAY(dateMetrica) BETWEEN '${primeiro_dia}' AND '${ultimo_dia}'
+    where idAmbiente = ${idAmbiente} AND DATE_FORMAT(dateMetrica, '%d-%m-%Y') BETWEEN '${primeiro_dia}' AND '${ultimo_dia}'
     GROUP BY DAY(dateMetrica)
     order by DAY(dateMetrica) asc;
     `;
