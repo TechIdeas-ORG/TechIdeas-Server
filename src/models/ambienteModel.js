@@ -83,13 +83,68 @@ function buscarDia(idAmbiente, primeiro_dia, ultimo_dia) {
     return database.executar(instrucao);
 }
 
-function buscarTempoReal(idAmbiente){
+function Med_Fluxo(idUsuario){
+    var instrucao = `SELECT AVG(group_day.valores) FROM (
+        SELECT COUNT(valMetrica) AS valores FROM tbMetricas
+        JOIN tbSensor ON idSensor = fkSensor
+        JOIN tbAmbiente ON idAmbiente = fkAmbiente
+        JOIN tbEmpresa ON tbAmbiente.fkEmpresa = idEmpresa
+        JOIN tbUsuario ON tbUsuario.fkEmpresa = idEmpresa
+        WHERE WEEK(dateMetrica) = WEEK(NOW()) AND idUsuario = ${idUsuario}
+        GROUP BY DAY(dateMetrica)
+    ) AS group_day;`
 
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
 }
+
+function Maior_fluxo(idUsuario){
+    var instrucao = `SELECT MAX(ValMax.valores), valMax.dateMetrica FROM (
+        SELECT COUNT(valMetrica) as valores, dateMetrica FROM tbMetricas
+        JOIN tbSensor ON idSensor = fkSensor
+        JOIN tbAmbiente ON idAmbiente = fkAmbiente
+        JOIN tbEmpresa ON tbAmbiente.fkEmpresa = idEmpresa
+        JOIN tbUsuario ON tbUsuario.fkEmpresa = idEmpresa
+        WHERE WEEK(dateMetrica) = WEEK(NOW()) AND idUsuario = ${idUsuario}
+        GROUP BY DAY(dateMetrica)
+    ) AS ValMax;`
+     
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
+
+function Aumento_fluxo(idUsuario){
+    var instrucao = `SELECT 100-((COUNT(valMetrica)/tbHoje.valores_hoje)*100) as valores FROM tbMetricas
+    JOIN tbSensor ON idSensor = fkSensor
+        JOIN tbAmbiente ON idAmbiente = fkAmbiente
+        JOIN tbEmpresa ON tbAmbiente.fkEmpresa = idEmpresa
+        JOIN tbUsuario ON tbUsuario.fkEmpresa = idEmpresa
+        JOIN (
+        SELECT COUNT(valMetrica) as valores_hoje FROM tbMetricas
+        JOIN tbSensor ON idSensor = fkSensor
+        JOIN tbAmbiente ON idAmbiente = fkAmbiente
+        JOIN tbEmpresa ON tbAmbiente.fkEmpresa = idEmpresa
+        JOIN tbUsuario ON tbUsuario.fkEmpresa = idEmpresa
+        WHERE DAY(dateMetrica) = DAY(NOW()) AND idUsuario = ${idUsuario}
+        GROUP BY DAY(dateMetrica)
+    ) AS tbHoje
+    WHERE dateMetrica IN (
+        SELECT dateMetrica FROM tbMetricas
+        WHERE WEEK(dateMetrica) = (WEEK(NOW())-1) AND WEEKDAY(dateMetrica) = WEEKDAY(NOW())
+    ) AND idUsuario = ${idUsuario}
+    GROUP BY DAY(dateMetrica);`
+     
+    console.log("Executando a instrução SQL: \n" + instrucao);
+    return database.executar(instrucao);
+}
+
 module.exports = { 
     listar1,
     buscarAmbientes,
     buscarTodos,
     buscarDia,
-    listarDireita
+    listarDireita,
+    Med_Fluxo,
+    Maior_fluxo,
+    Aumento_fluxo
 };

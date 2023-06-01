@@ -1,4 +1,4 @@
--- Active: 1685626921736@@127.0.0.1@3306@bd_SMFP
+-- Active: 1685646506977@@127.0.0.1@3306@aquatech
 DROP DATABASE bd_SMFP;
 
 CREATE DATABASE bd_SMFP;
@@ -166,8 +166,8 @@ VALUES
 
 INSERT INTO tbMetricas (`fkSensor`, `dateMetrica`, `valMetrica`)
 VALUES
-    (1, "2023-05-31 22:00:00", 1)
-    ,(1, "2023-05-31 22:00:00", 1)
+    (1, "2023-05-25 22:00:00", 1)
+    ,(1, "2023-05-25 22:00:00", 1)
     ,(1, NOW(), 1)
     ,(1, NOW(), 1)
     ,(1, NOW(), 1)
@@ -248,3 +248,46 @@ JOIN tbUsuario ON tbUsuario.fkEmpresa = idEmpresa
 where DATEDIFF(dateMetrica, now()) < "23:30:00" and idUsuario = 1
 GROUP BY fkSensor, HOUR(dateMetrica),idAmbiente, maximoPessoas, minimoPessoas
 ORDER BY HOUR(dateMetrica);
+
+    -- Primeira KPI
+SELECT AVG(group_day.valores) FROM (
+    SELECT COUNT(valMetrica) AS valores FROM tbMetricas
+    JOIN tbSensor ON idSensor = fkSensor
+    JOIN tbAmbiente ON idAmbiente = fkAmbiente
+    JOIN tbEmpresa ON tbAmbiente.fkEmpresa = idEmpresa
+    JOIN tbUsuario ON tbUsuario.fkEmpresa = idEmpresa
+    WHERE WEEK(dateMetrica) = WEEK(NOW()) AND idUsuario = 1
+    GROUP BY DAY(dateMetrica)
+) AS group_day;
+
+-- Segunda KPI
+SELECT MAX(ValMax.valores), valMax.dateMetrica FROM (
+    SELECT COUNT(valMetrica) as valores, dateMetrica FROM tbMetricas
+    JOIN tbSensor ON idSensor = fkSensor
+    JOIN tbAmbiente ON idAmbiente = fkAmbiente
+    JOIN tbEmpresa ON tbAmbiente.fkEmpresa = idEmpresa
+    JOIN tbUsuario ON tbUsuario.fkEmpresa = idEmpresa
+    WHERE WEEK(dateMetrica) = WEEK(NOW()) AND idUsuario = ${idUsuario}
+    GROUP BY DAY(dateMetrica)
+) AS ValMax;
+
+-- Terceira KPI
+SELECT 100-((COUNT(valMetrica)/tbHoje.valores_hoje)*100) as valores FROM tbMetricas
+JOIN tbSensor ON idSensor = fkSensor
+    JOIN tbAmbiente ON idAmbiente = fkAmbiente
+    JOIN tbEmpresa ON tbAmbiente.fkEmpresa = idEmpresa
+    JOIN tbUsuario ON tbUsuario.fkEmpresa = idEmpresa
+    JOIN (
+    SELECT COUNT(valMetrica) as valores_hoje FROM tbMetricas
+    JOIN tbSensor ON idSensor = fkSensor
+    JOIN tbAmbiente ON idAmbiente = fkAmbiente
+    JOIN tbEmpresa ON tbAmbiente.fkEmpresa = idEmpresa
+    JOIN tbUsuario ON tbUsuario.fkEmpresa = idEmpresa
+    WHERE DAY(dateMetrica) = DAY(NOW()) AND idUsuario = ${idUsuario}
+    GROUP BY DAY(dateMetrica)
+) AS tbHoje
+WHERE dateMetrica IN (
+    SELECT dateMetrica FROM tbMetricas
+    WHERE WEEK(dateMetrica) = (WEEK(NOW())-1) AND WEEKDAY(dateMetrica) = WEEKDAY(NOW())
+) AND idUsuario = ${idUsuario}
+GROUP BY DAY(dateMetrica);

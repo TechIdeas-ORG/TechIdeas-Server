@@ -92,7 +92,7 @@
             <span id="span_max_fluxo"></span>
         </div>
         <div class="kpi">
-            <h4>Aumento do Fluxo</h4>
+            <h4>Aumento Relativo à Semana Passada</h4>
             <span id="span_porcent_aum_fluxo"></span>
         </div>
     </div>
@@ -109,20 +109,7 @@
         var proximaAtualizacao;
         var filtroAplicado = false;
 
-        for (var i = 0; i < dado_sem.length; i++) {
-            var dado = dado_sem[i];
-            soma += dado;
-            if (dado > dado_sem[max_pos]) { max_pos = i }
-        }
-
-        span_med_fluxo.innerHTML = (soma / dado_sem.length).toFixed(2);
-        span_max_fluxo.innerHTML = `${label_sem[max_pos]} teve o maior fluxo da semana com ${dado_sem[max_pos]} pontos`;
-        var dif_dia1_maiorDia = dado_sem[max_pos] - dado_sem[0];
-        /* 354 --- 100%
-           186 --- X%
-        */
-        span_porcent_aum_fluxo.innerHTML = `O aumento foi de ${((dif_dia1_maiorDia * 100) / dado_sem[0]).toFixed(2)}% comparado ao primeiro dia da semana`;
-
+        
         obterdados()
         window.onload = obterDadosGraficos();
 
