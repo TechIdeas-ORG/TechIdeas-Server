@@ -21,15 +21,9 @@ var sqlServerConfig = {
 var mySqlConfig = {
     host: "localhost",
     database: "bd_SMFP",
-<<<<<<< HEAD
     user: "aluno",
-    password: "sptech",
-=======
-    user: "root",
-    password: "",
->>>>>>> dash-L
-};
-
+    password: "sptech"
+}
 function executar(instrucao) {
     // VERIFICA A VARIÁVEL DE AMBIENTE SETADA EM app.js
     if (process.env.AMBIENTE_PROCESSO == "producao") {
