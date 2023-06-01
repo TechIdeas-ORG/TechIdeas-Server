@@ -35,7 +35,7 @@
                 account_circle
             </span>
             <div class="perfil">
-                <h3>Nome do Usuário</h3>
+                <h3 id="navbar_nmUser">Nome do Usuário</h3>
                 <a href="logout.html">Sair</a>
             </div>
         </div>
@@ -66,9 +66,9 @@
         </div>
 
         <div class="consultaDia">
-            <input id="primeiro_dia" oninput="plotar_filtro()" placeholder="dd-MM-AAAA"><br><br>
+            <input id="primeiro_dia" onkeyup="plotar_filtro()" placeholder="dd-MM-AAAA"><br><br>
             <h1>-</h1>
-            <input id="ultimo_dia" oninput="plotar_filtro()" placeholder="dd-MM-AAAA"><br>
+            <input id="ultimo_dia" onkeyup="plotar_filtro()" placeholder="dd-MM-AAAA"><br>
         </div>
 
         <div class="divGraf2">

@@ -153,6 +153,8 @@ nav .head {
     padding-top: 80px;
     padding-left: 280px !important;
     padding-right: 84px;
+
+    transition: 800ms;
 }
 
 .page-title{
