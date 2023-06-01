@@ -137,19 +137,19 @@ VALUES
     ,('Fast-food')
     ,('Cinema');
 
-INSERT INTO tbAmbiente (`fkEmpresa`, `fkSetor`, `tempoDispersao`, `nomeAmbiente`, `descAmbiente`, `minimoPessoas`, `mediaPessoas`, `maximoPessoas`) 
+INSERT INTO tbAmbiente (`fkEmpresa`, `tempoDispersao`, `nomeAmbiente`, `descAmbiente`, `setorAmbiente`, `minimoPessoas`, `mediaPessoas`, `maximoPessoas`) 
 VALUES 
-   (1,  1, 30, 'Loja de Roupa 1', 'Ambiente para lojas de roupas femininas', 33, 56, 96)
-    ,(1, 1, 25, 'Loja de Roupa 2', 'Ambiente para lojas de roupas masculinas', 27, 43, 83)
-    ,(2, 1, 28, 'Loja de Roupa 3', 'Ambiente para lojas de roupas infantis', 16, 28, 49)
-    ,(2, 15, 10, 'Fast Food', 'Ambiente para estabelecimentos de fast food', 100, 200, 300)
-    ,(3, 14, 60, 'Restaurantes', 'Ambiente para restaurantes', 79, 100, 172)
-    ,(3, 8, 120, 'Parque de Diversões', 'Ambiente para o parque de diversões', 72, 90, 133)
-    ,(4, 16, 120, 'Salas de Cinema', 'Ambiente para salas de cinema', 79, 95, 159)
-    ,(4, 2, 18, 'Lojas de Calçados', 'Ambiente para lojas de calçados', 50, 72, 90)
-    ,(5, 3, 13, 'Lojas de Acessórios', 'Ambiente para lojas de acessórios', 40, 69, 82)
-    ,(5, 9, 10, 'Lojas de Eletrônicos', 'Ambiente para lojas de eletrônicos', 50, 78, 91)
-    ,(6, 11, 12,'Lojas de Eletrodomésticos', 'Ambiente para lojas de eletrodomésticos', 68, 88, 117);
+   (1, 30, 'Loja de Roupa 1', 'Ambiente para lojas de roupas femininas', '',33, 56, 96)
+    ,(1, 25, 'Loja de Roupa 2', 'Ambiente para lojas de roupas masculinas', '',27, 43, 83)
+    ,(2, 28, 'Loja de Roupa 3', 'Ambiente para lojas de roupas infantis', '',16,28, 49)
+    ,(2, 10, 'Fast Food', 'Ambiente para estabelecimentos de fast food', '',100,200, 300)
+    ,(3, 60, 'Restaurantes', 'Ambiente para restaurantes', '',79, 100, 172)
+    ,(3, 120, 'Parque de Diversões', 'Ambiente para o parque de diversões', '',72, 90, 133)
+    ,(4, 120, 'Salas de Cinema', 'Ambiente para salas de cinema', '',79, 95, 159)
+    ,(4, 18, 'Lojas de Calçados', 'Ambiente para lojas de calçados', '',50, 72, 90)
+    ,(5, 13, 'Lojas de Acessórios', 'Ambiente para lojas de acessórios', '',40, 69, 82)
+    ,(5, 10, 'Lojas de Eletrônicos', 'Ambiente para lojas de eletrônicos', '',50, 78, 91)
+    ,(6, 12,'Lojas de Eletrodomésticos', 'Ambiente para lojas de eletrodomésticos', '',68, 88, 117);
 
 
 INSERT INTO tbSensor (`fkAmbiente`, `portaSensor`)
