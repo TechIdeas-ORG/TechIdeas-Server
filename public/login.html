@@ -78,6 +78,7 @@
                 senhaServer: senha
             })
         }).then(function (resposta) {
+            console.log("Resposta: " + resposta)
             if (resposta.ok) {
                 console.log(resposta);
 
@@ -87,7 +88,6 @@
                     sessionStorage.EMAIL_USUARIO = json.emailUsuario;
                     sessionStorage.NOME_USUARIO = json.nomeUsuario;
                     sessionStorage.ID_USUARIO = json.idUsuario;
-                    sessionStorage.FK_ADMIN = json.fkAdministrador;
 
                     window.location = '/dashboard';
 

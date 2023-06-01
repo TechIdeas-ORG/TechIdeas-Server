@@ -1,4 +1,4 @@
--- Active: 1679521204876@@127.0.0.1@3306@bd_smfp
+-- Active: 1677852416029@@127.0.0.1@3306@bd_SMFP
 DROP DATABASE bd_SMFP;
 
 CREATE DATABASE bd_SMFP;
@@ -16,7 +16,7 @@ CREATE TABLE tbEmpresa (
     ,nomeEmpresa VARCHAR(50) NOT NULL
     ,cnpjEmpresa VARCHAR(18) NOT NULL
     ,PRIMARY KEY(idEmpresa, fkToken)
-    ,CONSTRAINT fk_tbEmpresa_tbToken FOREIGN KEY (fkToken) REFERENCES tbToken(idToken)
+    ,CONSTRAINT fk_tbEmpresa_tbToken FOREIGN KEY (fkToken) REFERENCES tbToken(idToken) ON DELETE CASCADE
 );
 
 CREATE TABLE tbUsuario(
@@ -25,9 +25,9 @@ CREATE TABLE tbUsuario(
     ,nomeUsuario VARCHAR(50) NOT NULL
     ,emailUsuario VARCHAR(100) NOT NULL UNIQUE
     ,senhaUsuario VARCHAR(64) NOT NULL
-    ,CONSTRAINT fk_tbUsuario_tbEmpresa FOREIGN KEY (fkEmpresa) REFERENCES tbEmpresa(idEmpresa)
+    ,CONSTRAINT fk_tbUsuario_tbEmpresa FOREIGN KEY (fkEmpresa) REFERENCES tbEmpresa(idEmpresa) ON DELETE CASCADE
     ,PRIMARY KEY(idUsuario, fkEmpresa)
-    ,fkAdministrador INT, FOREIGN KEY (fkAdministrador) REFERENCES tbUsuario(idUsuario)
+    ,fkAdministrador INT, FOREIGN KEY (fkAdministrador) REFERENCES tbUsuario(idUsuario) ON DELETE CASCADE
 );
 
 CREATE TABLE tbSetor(
@@ -42,11 +42,12 @@ CREATE TABLE tbAmbiente(
     ,tempoDispersao INT
     ,nomeAmbiente VARCHAR(50)
     ,descAmbiente VARCHAR(150)
+    ,setorAmbiente VARCHAR(35)
     ,minimoPessoas INT
     ,mediaPessoas INT
     ,maximoPessoas INT
-    ,CONSTRAINT fk_tbAmbiente_tbEmpresa FOREIGN KEY (fkEmpresa) REFERENCES tbEmpresa(idEmpresa)
-    ,CONSTRAINT fk_tbAmbiente_tbSetor FOREIGN KEY (fkSetor) REFERENCES tbSetor(idSetor)
+    ,CONSTRAINT fk_tbAmbiente_tbEmpresa FOREIGN KEY (fkEmpresa) REFERENCES tbEmpresa(idEmpresa) ON DELETE CASCADE
+    ,CONSTRAINT fk_tbAmbiente_tbSetor FOREIGN KEY (fkSetor) REFERENCES tbSetor(idSetor) ON DELETE CASCADE
     ,PRIMARY KEY(idAmbiente, fkEmpresa, fkSetor)
 );
 
@@ -54,7 +55,7 @@ CREATE TABLE tbSensor(
     idSensor INT AUTO_INCREMENT
     ,fkAmbiente INT
     ,portaSensor VARCHAR(6) NOT NULL
-    ,CONSTRAINT fk_tbSensor_fkAmbiente FOREIGN KEY (fkAmbiente) REFERENCES tbAmbiente(idAmbiente)
+    ,CONSTRAINT fk_tbSensor_fkAmbiente FOREIGN KEY (fkAmbiente) REFERENCES tbAmbiente(idAmbiente) ON DELETE CASCADE
     ,PRIMARY KEY(idSensor, fkAmbiente)
 );
 
@@ -63,8 +64,8 @@ CREATE TABLE tbMetricas (
     ,fkSensor INT
     ,dateMetrica TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     ,valMetrica INT
-    ,CONSTRAINT fk_tbMetricas_fkSensor FOREIGN KEY (fkSensor) REFERENCES tbSensor(idSensor)
-    ,PRIMARY KEY(idMetrica, fkSensor)
+    ,CONSTRAINT fk_tbMetricas_fkSensor FOREIGN KEY (fkSensor) REFERENCES tbSensor(idSensor) ON DELETE CASCADE
+    ,PRIMARY KEY(idMetrica, fkSensor) 
 );
 
 
@@ -97,23 +98,23 @@ VALUES
     
 INSERT INTO tbUsuario (`fkEmpresa`, `idUsuario`,`nomeUsuario`,`emailUsuario`,`senhaUsuario`,`fkAdministrador`)
 VALUES
-	 (1, 1, 'Administrador', 'admin@techideas.com', '$2b$10$M/CbWCDYZcYYDnTUs1nfPOu/U665hzfQDSBucm56MxAy4ldau2YAi', NULL)
-    ,(2, 1, 'João Silva', 'joao.silva@exemplo.com', SHA2('senha123', 256), NULL)
-    ,(2, 2, 'Maria Santos', 'maria.santos@exemplo.com', SHA2('senha456', 256), 1)
-    ,(3, 1, 'Pedro Oliveira', 'pedro.oliveira@exemplo.com', SHA2('senha789', 256), NULL)
-    ,(3, 2, 'Carla Ferreira', 'carla.ferreira@exemplo.com', SHA2('senhaabc', 256), 1)
-    ,(4, 1, 'Lucas Costa', 'lucas.costa@exemplo.com', SHA2('senhaxyz', 256), NULL)
-    ,(4, 2, 'Ana Souza', 'ana.souza@exemplo.com', SHA2('senha123', 256), 1)
-    ,(5, 1, 'Paulo Rodrigues', 'paulo.rodrigues@exemplo.com', SHA2('senha456', 256), NULL)
-    ,(5, 2, 'Fernanda Alves', 'fernanda.alves@exemplo.com', SHA2('senha789', 256), 1)
-    ,(6, 1, 'Rafaela Pereira', 'rafaela.pereira@exemplo.com', SHA2('senhaabc', 256), NULL)
-    ,(6, 2, 'Marcelo Santos', 'marcelo.santos@exemplo.com', SHA2('senhaxyz', 256), 1)
-    ,(7, 1, 'Amanda Ferreira', 'amanda.ferreira@exemplo.com', SHA2('senha123', 256), NULL)
-    ,(7, 2, 'Thiago Costa', 'thiago.costa@exemplo.com', SHA2('senha456', 256), 1)
-    ,(8, 1, 'Gabriela Oliveira', 'gabriela.oliveira@exemplo.com', SHA2('senha789', 256), NULL)
-    ,(8, 2, 'Marina Souza', 'marina.souza@exemplo.com', SHA2('senhaabc', 256), 1)
-    ,(9, 1, 'Vinícius Rodrigues', 'vinicius.rodrigues@exemplo.com', SHA2('senhaxyz', 256), NULL)
-    ,(9, 2, 'Bruna Alves', 'bruna.alves@exemplo.com', SHA2('senha123', 256), 1);
+	 (1, NULL, 'Administrador', 'admin@techideas.com', '$2b$10$M/CbWCDYZcYYDnTUs1nfPOu/U665hzfQDSBucm56MxAy4ldau2YAi', NULL)
+    ,(2, NULL, 'João Silva', 'joao.silva@exemplo.com', SHA2('senha123', 256), NULL)
+    ,(2, NULL, 'Maria Santos', 'maria.santos@exemplo.com', SHA2('senha456', 256), 1)
+    ,(3, NULL, 'Pedro Oliveira', 'pedro.oliveira@exemplo.com', SHA2('senha789', 256), NULL)
+    ,(3, NULL, 'Carla Ferreira', 'carla.ferreira@exemplo.com', SHA2('senhaabc', 256), 1)
+    ,(4, NULL, 'Lucas Costa', 'lucas.costa@exemplo.com', SHA2('senhaxyz', 256), NULL)
+    ,(4, NULL, 'Ana Souza', 'ana.souza@exemplo.com', SHA2('senha123', 256), 1)
+    ,(5, NULL, 'Paulo Rodrigues', 'paulo.rodrigues@exemplo.com', SHA2('senha456', 256), NULL)
+    ,(5, NULL, 'Fernanda Alves', 'fernanda.alves@exemplo.com', SHA2('senha789', 256), 1)
+    ,(6, NULL, 'Rafaela Pereira', 'rafaela.pereira@exemplo.com', SHA2('senhaabc', 256), NULL)
+    ,(6, NULL, 'Marcelo Santos', 'marcelo.santos@exemplo.com', SHA2('senhaxyz', 256), 1)
+    ,(7, NULL, 'Amanda Ferreira', 'amanda.ferreira@exemplo.com', SHA2('senha123', 256), NULL)
+    ,(7, NULL, 'Thiago Costa', 'thiago.costa@exemplo.com', SHA2('senha456', 256), 1)
+    ,(8, NULL, 'Gabriela Oliveira', 'gabriela.oliveira@exemplo.com', SHA2('senha789', 256), NULL)
+    ,(8, NULL, 'Marina Souza', 'marina.souza@exemplo.com', SHA2('senhaabc', 256), 1)
+    ,(9, NULL, 'Vinícius Rodrigues', 'vinicius.rodrigues@exemplo.com', SHA2('senhaxyz', 256), NULL)
+    ,(9, NULL, 'Bruna Alves', 'bruna.alves@exemplo.com', SHA2('senha123', 256), 1);
 
 INSERT INTO tbSetor (`nomeSetor`)
 VALUES
@@ -175,7 +176,18 @@ VALUES
     ,(1, NOW(), 1)
     ,(1, NOW(), 1)
     ,(1, NOW(), 1)
-    ,(1, NOW(), 1);
+    ,(1, NOW(), 1), 
+    (2, NOW(), 1)
+    ,(2, NOW(), 1)
+    ,(2, NOW(), 1)
+    ,(2, NOW(), 1)
+    ,(2, NOW(), 1)
+    ,(2, NOW(), 1)
+    ,(2, NOW(), 1)
+    ,(2, NOW(), 1)
+    ,(2, NOW(), 1)
+    ,(2, NOW(), 1)
+    ,(2, NOW(), 1);
 
     
 /* SELECTS */
@@ -208,3 +220,11 @@ SELECT tbMetricas.`valMetrica`, tbMetricas.`dateMetrica`
 SELECT idToken, count(idEmpresa) FROM tbToken
     INNER JOIN tbEmpresa ON fkToken = idEmpresa AND fkToken = idToken
     WHERE tokenHash = '43785e89508865813596518a211809f5606532c11aa54314f379814c3b360e90';
+select SUM(valMetrica) as soma, HOUR(dateMetrica) as horario 
+        from tbMetricas
+        join tbSensor on fkSensor = idSensor
+        join tbAmbiente on fkAmbiente = idAmbiente
+        where idAmbiente = ${idAmbiente} and YEAR(dateMetrica) = YEAR(now()) and DAY(now()) = DAY(dateMetrica) and 
+        MONTH(dateMetrica) = MONTH(now())
+        GROUP BY HOUR(dateMetrica)
+        order by HOUR(dateMetrica) asc;
