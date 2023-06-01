@@ -55,6 +55,10 @@ function buscarTodos(idUsuario) {
     where HOUR(dateMetrica) = HOUR(NOW()) and idUsuario = ${idUsuario}
     GROUP BY fkSensor, HOUR(dateMetrica),idAmbiente, maximoPessoas, minimoPessoas
     ORDER BY HOUR(dateMetrica);
+<<<<<<< HEAD
+=======
+
+>>>>>>> b9cac44c281db22a1b1b087fa4496b5d21ade596
     `;
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
