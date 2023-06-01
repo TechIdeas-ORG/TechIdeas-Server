@@ -1,43 +1,54 @@
 const express = require('express');
-const session = require('express-session');
-const routerAuth = express.Router();
+var router = express.Router();
 const ambienteController = require('../controllers/ambienteController')
 
-routerAuth.use(session({
-    secret: 'techideas_secret_key',
-    resave: false,
-    saveUninitialized: true,
-}));
 
-routerAuth.use((req, res, next) => {
-    if (req.session.EMAIL_USUARIO != undefined) {
-        next();
-    } else {
-        // not authorized
-        res.redirect("/login.html");
-    }
-});
-
-
-routerAuth.get("/listar/:idAmbiente", function (req, res) {
+router.get("/listar/:idAmbiente", function (req, res) {
     
     ambienteController.listar(req, res);
 });
-routerAuth.get("/consultaAmbiente/:idUsuario", function (req, res) {
+router.get("/consultaAmbiente/:idUsuario", function (req, res) {
     
     ambienteController.consultaAmbiente(req, res);
 });
 
 
-routerAuth.get("/consultaTodos/:fkUser", (req, res) => {
+router.get("/consultaTodos/:fkUser", (req, res) => {
     ambienteController.consultaTodos(req,res)
 })
 
-routerAuth.get("/consultaDia/:idAmbiente/:primeiro_dia/:ultimo_dia", function (req, res) {
+router.get("/consultaDia/:idAmbiente/:primeiro_dia/:ultimo_dia", function (req, res) {
     
+
     ambienteController.consultaDia(req, res);
 });
-routerAuth.get("/listarDireita/:idUsuario", function (req, res) {
+router.get("/listarDireita/:idUsuario", function (req, res) {
     ambienteController.listarDireita(req, res);
 });
-module.exports = routerAuth;
+
+
+router.get("/", function (req, res) {
+    ambienteController.testar(req, res);
+});
+
+//Recebendo os dados do html e direcionando para a função cadastrar de ambienteController.js
+router.post("/cadastrar", function (req, res) {
+    ambienteController.cadastrar(req, res);
+})
+
+//Recebendo os dados do html e direcionando para a função excluir de ambienteController.js
+router.post("/excluir", function (req, res) {
+    ambienteController.excluir(req, res);
+})
+
+//Recebendo os dados do html e direcionando para a função atualizar de ambienteController.js
+router.post("/atualizar", function (req, res) {
+    ambienteController.atualizar(req, res);
+})
+
+router.get("/consultar/:idAmbiente", (req, res) => {
+    ambienteController.consultar(req,res);
+})
+
+
+module.exports = router;
