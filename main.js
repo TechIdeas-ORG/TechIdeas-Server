@@ -12,8 +12,7 @@ var app = express();
 var indexRouter = require("./src/routes/index");
 var usuarioRouter = require("./src/routes/usuario");
 var dashboardRouter = require("./src/routes/dashboard");
-// criando rotas para o crud
-var ambienteRouter = require("./src/routes/ambiente");
+const ambienteRouter = require("./src/routes/ambiente")
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

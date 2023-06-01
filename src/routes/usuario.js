@@ -16,4 +16,16 @@ router.post("/auth", function (req, res) {
     usuarioController.entrar(req, res);
 });
 
+router.get("/consultar/:idEmpresa", function (req, res) {
+    usuarioController.consultar(req, res);
+});
+
+router.get("/excluir/:idUsuario", function (req, res) {
+    usuarioController.excluir(req, res);
+});
+
+router.get("/atualizar/:idUsuario/:emailUsuario/:nomeUsuario", function (req, res) {
+    usuarioController.atualizar(req, res);
+});
+
 module.exports = router;
