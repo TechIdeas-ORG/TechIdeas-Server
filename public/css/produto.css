@@ -159,7 +159,7 @@
     transition: 1s;
 }
 
-/*.grafico::before{
+.grafico::before{
     content: '';
     position: absolute;
     z-index: 1;
@@ -184,7 +184,7 @@
 
     background: #0A600E;
     box-shadow: 6px 0px 0px #084F0C;
-}*/
+}
 
 .grafico span {
     color: white;

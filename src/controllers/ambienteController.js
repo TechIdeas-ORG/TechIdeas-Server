@@ -1,4 +1,4 @@
-var AmbienteModel = require("../models/AmbienteModel");
+var AmbienteModel = require("../models/ambienteModel");
 
 function listar(req, res) {
     var idAmb = req.params.idAmbiente;
@@ -241,7 +241,6 @@ module.exports = {
     consultaTodos,
     consultaDia,
     listarDireita,
-    entrar,
     cadastrar,
     testar,
     excluir,

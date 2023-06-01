@@ -23,6 +23,7 @@ app.use("/", indexRouter);
 app.use("/usuario", usuarioRouter);
 app.use("/dashboard", dashboardRouter);
 app.use("/ambientes", ambienteRouter);
+app.use("/ambiente", ambienteRouter);
 app.use("/excluir", ambienteRouter);
 app.use("/atualizar", ambienteRouter);
 

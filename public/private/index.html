@@ -25,8 +25,8 @@
         <div class="menu">
             <ul>
                 <li class="active"><a href="#">DashBoard</a></li>
-                <li><a href="#">Mapa de Calor</a></li>
-                <li><a href="crudVersaoFinal.html">Ambientes</a></li>>
+                <li><a href="index.html#mapaCalor">Mapa de Calor</a></li>
+                <li><a href="crudVersaoFinal.html">Ambientes</a></li>
                 <li><a href="gerenciamentoFuncionario.html">Gerenciar Funcionarios</a></li>
             </ul>
         </div>
@@ -36,7 +36,7 @@
             </span>
             <div class="perfil">
                 <h3>Nome do Usuário</h3>
-                <a href="#">Sair</a>
+                <a href="logout.html">Sair</a>
             </div>
         </div>
     </nav>
@@ -68,9 +68,8 @@
         <div class="consultaDia">
             <input id="primeiro_dia" placeholder="dd-MM-AAAA"><br><br>
             <h1>-</h1>
-            <input id="ultimo_dia" placeholder="dd-MM-AAAA"><br>
+            <input id="ultimo_dia" oninput="plotar_filtro()" placeholder="dd-MM-AAAA"><br>
         </div>
-        <button onclick="plotar_filtro()">Filtrar</button>
 
         <div class="divGraf2">
 
@@ -409,7 +408,7 @@
 
 
 
-            if (ultimo_dia_val.length == 10) {
+            if (ultimo_dia_val.length == 10 && primeiro_dia_val.length == 10) {
                 filtroAplicado = true;
                 myChart_global.data = {
                     labels: [],
@@ -525,33 +524,12 @@
 </body>
 
 </html>
-<script>
-    var isCollapsed = false;
-    // Com lambda
-    /*function collapse(collapse_button){
-        navbar.style.left = isCollapsed ? '0px' : '-260px';
-        collapse_text.style.transform = isCollapsed ? 'rotate(0deg)' : 'rotate(180deg)';
-        isCollapsed = !isCollapsed;
-    }*/
 
-    // Sem lambda
-    function collapse(collapse_button) {
-        if (isCollapsed) {
-            navbar.style.left = '0px';
-            collapse_text.style.transform = 'rotate(0deg)';
-            isCollapsed = false;
-        } else {
-            navbar.style.left = '-260px';
-            collapse_text.style.transform = 'rotate(180deg)';
-            isCollapsed = true;
-        }
-    }
-    consultarTudo()
-</script>
 
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
 <script src="js/jquery.mask.js"></script>
+<script src="js/navbar.js"></script>
 
 <script>
     $('#primeiro_dia').mask('00-00-0000');

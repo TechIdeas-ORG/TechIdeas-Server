@@ -1,4 +1,4 @@
--- Active: 1685562660322@@127.0.0.1@3306@bd_smfp
+-- Active: 1685626921736@@127.0.0.1@3306@bd_SMFP
 
 DROP DATABASE bd_SMFP;
 

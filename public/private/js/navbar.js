@@ -14,7 +14,7 @@ function collapse(collapse_button){
     }
 }
 
-//VERIFICAR SESSION
+//VERIFICAR SESSION 
 if(sessionStorage.ID_USUARIO == undefined){
     window.location = '../login.html';
 }
