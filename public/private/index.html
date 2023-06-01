@@ -71,11 +71,7 @@
             <h1>-</h1>
             <input id="ultimo_dia" placeholder="dd-MM-AAAA"><br>
         </div>
-<<<<<<< HEAD
         <button onclick="plotar_filtro()">Filtrar</button>
-=======
-        <button onclick="onInput()">Filtrar</button>
->>>>>>> dash-L
 
         <div class="divGraf2">
 
@@ -110,10 +106,7 @@
         var qtdeAmb = 0;
         var fluxoAmbs = [];
         var proximaAtualizacao;
-<<<<<<< HEAD
         var filtroAplicado = false;
-=======
->>>>>>> dash-L
 
         for (var i = 0; i < dado_sem.length; i++) {
             var dado = dado_sem[i];
@@ -129,11 +122,7 @@
         */
         span_porcent_aum_fluxo.innerHTML = `O aumento foi de ${((dif_dia1_maiorDia * 100) / dado_sem[0]).toFixed(2)}% comparado ao primeiro dia da semana`;
 
-<<<<<<< HEAD
         
-=======
-
->>>>>>> dash-L
         window.onload = obterDadosGraficos();
 
         function obterDadosGraficos() {
@@ -156,14 +145,8 @@
                             console.log(`Dados atuais do gráfico:`);
                             console.log(dados);
                             let avisoCaptura = document.getElementById(`avisoCaptura${idSensor}`)
-<<<<<<< HEAD
 
                             plotarGrafico(novoRegistro, fkAmbiente);
-=======
-                            somatotal = 0;
-
-                            plotarGrafico(novoRegistro, fkAmbiente, somatotal);
->>>>>>> dash-L
 
 
                             /*if (novoRegistro[0].momento_grafico == dados.labels[dados.labels.length - 1]) {
@@ -210,7 +193,6 @@
 
         }
 
-<<<<<<< HEAD
 
         var myChart_global;
         const dados = {
@@ -251,16 +233,6 @@
             //RESET DO GRÁFICO
             myChart_global.data = {
                 labels: [],
-=======
-        var myChart_global, dados_global;
-
-        function plotarGrafico(resposta, fkAmbiente, soma) {
-
-            // grafico ambiente
-            let labels = [];
-            let dados = {
-                labels: labels,
->>>>>>> dash-L
                 datasets: [{
                     label: 'fluxo',
                     data: [],
@@ -271,7 +243,6 @@
 
                 }]
             };
-<<<<<<< HEAD
             myChart_global.update();
 
             for (i = 0; i < resposta.length; i++) {
@@ -283,36 +254,6 @@
             }
             
             myChart_global.update();
-=======
-            for (i = 0; i < resposta.length; i++) {
-                var registro = resposta[i];
-                labels.push(registro.horario)
-                console.log(registro.horario)
-                console.log(dados.datasets[0].data)
-                dados.datasets[0].data.push(registro.soma);
-            }
-            const config = {
-                type: 'bar',
-                data: dados,
-                options: {
-                    animation: false,
-                    scales: {
-                        yAxes: [{
-                            ticks: {
-                                beginAtZero: true
-                            }
-                        }]
-                    }
-                }
-            };
-            let myChart = new Chart(
-                document.getElementById(`chave1`),
-                config
-            );
-
-            myChart_global = myChart;
-            dados_global = dados;
->>>>>>> dash-L
 
             // grafico geral
 
@@ -344,21 +285,13 @@
                     }
                 }
             };
-<<<<<<< HEAD
-
-=======
->>>>>>> dash-L
             let myChart2 = new Chart(
                 document.getElementById(`chave2`),
                 config2
             );
 
             alert('cheguei aqui')
-<<<<<<< HEAD
             setTimeout(() => atualizarGrafico(fkAmbiente, dados, myChart_global, undefined, undefined), 2000);
-=======
-            setTimeout(() => atualizarGrafico(fkAmbiente, dados, myChart, undefined), 2000);
->>>>>>> dash-L
             setTimeout(() => consultarGraficoDireita(myChart2, dados2), 2000);
 
         }
@@ -403,22 +336,12 @@
 
         }
         CarregarBox();
-<<<<<<< HEAD
         function atualizarGrafico(fkAmbiente, dados, myChart) {
             //SAI DA FUNÇÃO E TENTA PARAR O TIMEOUT
             if(filtroAplicado){return clearTimeout(proximaAtualizacao)};
 
             var fkAmbiente = boxAmbiente.value;
             var url = `/ambiente/listar/${fkAmbiente}`;
-=======
-        function atualizarGrafico(fkAmbiente, dados, myChart, primeiro_dia, ultimo_dia) {
-        
-            var fkAmbiente = boxAmbiente.value;
-            var url = `/ambiente/listar/${fkAmbiente}`;
-            if (primeiro_dia != undefined) {
-                url = `/ambiente/consultaDia/${fkAmbiente}/${primeiro_dia}/${ultimo_dia}`
-            }
->>>>>>> dash-L
 
             fetch(url, { cache: 'no-store' }).then(function (response) {
                 if (response.ok) {
@@ -429,7 +352,6 @@
                         console.log(dados);
 
 
-<<<<<<< HEAD
                         if (novoRegistro[0].horario == myChart_global.data.labels[myChart_global.data.labels.length - 1] && novoRegistro[0].soma == myChart_global.data.datasets[0].data[myChart_global.data.datasets[0].data.length - 1]) {
                             console.log("---------------------------------------------------------------")
                             console.log("Como não há myChart_global.data novos para captura, o gráfico não atualizará.")
@@ -453,30 +375,6 @@
 
 
                             myChart_global.update();
-=======
-                        if (novoRegistro[0].horario == dados.labels[dados.labels.length - 1] && novoRegistro[0].soma == dados.datasets[0].data[dados.datasets[0].data.length - 1]) {
-                            console.log("---------------------------------------------------------------")
-                            console.log("Como não há dados novos para captura, o gráfico não atualizará.")
-                            console.log("Horário do novo dado capturado:")
-                            console.log(novoRegistro[0].horario)
-                            console.log("Horário do último dado capturado:")
-                            console.log(dados.labels[dados.labels.length - 1])
-                            console.log("---------------------------------------------------------------")
-                        } else {
-                            for (var i = 0; i < novoRegistro.length; i++) {
-
-                                dados.labels.shift(); // apagar o primeiro
-                                dados.labels.push(Number(novoRegistro[i].horario)); // incluir um novo momento
-
-                                dados.datasets[0].data.shift();  // apagar o primeiro de umidade
-                                dados.datasets[0].data.push(Number(novoRegistro[i].soma)); // incluir uma nova medida de umidade
-
-                                dados_global = dados;
-
-                            }
-
-                            myChart.update();
->>>>>>> dash-L
                         }
 
                         // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
@@ -494,11 +392,7 @@
 
         }
 
-<<<<<<< HEAD
         function plotar_filtro() {
-=======
-        function onInput() {
->>>>>>> dash-L
 
             var primeiro_dia_val = primeiro_dia.value;
             var ultimo_dia_val = ultimo_dia.value;
@@ -507,7 +401,6 @@
 
 
             if (ultimo_dia_val.length == 10) {
-<<<<<<< HEAD
                 filtroAplicado = true;
                 myChart_global.data = {
                     labels: [],
@@ -541,10 +434,6 @@
                 }).catch(function (error) {
                     console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
                 });
-=======
-                clearTimeout(proximaAtualizacao);
-                atualizarGrafico(fkAmbiente, dados_global, myChart_global, primeiro_dia_val, ultimo_dia_val);
->>>>>>> dash-L
             }
         }
 
@@ -556,11 +445,7 @@
                         console.log(response)
                         response.json().then(function (novoRegistro) {
                             console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
-<<<<<<< HEAD
                             alert(JSON.stringify(novoRegistro))
-=======
-
->>>>>>> dash-L
                             console.log("Mapa de calor: " + novoRegistro)
                             for (var i = 0; i < novoRegistro.length; i++) {
                                 if (novoRegistro[i].minimoPessoas > novoRegistro[i].soma) {
@@ -607,10 +492,6 @@
                             dados.labels.push(Number(novoRegistro[i].horario)); // incluir um novo momento
                             dados.datasets[0].data.push(Number(novoRegistro[i].soma)); // incluir uma nova medida de umidade
 
-<<<<<<< HEAD
-=======
-                            dados_global = dados;
->>>>>>> dash-L
 
                         }
 
@@ -656,10 +537,7 @@
             isCollapsed = true;
         }
     }
-<<<<<<< HEAD
     consultarTudo()
-=======
->>>>>>> dash-L
 </script>
 
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
