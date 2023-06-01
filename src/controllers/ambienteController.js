@@ -1,7 +1,4 @@
-var AmbienteModel = require("../models/ambienteModel");
-const bcrypt = require('bcrypt');
-
-const session = require('express-session');
+var AmbienteModel = require("../models/AmbienteModel");
 
 function listar(req, res) {
     var idAmb = req.params.idAmbiente;
@@ -100,34 +97,9 @@ function consultaDia(req, res) {
         );
 }
 
-module.exports = {
-    listar,
-    consultaAmbiente,
-    consultaTodos,
-    consultaDia,
-    listarDireita
-}
-
 function testar(req, res) {
     console.log("ENTRAMOS NA ambienteController");
     res.json("ESTAMOS FUNCIONANDO!");
-}
-
-function listar(req, res) {
-    ambienteModel.listar()
-        .then(function (resultado) {
-            if (resultado.length > 0) {
-                res.status(200).json(resultado);
-            } else {
-                res.status(204).send("Nenhum resultado encontrado!")
-            }
-        }).catch(
-            function (erro) {
-                console.log(erro);
-                console.log("Houve um erro ao realizar a consulta! Erro: ", erro.sqlMessage);
-                res.status(500).json(erro.sqlMessage);
-            }
-        );
 }
 
 
@@ -150,8 +122,8 @@ function cadastrar(req, res) {
         res.status(400).send("O setor do ambiente está undefined!");
     } else {
 
-        // Passe os valores como parâmetro e vá para o arquivo ambienteModel.js
-        ambienteModel.cadastrar(fkEmpresa, ambiente, descAmbiente, setorAmbiente, minimoPessoas, mediaPessoas, maximoPessoas)
+        // Passe os valores como parâmetro e vá para o arquivo AmbienteModel.js
+        AmbienteModel.cadastrar(fkEmpresa, ambiente, descAmbiente, setorAmbiente, minimoPessoas, mediaPessoas, maximoPessoas)
             .then(
                 function (resultado) {
                     res.json(resultado);
@@ -178,8 +150,8 @@ function excluir(req, res) {
     if (idAmbiente == undefined) {
         res.status(400).send("O id do ambiente está undefined!");
     } else {
-        // Passando o id como parâmetro para ir ao arquivo ambienteModel.js
-        ambienteModel.excluir(idAmbiente)
+        // Passando o id como parâmetro para ir ao arquivo AmbienteModel.js
+        AmbienteModel.excluir(idAmbiente)
             .then(
                 function (resultado) {
                     res.json(resultado);
@@ -224,8 +196,8 @@ function atualizar(req, res) {
         res.status(400).send("O máximo de pessoas para esse ambiente está undefined!");
     } else {
 
-        // Passe os valores como parâmetro e vá para o arquivo ambienteModel.js
-        ambienteModel.atualizar(idAmbiente, ambiente, descAmbiente, setorAmbiente, minimoPessoas, mediaPessoas, maximoPessoas)
+        // Passe os valores como parâmetro e vá para o arquivo AmbienteModel.js
+        AmbienteModel.atualizar(idAmbiente, ambiente, descAmbiente, setorAmbiente, minimoPessoas, mediaPessoas, maximoPessoas)
             .then(
                 function (resultado) {
                     res.json(resultado);
@@ -247,7 +219,7 @@ function consultar(req, res) {
     var idUsuario = req.params.idAmbiente;
     
 
-    ambienteModel.consultar(idUsuario)
+    AmbienteModel.consultar(idUsuario)
         .then(function (resultado) {
             if (resultado.length > 0) {
                 res.status(200).json(resultado);
@@ -264,9 +236,13 @@ function consultar(req, res) {
 }
 
 module.exports = {
+    listar,
+    consultaAmbiente,
+    consultaTodos,
+    consultaDia,
+    listarDireita,
     entrar,
     cadastrar,
-    listar,
     testar,
     excluir,
     atualizar,
