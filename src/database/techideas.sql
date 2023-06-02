@@ -1,4 +1,4 @@
--- Active: 1685626921736@@127.0.0.1@3306@bd_SMFP
+-- Active: 1685712302980@@127.0.0.1@3306@bd_SMFP
 
 DROP DATABASE bd_SMFP;
 
@@ -31,15 +31,9 @@ CREATE TABLE tbUsuario(
     ,fkAdministrador INT, FOREIGN KEY (fkAdministrador) REFERENCES tbUsuario(idUsuario) ON DELETE CASCADE
 );
 
-CREATE TABLE tbSetor(
-    idSetor INT PRIMARY KEY AUTO_INCREMENT
-    ,nomeSetor VARCHAR(50)
-);
-
 CREATE TABLE tbAmbiente(
     idAmbiente INT AUTO_INCREMENT
     ,fkEmpresa INT
-    ,fkSetor INT
     ,tempoDispersao INT
     ,nomeAmbiente VARCHAR(50)
     ,descAmbiente VARCHAR(150)
@@ -48,8 +42,7 @@ CREATE TABLE tbAmbiente(
     ,mediaPessoas INT
     ,maximoPessoas INT
     ,CONSTRAINT fk_tbAmbiente_tbEmpresa FOREIGN KEY (fkEmpresa) REFERENCES tbEmpresa(idEmpresa) ON DELETE CASCADE
-    ,CONSTRAINT fk_tbAmbiente_tbSetor FOREIGN KEY (fkSetor) REFERENCES tbSetor(idSetor) ON DELETE CASCADE
-    ,PRIMARY KEY(idAmbiente, fkEmpresa, fkSetor)
+    ,PRIMARY KEY(idAmbiente, fkEmpresa)
 );
 
 CREATE TABLE tbSensor(
@@ -69,7 +62,6 @@ CREATE TABLE tbMetricas (
     ,PRIMARY KEY(idMetrica, fkSensor) 
 );
 
-SELECT * FROM tbUsuario;
 /* INSERTS */
 
 /* GENERATE TOKEN */
@@ -118,24 +110,6 @@ VALUES
     ,(9, NULL, 'Vinícius Rodrigues', 'vinicius.rodrigues@exemplo.com', SHA2('senhaxyz', 256), NULL)
     ,(9, NULL, 'Bruna Alves', 'bruna.alves@exemplo.com', SHA2('senha123', 256), 1);
 
-INSERT INTO tbSetor (`nomeSetor`)
-VALUES
-    ('Vestuário')
-    ,('Calçados')
-    ,('Acessórios')
-    ,('Joalheria e Bijuterias')
-    ,('Cosméticos e Perfumaria')
-    ,('Livros e Papelaria')
-    ,('Esportes')
-    ,('Brinquedos e Jogos')
-    ,('Eletrônicos')
-    ,('Cama, Mesa e Banho')
-    ,('Móveis e Decoração')
-    ,('Supermercado')
-    ,('Farmácia')
-    ,('Restaurantes')
-    ,('Fast-food')
-    ,('Cinema');
 
 INSERT INTO tbAmbiente (`fkEmpresa`, `tempoDispersao`, `nomeAmbiente`, `descAmbiente`, `setorAmbiente`, `minimoPessoas`, `mediaPessoas`, `maximoPessoas`) 
 VALUES 
@@ -191,7 +165,7 @@ VALUES
     ,(2, NOW(), 1)
     ,(2, NOW(), 1);
 
-    INSERT INTO tbMetricas (`fkSensor`, `dateMetrica`, `valMetrica`)
+INSERT INTO tbMetricas (`fkSensor`, `dateMetrica`, `valMetrica`)
 VALUES
     (1, '2023-05-01 09:30:00', 1),
     (1, '2023-05-01 10:45:00', 1),
