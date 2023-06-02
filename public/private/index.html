@@ -1,366 +1,537 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/index.css">
-    <link rel="stylesheet" href="css/sobreNos.css">
-    <link rel="stylesheet" href="css/equipe.css">
-    <link rel="stylesheet" href="css/produto.css">
-    <link rel="stylesheet" href="css/calculadora.css">
-    <link rel="stylesheet" href="css/contato.css">
-    <title>TechIdeas</title>
+    <title>Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+    <script src="http://www.chartjs.org/dist/2.7.1/Chart.js"></script>
+    <script src="http://www.chartjs.org/samples/latest/utils.js"></script>
+    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="CSS/dashboard.css">
 </head>
 
-<body>
-    <!--Index-->
-    <section>
-        <header id="index">
-            <!--Navbar-->
-            <div class="nav-container">
-                <nav class="index-nav" id="nav">
-                    <a class='logo' href="#index"><img src="img/semfundox2.png" alt="fotoEmpresa"></a>
-                    <ul class="nav-list">
-                        <li><a href="#index">Home</a></li>
-                        <li><a href="#sobreNos">Sobre Nós</a></li>
-                        <li><a href="#equipe">Equipe</a></li>
-                        <li><a href="#produto">Produtos</a></li>
-                        <li><a href="#calculadora">Calculadora</a></li>
-                        <li><a href="#contato">Contatos</a></li>
-                        <div class="auth-container">
-                            <a href="login.html">
-                                <div class="anim-auth left"></div>Login
-                            </a>
-                            <a href="cadastro.html">Registro<div class="anim-auth right"></div></a>
-                        </div>
-                    </ul>
-                </nav>
-            </div>
-    
-    
-    
-            <div id="prop">
-                <h1 id="title">A Melhor em solucionar <br> os seus problemas</h1>
-                <h3>Profissionais capacitados para buscar a melhor <br> forma de resolver a sua demanda</h3>
-
-            </div>
-        </header>
-    </section>
-    
-
-    <!--Sobre Nós-->
-    <section style="background-color: #0f0f0f;">
-        <div class="page-title container" id="sobreNos">
-            <h1>Sobre a Tech Ideas</h1>
-            <div></div>
+<body onload=" plotarGrafico(), obterDadosGrafico(), consultarTudo()" onloadstart="CarregarBox()">
+    <nav id="navbar">
+        <div class="collapse" onclick="collapse()">
+            <span class="material-symbols-rounded" id="collapse_text">
+                chevron_left
+            </span>
         </div>
-        <div class="container">
-            <div class="principal">
-                <div class="texto">
-                    <p>A <span>Tech Ideas</span> surgiu e 2023 com o propósito de solucionar problemas atrávez da
-                        tecnologia,
-                        visando sempre inovar e usar a criatividade em nossas resoluções.
-                        Nossa equipe é composta por profissionais capacitados e compromissados para entregar o melhor
-                        sempre.
-                    </p>
-                </div>
-                <div class="imagem">
+
+        <div class="head">
+            <img src="img/Logo.png">
+            <h3>SMFP<br><span>Sistema de Mapeamento de Fluxo de Pessoas</span></h3>
+        </div>
+        <div class="menu">
+            <ul>
+                <li class="active"><a href="#">DashBoard</a></li>
+                <li><a href="index.html#mapaCalor">Mapa de Calor</a></li>
+                <li><a href="crudVersaoFinal.html">Ambientes</a></li>
+                <li><a href="gerenciamentoFuncionario.html">Gerenciar Funcionarios</a></li>
+            </ul>
+        </div>
+        <div class="account">
+            <span class="material-symbols-rounded">
+                account_circle
+            </span>
+            <div class="perfil">
+                <h3 id="navbar_nmUser">Nome do Usuário</h3>
+                <a href="logout.html">Sair</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-title container">
+        <h1>Dashboard Empresa</h1>
+        <div></div>
+    </div>
+
+    <div class="areaGrafico container" >
+        <div class="divGraf1">
+            <h1 id="chave1A">
+                <select id="boxAmbiente" name="Ambiente" onchange="obterDadosGrafico()">
+
+                    <option id="caixasBox" value="1">Geral</option>
+                    <option id="caixasBox" value="2">
+                        Ambiente 2
+                    </option>
+
+                </select>
+            </h1>
+            <br><br>
+            <section style="width: 90%;" id="ambiente1">
+                <h1 id="chave1B">Ambiente </h1><br><br>
+                <canvas id="chave1"></canvas>
+            </section>
+        </div>
+
+        <div class="consultaDia">
+            <input id="primeiro_dia" onkeyup="plotar_filtro()" placeholder="dd-MM-AAAA"><br><br>
+            <h1>-</h1>
+            <input id="ultimo_dia" onkeyup="plotar_filtro()" placeholder="dd-MM-AAAA"><br>
+        </div>
+
+        <div class="divGraf2">
+
+            <section style="width: 100%;" id="ambiente2">
+                <canvas id="chave2"></canvas>
+            </section>
+        </div>
+    </div>
+
+    <div class="areaKPI container" id="dv_ambientes">
+        <div class="kpi">
+            <h4>Média de Fluxo da semana</h4>
+            <span id="span_med_fluxo"></span>
+        </div>
+        <div class="kpi">
+            <h4>Maior Fluxo</h4>
+            <span id="span_max_fluxo"></span>
+        </div>
+        <div class="kpi">
+            <h4>Aumento do Fluxo</h4>
+            <span id="span_porcent_aum_fluxo"></span>
+        </div>
+
+        <div class = "div_funcionario">
+            <div class="cadastrar_funcionario">
+
+            </div>
+            <div class="consultar_funcionario">
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        /*Dados de Testes*/
+        const label_sem = ['Domingo', 'Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado'];
+        const dado_sem = [354, 540, 245, 424, 350, 348, 451];
+        var soma = 0;
+        var max_pos = 0;
+        var somatotal = 0;
+        var qtdeAmb = 0;
+        var fluxoAmbs = [];
+        var proximaAtualizacao;
+        var filtroAplicado = false;
+
+        for (var i = 0; i < dado_sem.length; i++) {
+            var dado = dado_sem[i];
+            soma += dado;
+            if (dado > dado_sem[max_pos]) { max_pos = i }
+        }
+
+        span_med_fluxo.innerHTML = (soma / dado_sem.length).toFixed(2);
+        span_max_fluxo.innerHTML = `${label_sem[max_pos]} teve o maior fluxo da semana com ${dado_sem[max_pos]} pontos`;
+        var dif_dia1_maiorDia = dado_sem[max_pos] - dado_sem[0];
+        /* 354 --- 100%
+           186 --- X%
+        */
+        span_porcent_aum_fluxo.innerHTML = `O aumento foi de ${((dif_dia1_maiorDia * 100) / dado_sem[0]).toFixed(2)}% comparado ao primeiro dia da semana`;
+
         
-                </div>
-            </div>
-        </div>
+        window.onload = obterDadosGraficos();
+
+        function obterDadosGraficos() {
+            obterDadosGrafico(1)
+
+        }
+        function obterDadosGrafico(idSensor, dados, myChart) {
+
+            const queryStr = window.location.search;
+            const urlParam = new URLSearchParams(queryStr);
+            var fkAmbiente = boxAmbiente.value;
+            console.log(urlParam.get('idAmbiente'))
+            if (urlParam.get('idAmbiente') == null) {
+                fetch(`/ambiente/listar/${fkAmbiente}`, { cache: 'no-store' }).then(function (response) {
+                    if (response.ok) {
+                        console.log(response)
+                        response.json().then(function (novoRegistro) {
+
+                            console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
+                            console.log(`Dados atuais do gráfico:`);
+                            console.log(dados);
+                            let avisoCaptura = document.getElementById(`avisoCaptura${idSensor}`)
+
+                            plotarGrafico(novoRegistro, fkAmbiente);
+
+
+                            /*if (novoRegistro[0].momento_grafico == dados.labels[dados.labels.length - 1]) {
+                                console.log("---------------------------------------------------------------")
+                                console.log("Como não há dados novos para captura, o gráfico não atualizará.")
+                                avisoCaptura.innerHTML = "<i class='fa-solid fa-triangle-exclamation'></i> Foi trazido o dado mais atual capturado pelo sensor. <br> Como não há dados novos a exibir, o gráfico não atualizará."
+                                console.log("Horário do novo dado capturado:")
+                                console.log(novoRegistro[0].momento_grafico)
+                                console.log("Horário do último dado capturado:")
+                                console.log(dados.labels[dados.labels.length - 1])
+                                console.log("---------------------------------------------------------------")
+                            } else {
+                                // tirando e colocando valores no gráfico
+                                dados.labels.shift(); // apagar o primeiro
+                                dados.labels.push(novoRegistro[0].momento_grafico); // incluir um novo momento
     
-        <div class="container">
-            <div class="social">
-                <div class="card">
-                    <h1> Missão </h1>
-                    <p>Resolver necessidades do dia a dia atravéz dos recursos tecnológicos
-                        de maneira rápida e objetiva.
-                    </p>
-                </div>
-                <div class="card">
-                    <h1> Visão </h1>
-                    <p>Entregar as melhores soluções para nossos parceiros e clientes
-                        focando sempre ao crescimento, rentabilidade e confiança.
-                    </p>
-                </div>
-                <div class="card">
-                    <h1>Valores</h1>
-                    <li>Transparência;</li>
-                    <li>Inovação;</li>
-                    <li>Confiabilidade;</li>
-                    <li>Excelências nas entregas.</li>
-                </div>
-            </div>
-        </div>
-    </section>
+                                dados.datasets[0].data.shift();  // apagar o primeiro de umidade
+                                dados.datasets[0].data.push(novoRegistro[0].umidade); // incluir uma nova medida de umidade
     
-
-    <!--Equipe-->
-    <section>
-        <div class="page-title container" id="equipe">
-            <h1>Nosso Time</h1>
-            <div></div>
-        </div>
+                                dados.datasets[1].data.shift();  // apagar o primeiro de temperatura
+                                dados.datasets[1].data.push(novoRegistro[0].temperatura); // incluir uma nova medida de temperatura
     
-        <div class="principal-equipe">
-            <div class="card-equipe">
-               <div class="imagem-equipe"><img src="img/breno.jpeg" alt=""></div>
-               <div class="texto-equipe"><h2>Breno Delmondes</h2></div>
-               <div class="redes-equipe"><img src="img/icons8-linkedin-192 7.png" alt=""><img src="img/icons8-github-192 7.png" alt=""><img src="img/icons8-instagram-192 9.png" alt=""></div>
-            </div>
-            <div class="card-equipe">
-                <div class="imagem-equipe"><img src="img/eduardo.jpeg" alt=""></div>
-                <div class="texto-equipe"><h2>Eduardo Corrêa</h2></div>
-                <div class="redes-equipe"><a href="https://www.linkedin.com/in/eduardo-corr%C3%AAa-295988242/"><img src="img/icons8-linkedin-192 7.png" alt=""></a><a href="https://github.com/edu-correa"><img src="img/icons8-github-192 7.png" alt=""></a><a href="https://instagram.com/correa._.ed"><img src="img/icons8-instagram-192 9.png" alt=""></a></div>
-             </div>
-             <div class="card-equipe">
-                <div class="imagem-equipe"><img src="img/gabriel.jpeg" alt=""></div>
-                <div class="texto-equipe"><h2>Gabriel Bifon</h2></div>
-                <div class="redes-equipe"><a href="https://linkedin.com"><img src="img/icons8-linkedin-192 7.png" alt=""></a><a href="https://github.com/GabrielBifon05"><img src="img/icons8-github-192 7.png" alt=""></a></div>
-             </div>
-           </div>
-           <div class="principal-equipe">
-            <div class="card-equipe">
-               <div class="imagem-equipe"><img src="img/kevyn.jpeg" alt=""></div>
-               <div class="texto-equipe"><h2>Kevyn Rocha</h2></div>
-               <div class="redes-equipe"><a href="https://github.com/KevynRochaAl"><img src="img/icons8-github-192 7.png" alt=""></a></div>
-            </div>
-            <div class="card-equipe">
-                <div class="imagem-equipe"><img src="img/lucas.jpeg" alt=""></div>
-                <div class="texto-equipe"><h2>Lucas Ferreira</h2></div>
-                <div class="redes-equipe"><a href="https://github.com/Lucas1Ferreira"><img src="img/icons8-github-192 7.png" alt=""></a></div>
-             </div>
-             <div class="card-equipe">
-                <div class="imagem-equipe"><img src="img/thiago.jpeg" alt=""></div>
-                <div class="texto-equipe"><h2>Thiago Mendonça</h2></div>
-                <div class="redes-equipe"><a href="https://www.linkedin.com/in/thiago-rodrigues-795b0322a/"><img src="img/icons8-linkedin-192 7.png" alt=""></a><a href="https://github.com/Thigos"><img src="img/icons8-github-192 7.png" alt=""></a></div>
-             </div>
-           </div>
-    </section>
+                                myChart.update();
+                            }*/
 
-    <!--Produto-->
-    <section style="background-color: #0f0f0f;" class="produto flex-wrap" id="produto">
-        <div class="left-container container">
-            <div class="page-title">
-                <h1>Mapeamento de Fluxo</h1>
-                <div></div>
-            </div>
+                            // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
+                            // proximaAtualizacao = setTimeout(() => atualizarGrafico(idSensor, dados, myChart), 2000);
+                        });
+                    } else {
+                        console.error('Nenhum dado encontrado ou erro na API');
+                        // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
+                        //proximaAtualizacao = setTimeout(() => atualizarGrafico(idSensor, dados, myChart), 2000);
+                    }
+                })
 
-            <div class="overview">
-                <h1>SMFP Visão Geral</h1>
+                    .catch(function (error) {
+                        console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+                    });
+            }
+            else {
+                alert("opa")
+            }
 
-                <p>Sistema de Mapeamento de Fluxo - SMFP - é um sistema feito para o monitoramento de cada ambiente do seu shopping. Utilizando estratégias a partir do mapeamento de fluxo de pessoas a sua empresa será capaz de reduzir gastos e gerar lucros.</p>
 
-                <div class="text-line">
-                    <span>Lucros</span>
-                    <span>Até 70% A Mais<span style="opacity: 0.5;"> / Mês</span></span>
-                </div>
-                <div class="separator"></div>
-                <div class="text-line">
-                    <span>Preço</span>
-                    <span>15%<span style="opacity: 0.5;"> / Mês</span></span>
-                </div>
-                <div class="separator"></div>
-            </div>
-        </div>
+        }
 
-        <div class="flex right-container container">
-            <div class="flex">
-                <div class="ambiente center">
-                    <div class="num left-num center">
-                        <span>1</span>
-                    </div>
-                    <div id="ambiente1" class="ball">
-                        
-                    </div>
-                </div>
-                <div class="ambiente center">
-                    <div class="num right-num center">
-                        <span>2</span>
-                    </div>
-                    <div id="ambiente2"  class="ball">
-                        
-                    </div>
-                </div>
-            </div>
-            <div class="flex">
-                <div class="ambiente center">
-                    <div class="num left-num center">
-                        <span>3</span>
-                    </div>
-                    <div id="ambiente3" class="ball">
-                        
-                    </div>
-                </div>
-                <div class="ambiente center">
-                    <div class="num right-num center">
-                        <span>4</span>
-                    </div>
-                    <div id="ambiente4" class="ball">
-                        
-                    </div>
-                </div>
-            </div>
 
-            <div class="light-room center">
-                <span class="grafY">FLUXO</span>
-                <div class="flex" style="column-gap: 46px; align-items: flex-end; height: 166px;">
-                    <div class="grafico" id="graf1"><span>1</span></div>
-                    <div class="grafico" id="graf2"><span>2</span></div>
-                    <div class="grafico" id="graf3"><span>3</span></div>
-                    <div class="grafico" id="graf4"><span>4</span></div>
-                </div>
-                <span class="grafX">Ambientes</span>
-            </div>
+        var myChart_global;
+        const dados = {
+            labels: [],
+            datasets: [{
+                label: 'fluxo',
+                data: [],
+                fill: false,
+                borderColor: '#FFFFFF',
+                backgroundColor: '#00ff43',
+                tension: 0.1
 
+            }]
+        };
+
+        const config = {
+            type: 'bar',
+            data: dados,
+            options: {
+                animation: false,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        };
+
+        myChart_global = new Chart(
+            document.getElementById(`chave1`),
+            config
+        );
+        function plotarGrafico(resposta, fkAmbiente) {
             
+            // grafico ambiente
+            //RESET DO GRÁFICO
+            myChart_global.data = {
+                labels: [],
+                datasets: [{
+                    label: 'fluxo',
+                    data: [],
+                    fill: false,
+                    borderColor: '#FFFFFF',
+                    backgroundColor: '#00ff43',
+                    tension: 0.1
 
-        </div>
-    </section>
+                }]
+            };
+            myChart_global.update();
 
-    <!--Calculadora-->
-    <section>
-        <div class="page-title container" id="calculadora">
-            <h1>Simulador</h1>
-            <div></div>
-        </div>
-        <div class="container flex">
-            <div class="ret-branco flex">
-                <h1 class="simuleh1">SIMULE AQUI
-                </h1>
-                <h4 class="subTitulo">Faça uma simulação do seu
-                    aumento de rendimento utilizando nossos mapas</h4>
-    
-                <p class="renda">RENDA MENSAL DO ESTABELECIMENTO:</p>
-                <input class="inserir" placeholder="Digite aqui..." id="inputReceitaBruta">
-                <button class="botao" onclick="calcularAumento()">Simular</button> <br>
-            </div>
-            <div class="ret-verde">
-    
-                <div class="card1">
-                    <h2>Aumento Geral</h2>
-                    <img class="imgGeral" title="Gráfico" src="img/Vector (4).png" alt="grafico">
-                    <div id="div_geral"></div>
-                    <div class="divcima1" title="Você pode aumentar as suas vendas em até 70% utilizando nossos sensores">
-                        <h6>?</h6>
-                    </div>
-                </div>
-                <div class="container-setor">
-                    <div class="card">
-                        <h5>Vestuários</h5>
-                        <img src="img/vestuario.png" title="Vestuário" alt="vestuario" class="img1">
-    
-                        <div id="div_vestuarios"></div>
-                        <div class="divcima"
-                            title="Setores de vestuário podem ter um aumento de até 19% em sua renda mensal!">
-                            <h6>?</h6>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <h5>Mercados</h5>
-                        <img src="img/mercados.png" title="Mercados" alt="Mercados" class="img1">
-    
-                        <div id="div_mercados"></div>
-                        <div class="divcima"
-                            title="Setores de mercado podem ter um aumento de até 17% na sua renda mensal!">
-                            <h6>?</h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="container-setor">
-                    <div class="card">
-                        <h5>Alimenticio</h5>
-                        <img src="img/alimenticio.png" title="Alimenticio" alt="alimenticio" class="img1">
-    
-                        <div id="div_alimenticio"></div>
-                        <div class="divcima"
-                            title="Setores alimenticios podem ter um aumento de até 13% na sua renda mensal!">
-                            <h6>?</h6>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <h5>Cosméticos</h5>
-                        <img src="img/cosmetico.png" title="Cosméticos" alt="cosmetico" class="img1">
-    
-                        <div id="div_cosmeticos"></div>
-                        <div class="divcima"
-                            title="Setores de cosméticos podem ter um aumento de até 14% na sua renda meensal!">
-                            <h6>?</h6>
-                        </div>
-                    </div>
-                </div>
-    
-            </div>
-            <div class="exclamacao">
-                <button class="material-symbols-outlined" onclick="orientar()">
-                    release_alert
-                </button>
-                <div class="msg_exclamacao"> <p> Utilizaremos 15% do arrecadado mensalmente. Contate-nos para mais informações e negociações. </p> </div>
-            </div>
-        </div>
-    </section>
-    
+            for (i = 0; i < resposta.length; i++) {
+                var registro = resposta[i];
+                myChart_global.data.labels.push(registro.horario)
+                console.log(registro.horario)
+                console.log(dados.datasets[0].data)
+                myChart_global.data.datasets[0].data.push(registro.soma);
+            }
+            
+            myChart_global.update();
 
-    <!--Contato-->
-    <section>
-        <div class="banner">
+            // grafico geral
 
-            <div class="container flex center" id="contato">
-    
-                <div class="social-contato">
-                    <div class="social-infos">
-                        <img src="img/map_icon.png" width="40px" height="40px">
-                        <p>Rua Haddock Lobo, 595 - Cerqueira César, São Paulo - SP</p>
-                    </div>
-    
-                    <div class="social-infos">
-                        <img src="img/whats_icon.png" width="40px" height="40px">
-                        <p>(11) 99987-6543</p>
-                    </div>
-    
-                    <div class="social-infos">
-                        <img src="img/instagram_icon.png" width="40px" height="40px">
-                        <p>@tech_Ideas</p>
-                    </div>
-    
-                    <div class="social-infos">
-                        <img src="img/facebook_icon.png" width="40px" height="40px">
-                        <p>Tech Ideas</p>
-                    </div>
-                </div>
-    
-                <div class="map">
-                    <h3>Nossa meta é atender a sua melhor ideia!</h3>
-                    <div class="mapImage">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1828.6397376779098!2d-46.66208606878548!3d-23.55840404566667!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce59d2b063f663%3A0xc567c0d16d0bc582!2sS%C3%A3o%20Paulo%20Tech%20School!5e0!3m2!1spt-BR!2sbr!4v1681344505326!5m2!1spt-BR!2sbr" width="340" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-                    </div>
-                </div>
-    
-    
-                <div class="contato-container">
-                    <h3>Fale Conosco</h3>
-                    <input placeholder="nome" id="ipt_nome">
-                    <input placeholder="e-mail" id="ipt_email">
-                    <input placeholder="telefone" id="ipt_telefone">
-                    <input placeholder="mensagem" id="ipt_mensagem">
-                    <button onclick="envioMensagem()">Enviar mensagem</button>
-    
-                </div>
-            </div>
-    
-    </section>
-    <footer>
-        <p>Tech Ideas © 2023</p>
-    </footer>
+            let labels2 = [];
+            let dados2 = {
+                labels2: labels2,
+                datasets: [{
+                    label: 'fluxo',
+                    data: [],
+                    fill: false,
+                    borderColor: '#FFFFFF',
+                    backgroundColor: '#00ff43',
+                    tension: 0.1
+
+                }]
+            };
+
+            const config2 = {
+                type: 'bar',
+                data: dados2,
+                options: {
+                    animation: false,
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            };
+            let myChart2 = new Chart(
+                document.getElementById(`chave2`),
+                config2
+            );
+
+            alert('cheguei aqui')
+            setTimeout(() => atualizarGrafico(fkAmbiente, dados, myChart_global, undefined, undefined), 2000);
+            setTimeout(() => consultarGraficoDireita(myChart2, dados2), 2000);
+
+        }
+        function CarregarBox() {
+            var fkUser = sessionStorage.ID_USUARIO;
+            if (fkUser != null) {
+                fetch(`/ambiente/consultaAmbiente/${fkUser}`, { cache: 'no-store' }).then(function (response) {
+                    if (response.ok) {
+                        console.log(response)
+                        response.json().then(function (novoRegistro) {
+                            console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
+
+                            console.log(novoRegistro)
+
+
+
+                            boxAmbiente.innerHTML = ""
+                            for (var i = 0; i < novoRegistro.length; i++) {
+                                console.log("entrei no for")
+                                boxAmbiente.innerHTML += ` <option id="caixasBox" value="${novoRegistro[i].idAmbiente}">${novoRegistro[i].nomeAmbiente}</option>`
+                                dv_ambientes.innerHTML += `
+                                    <div class="kpi" id='dvAmbiente${i}'>
+                                        <h4 id="ambiente${i}">${novoRegistro[i].nomeAmbiente}</h4>
+                                        <span id="span_qtde_amb${i}"></span>
+                                    </div>
+                                `
+                                qtdeAmb++;
+                            }
+                        });
+                    } else {
+                        console.error('Nenhum dado encontrado ou erro na API');
+                        // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
+                        //proximaAtualizacao = setTimeout(() => atualizarGrafico(idSensor, dados, myChart), 2000);
+                    }
+                })
+
+                    .catch(function (error) {
+                        console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+                    });
+            }
+
+
+        }
+        CarregarBox();
+        function atualizarGrafico(fkAmbiente, dados, myChart) {
+            //SAI DA FUNÇÃO E TENTA PARAR O TIMEOUT
+            if(filtroAplicado){return clearTimeout(proximaAtualizacao)};
+
+            var fkAmbiente = boxAmbiente.value;
+            var url = `/ambiente/listar/${fkAmbiente}`;
+
+            fetch(url, { cache: 'no-store' }).then(function (response) {
+                if (response.ok) {
+                    response.json().then(function (novoRegistro) {
+
+                        console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
+                        console.log(`Dados atuais do gráfico:`);
+                        console.log(dados);
+
+
+                        if (novoRegistro[0].horario == myChart_global.data.labels[myChart_global.data.labels.length - 1] && novoRegistro[0].soma == myChart_global.data.datasets[0].data[myChart_global.data.datasets[0].data.length - 1]) {
+                            console.log("---------------------------------------------------------------")
+                            console.log("Como não há myChart_global.data novos para captura, o gráfico não atualizará.")
+                            console.log("Horário do novo dado capturado:")
+                            console.log(novoRegistro[0].horario)
+                            console.log("Horário do último dado capturado:")
+                            console.log(myChart_global.data.labels[dados.labels.length - 1])
+                            console.log("---------------------------------------------------------------")
+                        } else {
+
+                            for (var i = 0; i < novoRegistro.length; i++) {
+                                
+                                myChart_global.data.labels.shift(); // apagar o primeiro
+                                myChart_global.data.labels.push(Number(novoRegistro[i].horario)); // incluir um novo momento
+
+                                myChart_global.data.datasets[0].data.shift();  // apagar o primeiro de umidade
+                                myChart_global.data.datasets[0].data.push(Number(novoRegistro[i].soma)); // incluir uma nova medida de umidade
+
+
+                            }
+
+
+                            myChart_global.update();
+                        }
+
+                        // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
+                        proximaAtualizacao = setTimeout(() => atualizarGrafico(fkAmbiente, dados, myChart, primeiro_dia, ultimo_dia), 2000);
+                    });
+                } else {
+                    console.error('Nenhum dado encontrado ou erro na API');
+                    // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
+                    proximaAtualizacao = setTimeout(() => atualizarGrafico(fkAmbiente, dados, myChart, primeiro_dia, ultimo_dia), 2000);
+                }
+            })
+                .catch(function (error) {
+                    console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+                });
+
+        }
+
+        function plotar_filtro() {
+
+            var primeiro_dia_val = primeiro_dia.value;
+            var ultimo_dia_val = ultimo_dia.value;
+            var fkAmbiente = boxAmbiente.value;
+
+
+
+            if (ultimo_dia_val.length == 10 && primeiro_dia_val.length == 10) {
+                filtroAplicado = true;
+                myChart_global.data = {
+                    labels: [],
+                    datasets: [{
+                        label: 'fluxo',
+                        data: [],
+                        fill: false,
+                        borderColor: '#FFFFFF',
+                        backgroundColor: '#00ff43',
+                        tension: 0.1
+                    }]
+                };
+                myChart_global.update();
+                var url = `/ambiente/consultaDia/${fkAmbiente}/${primeiro_dia_val}/${ultimo_dia_val}`
+
+                fetch(url, { cache: 'no-store' }).then(function (response) {
+                    if (response.ok) {
+                        response.json().then(function (resposta) {
+                            console.warn('Filtro aplicado', resposta);
+
+                            for (i = 0; i < resposta.length; i++) {
+                                var registro = resposta[i];
+                                myChart_global.data.labels.push(registro.horario)
+                                myChart_global.data.datasets[0].data.push(registro.soma);
+                            }
+                            
+                            myChart_global.update();
+                        })
+                    }
+
+                }).catch(function (error) {
+                    console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+                });
+            }
+        }
+
+        function consultarTudo() {
+            var fkUser = sessionStorage.ID_USUARIO;
+            if (fkUser != null) {
+                fetch(`/ambiente/consultaTodos/${fkUser}`, { cache: 'no-store' }).then(function (response) {
+                    if (response.ok) {
+                        console.log(response)
+                        response.json().then(function (novoRegistro) {
+                            console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
+                            alert(JSON.stringify(novoRegistro))
+                            console.log("Mapa de calor: " + novoRegistro)
+                            for (var i = 0; i < novoRegistro.length; i++) {
+                                if (novoRegistro[i].minimoPessoas > novoRegistro[i].soma) {
+                                    document.getElementById(`dvAmbiente${i}`).classList.remove('kpi');
+                                    document.getElementById(`dvAmbiente${i}`).classList.add('kpiRuim');
+                                }
+                                else if (novoRegistro[i].maximoPessoas < novoRegistro[i].soma) {
+                                    document.getElementById(`dvAmbiente${i}`).classList.remove('kpi');
+                                    document.getElementById(`dvAmbiente${i}`).classList.add('kpiRuim');
+                                }
+                                else {
+                                    document.getElementById(`dvAmbiente${i}`).classList.remove('kpi');
+                                    document.getElementById(`dvAmbiente${i}`).classList.add('kpiMedia')
+                                }
+                                document.getElementById(`span_qtde_amb${i}`).innerHTML = novoRegistro[i].soma + " de total de fluxo"
+                                console.log("quantidade ambiente " + i + " " + novoRegistro[i].soma)
+                            }
+                        });
+                    } else {
+                        console.error('Nenhum dado encontrado ou erro na API');
+                        // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
+                        //proximaAtualizacao = setTimeout(() => atualizarGrafico(idSensor, dados, myChart), 2000);
+                    }
+                })
+
+                    .catch(function (error) {
+                        console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+                    });
+            }
+
+        }
+
+        function consultarGraficoDireita(Chart, dados) {
+            var fkUser = sessionStorage.ID_USUARIO;
+            alert('cheguei na function')
+            fetch(`/ambiente/listarDireita/${fkUser}`, { cache: 'no-store' }).then(function (response) {
+                console.log(response)
+                if (response.ok) {
+                    console.log(response)
+                    response.json().then(function (novoRegistro) {
+                        alert(`Dados recebidos direita: ${JSON.stringify(novoRegistro)}`);
+
+                        for (var i = 0; i < novoRegistro.length; i++) {
+                            dados.labels.push(Number(novoRegistro[i].horario)); // incluir um novo momento
+                            dados.datasets[0].data.push(Number(novoRegistro[i].soma)); // incluir uma nova medida de umidade
+
+
+                        }
+
+                        Chart.update();
+                    });
+                } else {
+                    console.error('Nenhum dado encontrado ou erro na API');
+                    // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
+                    //proximaAtualizacao = setTimeout(() => atualizarGrafico(idSensor, dados, myChart), 2000);
+                }
+            })
+
+                .catch(function (error) {
+                    console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+                });
+        }
         
+
+
+        //consultarTudo()
+    </script>
 </body>
 
 </html>
+
+
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<script src="js/jquery.mask.js"></script>
 <script src="js/navbar.js"></script>
-<script src="js/produto.js"></script>
-<script src="js/calculadora.js"></script>
-<script src="js/contato.js"></script>
+
+<script>
+    $('#primeiro_dia').mask('00-00-0000');
+    $('#ultimo_dia').mask('00-00-0000');
+</script>
