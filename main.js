@@ -12,6 +12,7 @@ var indexRouter = require("./src/routes/index");
 var usuarioRouter = require("./src/routes/usuario");
 var dashboardRouter = require("./src/routes/dashboard");
 const ambienteRouter = require("./src/routes/ambiente")
+const emailRouter = require("./src/routes/email")
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -26,6 +27,7 @@ app.use("/ambientes", ambienteRouter);
 app.use("/ambiente", ambienteRouter);
 app.use("/excluir", ambienteRouter);
 app.use("/atualizar", ambienteRouter);
+app.use("/email", emailRouter);
 
 app.listen(PORTA, function () {
     console.log(`Servidor Rodando Em: http://localhost:${PORTA} \n
