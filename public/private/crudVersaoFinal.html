@@ -64,7 +64,7 @@
 
         <div id="div_button_configMetricas" class="configB_Metricas">
             <button title="Alterar Métricas" onclick="abrirConfigForm()">
-                <img src="" alt="">
+                <img width="20px" height="20px" src="img/setting.svg" alt="">
             </button>
         </div>
 
@@ -175,7 +175,7 @@
             response.json().then(function (novoRegistro) {
                 console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
                 for (var i = 0; i < novoRegistro.length; i++) {
-
+                    vt_ambientes_nome.push(novoRegistro[i].nomeAmbiente)
                     ids.push(novoRegistro[i].idAmbiente)
                     
                     if(ambientes==4){
@@ -485,10 +485,10 @@
 
         for (var i = 0; i < vt_ambientes_nome.length; i++) {
             // Aqui está sendo selecionado o card de ambiente com o id igual ao valor de "i" (apenas uma abreviação pra index, apenas um nome).
-            var ambiente = document.getElementById(i);
+            var ambiente = document.getElementById(ids[i]);
 
             // Nessa parte estou verificando se no ambiente encontrado acima possui o valor pesquisado na barra de pesquisa, ambiente(minha variável).innerHTML(tudo que está dentro do card).includes(mesma coisa que o .contains); Caso ele encontre algo nesse card, ele será exibido na tela com o display flex e será somado +1 ao meu contador de pesquisas encontradas, caso contrário ele apenas irá esconder o card com o display none.
-
+            alert(ambiente)
             if (ambiente.innerHTML.includes(barraPesquisa)) {
                 ambiente.style.display = "flex";
                 ambientesEncontrados++;
