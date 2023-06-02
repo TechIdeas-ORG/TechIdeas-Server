@@ -1,8 +1,6 @@
 var usuarioModel = require("../models/usuarioModel");
 const bcrypt = require('bcrypt');
 
-const session = require('express-session');
-
 function listar(req, res) {
     usuarioModel.listar()
         .then(function (resultado) {
@@ -92,26 +90,30 @@ function cadastrar(req, res) {
     // Faça as validações dos valores
     if (emailUsuario == undefined) {
         res.status(400).send("Seu email está undefined!");
-    } else if (senha == undefined) {
+    } else if (senhaUsuario == undefined) {
         res.status(400).send("Sua senha está undefined!");
     } else {
         
-        // Passe os valores como parâmetro e vá para o arquivo usuarioModel.js
-        usuarioModel.cadastrar(nome, email, senha)
-            .then(
-                function (resultado) {
-                    res.json(resultado);
-                }
-            ).catch(
-                function (erro) {
-                    console.log(erro);
-                    console.log(
-                        "\nHouve um erro ao realizar o cadastro! Erro: ",
-                        erro.sqlMessage
-                    );
-                    res.status(500).json(erro.sqlMessage);
-                }
+        bcrypt.hash(senhaUsuario, saltRounds, (err, senha_criptografada) =>{
+
+            usuarioModel.cadastrar(fkEmpresa, nomeUsuario, emailUsuario, senhaUsuario)
+                .then(
+                    function (resultado) {
+                        res.json(resultado);
+                    }
+                ).catch(
+                    function (erro) {
+                        console.log(erro);
+                        console.log(
+                            "\nHouve um erro ao realizar o cadastro! Erro: ",
+                            erro.sqlMessage
+                        );
+                        res.status(500).json(erro.sqlMessage);
+                    }
             );
+
+        });
+
     }
 }
 
