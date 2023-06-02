@@ -134,6 +134,59 @@ function consultar(usuario){
     return database.executar(instrucao);
 }
 
+function media_fluxo(idUsuario){
+    var instrucao = `SELECT AVG(group_day.valores) as Media FROM (
+    SELECT COUNT(valMetrica) AS valores FROM tbMetricas
+    JOIN tbSensor ON idSensor = fkSensor
+    JOIN tbAmbiente ON idAmbiente = fkAmbiente
+    JOIN tbEmpresa ON tbAmbiente.fkEmpresa = idEmpresa
+    JOIN tbUsuario ON tbUsuario.fkEmpresa = idEmpresa
+    WHERE WEEK(dateMetrica) = WEEK(NOW()) AND idUsuario = ${idUsuario}
+    GROUP BY DAY(dateMetrica)
+    ) AS group_day;`
+
+    console.log("Executando a instrução SQl: \n" + instrucao);
+    return datadabase.executar(instrucao)
+}
+
+function maior_fluxo(idUsuario){
+    var instrucao = `SELECT MAX(ValMax.valores), valMax.dateMetrica FROM (
+        SELECT COUNT(valMetrica) as valores, dateMetrica FROM tbMetricas
+        JOIN tbSensor ON idSensor = fkSensor
+        JOIN tbAmbiente ON idAmbiente = fkAmbiente
+        JOIN tbEmpresa ON tbAmbiente.fkEmpresa = idEmpresa
+        JOIN tbUsuario ON tbUsuario.fkEmpresa = idEmpresa
+        WHERE WEEK(dateMetrica) = WEEK(NOW()) AND idUsuario = ${idUsuario}
+        GROUP BY DAY(dateMetrica)
+    ) AS ValMax;`
+
+    console.log("Executando a instrução SQl: \n" + instrucao);
+    return datadabase.executar(instrucao)
+}
+function aumento_fluxo(idUsuario){
+    var instrucao = `SELECT 100-((COUNT(valMetrica)/tbHoje.valores_hoje)*100) as valores FROM tbMetricas
+    JOIN tbSensor ON idSensor = fkSensor
+        JOIN tbAmbiente ON idAmbiente = fkAmbiente
+        JOIN tbEmpresa ON tbAmbiente.fkEmpresa = idEmpresa
+        JOIN tbUsuario ON tbUsuario.fkEmpresa = idEmpresa
+        JOIN (
+        SELECT COUNT(valMetrica) as valores_hoje FROM tbMetricas
+        JOIN tbSensor ON idSensor = fkSensor
+        JOIN tbAmbiente ON idAmbiente = fkAmbiente
+        JOIN tbEmpresa ON tbAmbiente.fkEmpresa = idEmpresa
+        JOIN tbUsuario ON tbUsuario.fkEmpresa = idEmpresa
+        WHERE DAY(dateMetrica) = DAY(NOW()) AND idUsuario = ${idUsuario}
+        GROUP BY DAY(dateMetrica)
+    ) AS tbHoje
+    WHERE dateMetrica IN (
+        SELECT dateMetrica FROM tbMetricas
+        WHERE WEEK(dateMetrica) = (WEEK(NOW())-1) AND WEEKDAY(dateMetrica) = WEEKDAY(NOW())
+    ) AND idUsuario = ${idUsuario}
+    GROUP BY DAY(dateMetrica);`
+
+    console.log("Executando a instrução SQl: \n" + instrucao);
+    return datadabase.executar(instrucao)
+}
 
 module.exports = {
     listar1,
@@ -145,5 +198,8 @@ module.exports = {
     cadastrar,
     listar,
     atualizar,
-    consultar
+    consultar,
+    media_fluxo,
+    maior_fluxo,
+    aumento_fluxo
 };
