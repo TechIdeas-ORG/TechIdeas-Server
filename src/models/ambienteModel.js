@@ -7,7 +7,7 @@ function listar1(idAmbiente) {
     from tbMetricas
     join tbSensor on fkSensor = idSensor
     join tbAmbiente on fkAmbiente = idAmbiente
-    where idAmbiente =  ${idAmbiente} and DATEDIFF(dateMetrica, now()) < "23:30:00"
+    where idAmbiente =  ${idAmbiente} and DAY(dateMetrica) = DAY(NOW())
     GROUP BY HOUR(dateMetrica)
     order by HOUR(dateMetrica) asc;
 
@@ -23,7 +23,7 @@ function listarDireita(idUsuario) {
     join tbAmbiente on fkAmbiente = idAmbiente
     join tbEmpresa on tbAmbiente.fkEmpresa = idEmpresa
     JOIN tbUsuario on tbUsuario.fkEmpresa = idEmpresa
-    WHERE idUsuario = ${Number(idUsuario)} and DATEDIFF(dateMetrica, now()) < "23:30:00"
+    WHERE idUsuario = ${Number(idUsuario)} and DAY(dateMetrica) = DAY(NOW())
     group by hour(dateMetrica);
     `;
     console.log("Executando a instrução SQL: \n" + instrucao);
@@ -61,15 +61,19 @@ function buscarTodos(idUsuario) {
 }
 
 function buscarDia(idAmbiente, primeiro_dia, ultimo_dia) {
+    var primeiro_dia_list = primeiro_dia.split('-');
+    var ultimo_dia_list = ultimo_dia.split('-');
+
     console.log("ACESSEI O AMBIENTE MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listar() \n\n ");
     var instrucao = `
-    select SUM(valMetrica) as soma, DAY(dateMetrica) as horario
-    from tbMetricas
-    join tbSensor on fkSensor = idSensor
-    join tbAmbiente on fkAmbiente = idAmbiente
-    where idAmbiente = ${idAmbiente} AND DATE_FORMAT(dateMetrica, '%d-%m-%Y') BETWEEN '${primeiro_dia}' AND '${ultimo_dia}'
-    GROUP BY DAY(dateMetrica)
-    order by DAY(dateMetrica) asc;
+    SELECT SUM(valMetrica) AS soma, DATE_FORMAT(dateMetrica, '%d-%m-%Y') AS horario
+    FROM tbMetricas
+    JOIN tbSensor ON fkSensor = idSensor
+    JOIN tbAmbiente ON fkAmbiente = idAmbiente
+    WHERE idAmbiente = 1 AND dateMetrica >= '${primeiro_dia_list[2]}-${primeiro_dia_list[1]}-${primeiro_dia_list[0]}' AND dateMetrica <= '${ultimo_dia_list[2]}-${ultimo_dia_list[1]}-${ultimo_dia_list[0]}'
+    GROUP BY horario
+    ORDER BY horario ASC;
+
     `;
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
@@ -150,14 +154,14 @@ function media_fluxo(idUsuario){
 }
 
 function maior_fluxo(idUsuario){
-    var instrucao = `SELECT MAX(ValMax.valores) as Maximo FROM (
-        SELECT COUNT(valMetrica) as valores FROM tbMetricas
+    var instrucao = `SELECT MAX(ValMax.valores) as Maximo, dia_sem FROM (
+        SELECT COUNT(valMetrica) as valores, WEEKDAY(dateMetrica) AS dia_sem FROM tbMetricas
         JOIN tbSensor ON idSensor = fkSensor
         JOIN tbAmbiente ON idAmbiente = fkAmbiente
         JOIN tbEmpresa ON tbAmbiente.fkEmpresa = idEmpresa
         JOIN tbUsuario ON tbUsuario.fkEmpresa = idEmpresa
         WHERE WEEK(dateMetrica) = WEEK(NOW()) AND idUsuario = ${idUsuario}
-        GROUP BY DAY(dateMetrica)
+        GROUP BY DAY(dateMetrica), dia_sem
     ) AS ValMax;`
 
     console.log("Executando a instrução SQl: \n" + instrucao);
