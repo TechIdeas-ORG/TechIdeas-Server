@@ -235,6 +235,66 @@ function consultar(req, res) {
         );
 }
 
+function media_fluxo(req, res){
+    var idUsuario = req.params.idUsuario;
+
+    AmbienteModel.media_fluxo(idUsuario)
+        .then(function (resultado) {
+            if (resultado.length > 0) {
+                console.log(resultado)
+                res.status(200).json(resultado);
+            } else {
+                res.status(204).send("Nenhum resultado encontrado!")
+            }   
+        }).catch(
+            function (erro) {
+                console.log(erro);
+                console.log("Houve um erro ao realizar a consulta! Erro: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
+function maior_fluxo(req, res){
+    var idUsuario = req.params.idUsuario;
+
+    AmbienteModel.media_fluxo(idUsuario)
+        .then(function (resultado) {
+            if (resultado.length > 0) {
+                console.log(resultado)
+                res.status(200).json(resultado);
+            } else {
+                res.status(204).send("Nenhum resultado encontrado!")
+            }
+        }).catch(
+            function (erro) {
+                console.log(erro);
+                console.log("Houve um erro ao realizar a consulta! Erro: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
+function aumento_fluxo(req, res){
+    var idUsuario = req.params.idUsuario;
+
+    AmbienteModel.media_fluxo(idUsuario)
+        .then(function (resultado) {
+            if (resultado.length > 0) {
+                console.log(resultado)
+                res.status(200).json(resultado);
+            } else {
+                res.status(204).send("Nenhum resultado encontrado!")
+            }
+        }).catch(
+            function (erro) {
+                console.log(erro);
+                console.log("Houve um erro ao realizar a consulta! Erro: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+}
+
 module.exports = {
     listar,
     consultaAmbiente,
@@ -245,5 +305,8 @@ module.exports = {
     testar,
     excluir,
     atualizar,
-    consultar
+    consultar,
+    media_fluxo,
+    maior_fluxo,
+    aumento_fluxo
 }

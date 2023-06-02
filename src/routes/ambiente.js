@@ -50,5 +50,18 @@ router.get("/consultar/:idAmbiente", (req, res) => {
     ambienteController.consultar(req,res);
 })
 
+router.get("/media_fluxo/:idUsuario", (req, res) => {
+    ambienteController.media_fluxo(req, res);
+})
 
+router.get("/maior_fluxo/:idUsuario", (req, res) => {
+    ambienteController.maior_fluxo(req, res);
+})
+
+router.get("/aumento_fluxo/:idUsuario", (req, res) => {
+    ambienteController.aumento_fluxo(req, res);
+})
+
+
+router.get("/")
 module.exports = router;
