@@ -125,3 +125,53 @@ align-items: center;
 font-size: 20px;
 border-radius: 15px;
 }
+.perigo-frio {
+    background-color: #5c6bc0;
+  }
+.perigo-frio .bola_aviso{
+background-color: #5c6bc0;
+width: 50px;
+height: 50px;
+border-radius:36px 
+;
+}
+  
+  .perigo-quente .bola_aviso{
+    background-color: #ff7043;
+    width: 50px;
+    height: 50px;
+    border-radius:36px ;
+  }
+
+  .perigo-quente h3,small{
+    color: #ff7043;
+  }
+  
+  .alerta-frio {
+    background-color: #42a5f5;
+  }
+  
+  .alerta-quente {
+    background-color: #ffee58;
+  }
+  
+  .ideal {
+    background-color: #9ccc65;
+  }
+  .cor-alerta {
+    width: 13%;
+    height: 30%;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  #alerta {
+    position: absolute;
+    right: 0px;
+    padding-bottom: 20px;
+ background-color: #1C1C1C;
+ padding: 20px;
+ border-radius: 33px;
+ border: 3px solid #FFF; 
+ z-index: 99;
+ display: none;
+}
