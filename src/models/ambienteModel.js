@@ -146,12 +146,12 @@ function media_fluxo(idUsuario){
     ) AS group_day;`
 
     console.log("Executando a instrução SQl: \n" + instrucao);
-    return datadabase.executar(instrucao)
+    return database.executar(instrucao)
 }
 
 function maior_fluxo(idUsuario){
-    var instrucao = `SELECT MAX(ValMax.valores), valMax.dateMetrica FROM (
-        SELECT COUNT(valMetrica) as valores, dateMetrica FROM tbMetricas
+    var instrucao = `SELECT MAX(ValMax.valores) as Maximo FROM (
+        SELECT COUNT(valMetrica) as valores FROM tbMetricas
         JOIN tbSensor ON idSensor = fkSensor
         JOIN tbAmbiente ON idAmbiente = fkAmbiente
         JOIN tbEmpresa ON tbAmbiente.fkEmpresa = idEmpresa
@@ -161,7 +161,7 @@ function maior_fluxo(idUsuario){
     ) AS ValMax;`
 
     console.log("Executando a instrução SQl: \n" + instrucao);
-    return datadabase.executar(instrucao)
+    return database.executar(instrucao)
 }
 function aumento_fluxo(idUsuario){
     var instrucao = `SELECT 100-((COUNT(valMetrica)/tbHoje.valores_hoje)*100) as valores FROM tbMetricas
@@ -182,10 +182,10 @@ function aumento_fluxo(idUsuario){
         SELECT dateMetrica FROM tbMetricas
         WHERE WEEK(dateMetrica) = (WEEK(NOW())-1) AND WEEKDAY(dateMetrica) = WEEKDAY(NOW())
     ) AND idUsuario = ${idUsuario}
-    GROUP BY DAY(dateMetrica);`
+    GROUP BY DAY(dateMetrica), tbHoje.valores_hoje;`
 
     console.log("Executando a instrução SQl: \n" + instrucao);
-    return datadabase.executar(instrucao)
+    return database.executar(instrucao)
 }
 
 module.exports = {

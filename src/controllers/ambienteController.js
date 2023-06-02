@@ -237,7 +237,7 @@ function consultar(req, res) {
 
 function media_fluxo(req, res){
     var idUsuario = req.params.idUsuario;
-
+    console.log('cheguei no media fluxo ' + idUsuario)
     AmbienteModel.media_fluxo(idUsuario)
         .then(function (resultado) {
             if (resultado.length > 0) {
@@ -257,8 +257,8 @@ function media_fluxo(req, res){
 
 function maior_fluxo(req, res){
     var idUsuario = req.params.idUsuario;
-
-    AmbienteModel.media_fluxo(idUsuario)
+    console.log('cheguei no maior fluxo ' + idUsuario)
+    AmbienteModel.maior_fluxo(idUsuario)
         .then(function (resultado) {
             if (resultado.length > 0) {
                 console.log(resultado)
@@ -277,8 +277,8 @@ function maior_fluxo(req, res){
 
 function aumento_fluxo(req, res){
     var idUsuario = req.params.idUsuario;
-
-    AmbienteModel.media_fluxo(idUsuario)
+    console.log('cheguei no aumento fluxo ' + idUsuario)
+    AmbienteModel.aumento_fluxo(idUsuario)
         .then(function (resultado) {
             if (resultado.length > 0) {
                 console.log(resultado)

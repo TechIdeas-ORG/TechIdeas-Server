@@ -1,4 +1,4 @@
--- Active: 1685712302980@@127.0.0.1@3306@bd_SMFP
+-- Active: 1685719503662@@127.0.0.1@3306@bd_SMFP
 
 DROP DATABASE bd_SMFP;
 
@@ -167,9 +167,9 @@ VALUES
 
 INSERT INTO tbMetricas (`fkSensor`, `dateMetrica`, `valMetrica`)
 VALUES
-    (1, '2023-05-01 09:30:00', 1),
-    (1, '2023-05-01 10:45:00', 1),
-    (1, '2023-05-01 11:15:00', 1),
+    (1, '2023-05-26 09:30:00', 1),
+    (1, '2023-05-26 10:45:00', 1),
+    (1, '2023-05-26 11:15:00', 1),
     (1, '2023-05-01 14:20:00', 1),
     (1, '2023-05-01 16:30:00', 1),
     (1, '2023-05-01 18:45:00', 1),
@@ -249,11 +249,35 @@ SELECT tbMetricas.`valMetrica`, tbMetricas.`dateMetrica`
 SELECT idToken, count(idEmpresa) FROM tbToken
     INNER JOIN tbEmpresa ON fkToken = idEmpresa AND fkToken = idToken
     WHERE tokenHash = '43785e89508865813596518a211809f5606532c11aa54314f379814c3b360e90';
-select SUM(valMetrica) as soma, HOUR(dateMetrica) as horario 
-        from tbMetricas
-        join tbSensor on fkSensor = idSensor
-        join tbAmbiente on fkAmbiente = idAmbiente
-        where idAmbiente = ${idAmbiente} and YEAR(dateMetrica) = YEAR(now()) and DAY(now()) = DAY(dateMetrica) and 
-        MONTH(dateMetrica) = MONTH(now())
-        GROUP BY HOUR(dateMetrica)
-        order by HOUR(dateMetrica) asc;
+
+SELECT MAX(ValMax.valores) as Maximo FROM (
+        SELECT COUNT(valMetrica) as valores FROM tbMetricas
+        JOIN tbSensor ON idSensor = fkSensor
+        JOIN tbAmbiente ON idAmbiente = fkAmbiente
+        JOIN tbEmpresa ON tbAmbiente.fkEmpresa = idEmpresa
+        JOIN tbUsuario ON tbUsuario.fkEmpresa = idEmpresa
+        WHERE WEEK(dateMetrica) = WEEK(NOW()) AND idUsuario = ${idUsuario}
+        GROUP BY DAY(dateMetrica)
+    ) AS ValMax;
+
+
+
+        SELECT 100-((COUNT(valMetrica)/tbHoje.valores_hoje)*100) as valores FROM tbMetricas
+    JOIN tbSensor ON idSensor = fkSensor
+        JOIN tbAmbiente ON idAmbiente = fkAmbiente
+        JOIN tbEmpresa ON tbAmbiente.fkEmpresa = idEmpresa
+        JOIN tbUsuario ON tbUsuario.fkEmpresa = idEmpresa
+        JOIN (
+        SELECT COUNT(valMetrica) as valores_hoje FROM tbMetricas
+        JOIN tbSensor ON idSensor = fkSensor
+        JOIN tbAmbiente ON idAmbiente = fkAmbiente
+        JOIN tbEmpresa ON tbAmbiente.fkEmpresa = idEmpresa
+        JOIN tbUsuario ON tbUsuario.fkEmpresa = idEmpresa
+        WHERE DAY(dateMetrica) = DAY(NOW()) AND idUsuario = ${idUsuario}
+        GROUP BY DAY(dateMetrica)
+    ) AS tbHoje
+    WHERE dateMetrica IN (
+        SELECT dateMetrica FROM tbMetricas
+        WHERE WEEK(dateMetrica) = (WEEK(NOW())-1) AND WEEKDAY(dateMetrica) = WEEKDAY(NOW())
+    ) AND idUsuario = ${idUsuario}
+    GROUP BY DAY(dateMetrica), tbHoje.valores_hoje;

@@ -107,30 +107,61 @@
     <script>
         /*Dados de Testes*/
         const label_sem = ['Domingo', 'Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado'];
-        const dado_sem = [354, 540, 245, 424, 350, 348, 451];
         var soma = 0;
-        var max_pos = 0;
-        var somatotal = 0;
         var qtdeAmb = 0;
         var fluxoAmbs = [];
         var proximaAtualizacao;
         var filtroAplicado = false;
-
-        for (var i = 0; i < dado_sem.length; i++) {
-            var dado = dado_sem[i];
-            soma += dado;
-            if (dado > dado_sem[max_pos]) { max_pos = i }
+        KPImedia()
+        function KPImedia(){
+            fetch("/ambiente/media_fluxo/" + sessionStorage.ID_USUARIO).then(function (resposta) {
+                console.log(resposta)    
+                if(resposta.ok){
+                        resposta.json().then((res) => {
+                            for(var i = 0; i < res.length; i++){
+                                span_med_fluxo.innerHTML = `Sua média foi: ${Number(res[i].Media).toFixed(2)} <br>
+                                                            `
+                            }
+                        })
+                    }else{
+                        alert('algo de errado')
+                    }
+            })
+        }
+        
+        KPImaximo()
+        function KPImaximo(){
+            fetch("/ambiente/maior_fluxo/" + sessionStorage.ID_USUARIO).then(function (resposta) {
+                console.log(resposta)    
+                if(resposta.ok){
+                        resposta.json().then((res) => {
+                            for(var i = 0; i < res.length; i++){
+                                span_max_fluxo.innerHTML = `Seu valor máximo foi: ${Number(res[i].Maximo).toFixed(2)} <br>
+                                                            `
+                            }
+                        })
+                    }else{
+                        alert('algo de errado')
+                    }
+            })
+        }
+        KPIaumentar()
+        function KPIaumentar(){
+            fetch("/ambiente/aumento_fluxo/" + sessionStorage.ID_USUARIO).then(function (resposta) {
+                    console.log(resposta)
+                    if(resposta.ok){
+                        resposta.json().then((res) => {
+                            for(var i = 0; i < res.length; i++){
+                                span_porcent_aum_fluxo.innerHTML = `Seu aumento foi: ${Number(res[0].valores).toFixed(2)} <br>
+                                                            `
+                            }
+                        })
+                    }else{
+                        alert('algo de errado')
+                    }
+            })
         }
 
-        span_med_fluxo.innerHTML = (soma / dado_sem.length).toFixed(2);
-        span_max_fluxo.innerHTML = `${label_sem[max_pos]} teve o maior fluxo da semana com ${dado_sem[max_pos]} pontos`;
-        var dif_dia1_maiorDia = dado_sem[max_pos] - dado_sem[0];
-        /* 354 --- 100%
-           186 --- X%
-        */
-        span_porcent_aum_fluxo.innerHTML = `O aumento foi de ${((dif_dia1_maiorDia * 100) / dado_sem[0]).toFixed(2)}% comparado ao primeiro dia da semana`;
-
-        
         window.onload = obterDadosGraficos();
 
         function obterDadosGraficos() {
@@ -298,7 +329,7 @@
                 config2
             );
 
-            alert('cheguei aqui')
+            
             setTimeout(() => atualizarGrafico(fkAmbiente, dados, myChart_global, undefined, undefined), 2000);
             setTimeout(() => consultarGraficoDireita(myChart2, dados2), 2000);
 
@@ -453,7 +484,6 @@
                         console.log(response)
                         response.json().then(function (novoRegistro) {
                             console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
-                            alert(JSON.stringify(novoRegistro))
                             console.log("Mapa de calor: " + novoRegistro)
                             for (var i = 0; i < novoRegistro.length; i++) {
                                 if (novoRegistro[i].minimoPessoas > novoRegistro[i].soma) {
@@ -488,13 +518,12 @@
 
         function consultarGraficoDireita(Chart, dados) {
             var fkUser = sessionStorage.ID_USUARIO;
-            alert('cheguei na function')
             fetch(`/ambiente/listarDireita/${fkUser}`, { cache: 'no-store' }).then(function (response) {
                 console.log(response)
                 if (response.ok) {
                     console.log(response)
                     response.json().then(function (novoRegistro) {
-                        alert(`Dados recebidos direita: ${JSON.stringify(novoRegistro)}`);
+
 
                         for (var i = 0; i < novoRegistro.length; i++) {
                             dados.labels.push(Number(novoRegistro[i].horario)); // incluir um novo momento
