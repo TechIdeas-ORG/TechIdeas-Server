@@ -22,8 +22,9 @@ var mySqlConfig = {
     host: "localhost",
     database: "bd_SMFP",
     user: "aluno",
-    password: "sptech"
-}
+    password: "sptech",
+};
+
 function executar(instrucao) {
     // VERIFICA A VARIÁVEL DE AMBIENTE SETADA EM app.js
     if (process.env.AMBIENTE_PROCESSO == "producao") {
