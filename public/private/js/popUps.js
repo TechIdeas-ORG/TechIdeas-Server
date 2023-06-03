@@ -20,19 +20,22 @@ function alertar(resposta, idAmbiente) {
     for (let i = 0; i < resposta.length; i++) {
         var temp = resposta[i].soma;
         var grauDeAviso = '';
+        var grauDeAvisoMensagem = ''
         var classe_temperatura = 'cor-alerta';
 
         if (temp >= resposta[i].maximoPessoas) {
             classe_temperatura = 'cor-alerta perigo-quente';
-            grauDeAviso = 'PERIGO,fluxo acima da capacidade máxima'
+            grauDeAviso = 'perigo-quente'
             grauDeAvisoCor = 'cor-alerta perigo-quente'
-            exibirAlerta(temp, resposta[i].idAmbiente, grauDeAviso, grauDeAvisoCor, resposta[i].nomeAmbiente)
+            grauDeAvisoMensagem = 'Imenso fluxo de pessoas, SUPERLOTADO'
+            exibirAlerta(temp, resposta[i].idAmbiente, grauDeAviso, grauDeAvisoCor, resposta[i].nomeAmbiente,grauDeAvisoMensagem)
         }
         else if (temp <= resposta[i].minimoPessoas) {
             classe_temperatura = 'cor-alerta perigo-frio';
-            grauDeAviso = 'Reduzido, baixo fluxo de pessoas'
+            grauDeAviso = 'perigo-frio'
             grauDeAvisoCor = 'cor-alerta perigo-frio'
-            exibirAlerta(temp, resposta[i].idAmbiente, grauDeAviso, grauDeAvisoCor,  resposta[i].nomeAmbient)
+            grauDeAvisoMensagem ='Baixo fluxo de Pessoas'
+            exibirAlerta(temp, resposta[i].idAmbiente, grauDeAviso, grauDeAvisoCor, resposta[i].nomeAmbiente,grauDeAvisoMensagem)
         }
         else {
             classe_temperatura = 'cor-alerta ideal';
@@ -45,15 +48,16 @@ function alertar(resposta, idAmbiente) {
 
 }
 
-function exibirAlerta(temp, idAmbiente, grauDeAviso, grauDeAvisoCor,nomeAmbiente) {
+function exibirAlerta(temp, idAmbiente, grauDeAviso, grauDeAvisoCor,nomeAmbiente,grauDeAvisoMensagem) {
     var indice = alertas.findIndex(item => item.idAmbiente == idAmbiente);
     alert(nomeAmbiente)
     if (indice >= 0) {
-        alertas[indice] = { idAmbiente, temp, grauDeAviso, grauDeAvisoCor }
+        alertas[indice] = { idAmbiente, temp, grauDeAviso, grauDeAvisoCor,grauDeAvisoMensagem }
     } else {
-        alertas.push({ idAmbiente, temp, grauDeAviso, grauDeAvisoCor,nomeAmbiente });
+        alertas.push({ idAmbiente, temp, grauDeAviso, grauDeAvisoCor,nomeAmbiente,grauDeAvisoMensagem });
     
     }
+    
     exibirCards();
 
     // Dentro da div com classe grauDeAvisoCor há um caractere "invisível", 
@@ -75,12 +79,12 @@ function exibirCards() {
     }
 }
 
-function transformarEmDiv({ idAmbiente, temp, grauDeAviso, grauDeAvisoCor,nomeAmbiente }) {
+function transformarEmDiv({ idAmbiente, temp, grauDeAviso, grauDeAvisoCor,nomeAmbiente,grauDeAvisoMensagem }) {
     return `<div class="mensagem-alarme ${grauDeAviso}">
     <div class="informacao">
-    <div class="bola_aviso">&#12644;</div> 
-     <h3>${nomeAmbiente} está em estado de ${grauDeAviso}!</h3>
-    <small>Fluxo: ${temp}.</small>   
+    <div class="bola_aviso">&#12644;</div> <img src="/private/img/Logo.png" class="foto">
+     <h3>${nomeAmbiente} está com um ${grauDeAvisoMensagem}!</h3>
+    <small>Fluxo de pessoas: ${temp}.</small>   
     </div>
     <div class="alarme-sino"></div>
     </div>`;
