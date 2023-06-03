@@ -184,3 +184,14 @@ border-radius: 36px;
  display: none;
 }
 
+.mapaCalor{
+  width: 70%;
+  height: 500px;
+  border: 1px solid black;
+  border-radius: 10px;
+  margin: auto;
+  display: flex;
+  gap: 30px;
+  padding: 40px;
+  background-color: white;
+}

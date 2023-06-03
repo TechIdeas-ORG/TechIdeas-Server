@@ -47,7 +47,9 @@
         <h1>Dashboard Empresa</h1>
         <div></div>
     </div>
-
+    <div id="mapaCalor" class="mapaCalor">
+        
+    </div>
     <div class="areaGrafico container">
         <div class="divGraf1">
             <h1 id="chave1A">
@@ -56,7 +58,6 @@
                     <option id="caixasBox" value="2">
                         Ambiente 2
                     </option>
-
                 </select>
             </h1>
             <br><br>
@@ -299,7 +300,7 @@
                             for (var i = 0; i < novoRegistro.length; i++) {
                                 console.log("entrei no for")
                                 boxAmbiente.innerHTML += ` <option id="caixasBox" value="${novoRegistro[i].idAmbiente}">${novoRegistro[i].nomeAmbiente}</option>`
-                                dv_ambientes.innerHTML += `
+                                mapaCalor.innerHTML += `
                                     <div class="kpi" id='dvAmbiente${i}'>
                                         <h4 id="ambiente${i}">${novoRegistro[i].nomeAmbiente}</h4>
                                         <span id="span_qtde_amb${i}"></span>
