@@ -280,7 +280,7 @@ VALUES
 
 INSERT INTO
     tbSensor (`fkAmbiente`, `portaSensor`)
-VALUES (1, 'COM1'), (2, 'COM2'), (3, 'COM3'), (4, 'COM4'), (5, 'COM5'), (6, 'COM6'), (7, 'COM7'), (8, 'COM8'), (9, 'COM9'), (10, 'COM10'), (11, 'COM11'), (12, 'COM12');
+VALUES (1, 'COM1'), (2, 'COM2'), (3, 'COM3'), (4, 'COM4'), (5, 'COM5'), (6, 'COM6'), (7, 'COM7'), (8, 'COM8'), (9, 'COM9'), (10, 'COM10'), (11, 'COM11');
 
 INSERT INTO
     tbMetricas (
