@@ -137,7 +137,7 @@ span {
 .perigo-frio .foto {
   width: 70px;
   height: 70px;
-  margin-left: 450px;
+  margin-left: 550px;
 }
 
 .perigo-frio .bola_aviso {
@@ -148,12 +148,12 @@ span {
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  animation: pulse-red 2s infinite normal;
+  animation: pulse-blue 2s infinite normal;
 }
 
 .perigo-frio h3,
-small {
-  color: #ff7043;
+.perigo-frio small {
+  color: rgb(67, 249, 255);
 }
 
 .perigo-quente .foto {
@@ -173,7 +173,7 @@ small {
 }
 
 .perigo-quente h3,
-small {
+.perigo-quente small {
   color: #ff7043;
 }
 
@@ -184,7 +184,7 @@ small {
   }
   
   70% {
-    transform: scale(1.15);
+    transform: scale(1.05);
     box-shadow: 0 0 0 10px rgba(255, 112, 67, 0);
   }
   
@@ -202,7 +202,7 @@ small {
   }
   
   70% {
-    transform: scale(1.15);
+    transform: scale(1.05);
     box-shadow: 0 0 0 10px rgba(67, 249, 255, 0);
   }
   
@@ -234,6 +234,8 @@ small {
   border: 3px solid #3BDB43;
   z-index: 99;
   display: none;
+  max-height: 50%;
+  overflow-y: auto;
 }
 
 .mapaCalor {

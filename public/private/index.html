@@ -80,7 +80,7 @@
             <div class="divGraf2">
     
                 <section style="width: 100%;" id="ambiente2">
-                    <h1 id="chave1B">Geral </h1><br><br>
+                    <h1 id="chave2B">Geral </h1><br><br>
                     <canvas id="chave2"></canvas>
                 </section>
             </div>
@@ -120,6 +120,8 @@
         var fluxoAmbs = [];
         var proximaAtualizacao;
         var filtroAplicado = false;
+        var nomes_ambientes = {};
+
         KPImedia()
         function KPImedia(){
             fetch("/ambiente/media_fluxo/" + sessionStorage.ID_USUARIO).then(function (resposta) {
@@ -171,12 +173,9 @@
             })
         }
         obterdados()
-        window.onload = obterDadosGraficos();
+        window.onload = obterDadosGrafico(1);
 
-        function obterDadosGraficos() {
-            obterDadosGrafico(1)
 
-        }
         function obterDadosGrafico(idSensor, dados, myChart) {
 
             const queryStr = window.location.search;
@@ -193,10 +192,8 @@
                             console.log(`Dados atuais do gráfico:`);
                             console.log(dados);
                             let avisoCaptura = document.getElementById(`avisoCaptura${idSensor}`)
-
+                            
                             plotarGrafico(novoRegistro, fkAmbiente);
-
-
                             /*if (novoRegistro[0].momento_grafico == dados.labels[dados.labels.length - 1]) {
                                 console.log("---------------------------------------------------------------")
                                 console.log("Como não há dados novos para captura, o gráfico não atualizará.")
@@ -275,8 +272,11 @@
             document.getElementById(`chave1`),
             config
         );
+
+        CarregarBox();
+
         function plotarGrafico(resposta, fkAmbiente) {
-            
+            carregarNomes();
             // grafico ambiente
             //RESET DO GRÁFICO
             myChart_global.data = {
@@ -341,6 +341,14 @@
             setTimeout(() => consultarGraficoDireita(myChart2, dados2), 2000);
 
         }
+
+        function carregarNomes(){
+            var fkAmbiente = boxAmbiente.value;
+            const date = new Date(Date.now()).toLocaleString().split(',')[0].replaceAll('/', '-');
+            chave1B.innerHTML = `${nomes_ambientes[fkAmbiente]} <br> <span style='color: gray;'>${date}<span>`;
+            chave2B.innerHTML = `Geral <br> <span style='color: gray;'>${date}<span>`;
+        }
+
         function CarregarBox() {
             var fkUser = sessionStorage.ID_USUARIO;
             if (fkUser != null) {
@@ -364,6 +372,9 @@
                                         <span id="span_qtde_amb${i}"></span>
                                     </div>
                                 `
+                                nomes_ambientes[novoRegistro[i].idAmbiente] = novoRegistro[i].nomeAmbiente;
+
+                                carregarNomes();
                                 qtdeAmb++;
                             }
 
@@ -383,7 +394,7 @@
 
 
         }
-        CarregarBox();
+        
         function atualizarGraficoAmbiente(fkAmbiente) {
             //SAI DA FUNÇÃO E TENTA PARAR O TIMEOUT
             if(filtroAplicado){return clearTimeout(proximaAtualizacao)};
@@ -447,8 +458,8 @@
             var fkAmbiente = boxAmbiente.value;
 
 
-
             if (ultimo_dia_val.length == 10 && primeiro_dia_val.length == 10) {
+
                 filtroAplicado = true;
                 myChart_global.data = {
                     labels: [],
@@ -476,12 +487,18 @@
                             }
                             
                             myChart_global.update();
+                            chave1B.innerHTML = `${nomes_ambientes[fkAmbiente]} <br> <span style='color: gray;'>${primeiro_dia_val} <br> ${ultimo_dia_val}<span>`;
+
                         })
                     }
 
                 }).catch(function (error) {
                     console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
                 });
+            }else if(filtroAplicado){
+                filtroAplicado = false;
+                carregarNomes();
+                obterDadosGrafico();
             }
         }
         
