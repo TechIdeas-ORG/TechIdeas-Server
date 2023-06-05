@@ -97,7 +97,7 @@ function cadastrar(fkEmpresa, ambiente, descAmbiente, setorAmbiente, minimoPesso
     // Insira exatamente a query do banco aqui, lembrando da nomenclatura exata nos valores
     //  e na ordem de inserção dos dados.
     var instrucao = `
-        INSERT INTO tbAmbiente (fkEmpresa, setorAmbiente, nomeAmbiente, descAmbiente, minimoPessoas, mediaPessoas, maximoPessoas) VALUES ('${fkEmpresa}', '${setorAmbiente}', '${ambiente}', '${descAmbiente}', '${minimoPessoas}', '${mediaPessoas}', '${maximoPessoas}');
+        INSERT INTO tbAmbiente (fkEmpresa, setorAmbiente, nomeAmbiente, descAmbiente, minimoPessoas, mediaPessoas, maximoPessoas) VALUES (${fkEmpresa}, '${setorAmbiente}', '${ambiente}', '${descAmbiente}', ${minimoPessoas}, ${mediaPessoas}, ${maximoPessoas});
     `;
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
