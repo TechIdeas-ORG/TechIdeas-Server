@@ -132,7 +132,7 @@
                             }
                         })
                     }else{
-                        alert('algo de errado')
+                        //alert('algo de errado')
                     }
             })
         }
@@ -150,7 +150,7 @@
                             }
                         })
                     }else{
-                        alert('algo de errado')
+                        //alert('algo de errado')
                     }
             })
         }
@@ -166,7 +166,7 @@
                             }
                         })
                     }else{
-                        alert('algo de errado')
+                        //alert('algo de errado')
                     }
             })
         }
@@ -235,7 +235,7 @@
                     });
             }
             else {
-                alert("opa")
+                //alert("opa")
             }
 
 
@@ -336,7 +336,7 @@
                 config2
             );
 
-            alert('cheguei aqui')
+            //alert('cheguei aqui')
             setTimeout(() => atualizarGraficoAmbiente(fkAmbiente), 2000);
             setTimeout(() => consultarGraficoDireita(myChart2, dados2), 2000);
 
@@ -366,6 +366,8 @@
                                 `
                                 qtdeAmb++;
                             }
+
+                            consultarTudo();
                         });
                     } else {
                         console.error('Nenhum dado encontrado ou erro na API');
@@ -482,7 +484,7 @@
                 });
             }
         }
-        consultarTudo();
+        
         function consultarTudo() {
             var fkUser = sessionStorage.ID_USUARIO;
             if (fkUser != null) {
@@ -491,7 +493,7 @@
                         console.log(response)
                         response.json().then(function (novoRegistro) {
                             console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
-                            alert(JSON.stringify(novoRegistro))
+                            //alert(JSON.stringify(novoRegistro))
                             console.log("Mapa de calor: " + novoRegistro)
                             for (var i = 0; i < novoRegistro.length; i++) {
                                 if (novoRegistro[i].minimoPessoas > novoRegistro[i].soma) {

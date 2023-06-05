@@ -1,186 +1,242 @@
-.areaGrafico{
-    width: 80%;
-    margin: auto;
-    border-radius: 10px;
-    color: white;
-}
-#div_API{
-    height: 60vh;
-    width: 80%;
-    margin: auto;
-    padding: 15px;
-    border-radius: 10px;
-    color: white;
-
-}
-.div_botao{
-    width: 20%;
-    height: 10%;
-    margin-top: 50px;
-    margin-left: 50%;
-   text-align: center;
-    display: flex;
-}
-.bt11{
-    border-radius: 15px;
-    width: 50%;
-    height: 40%;
-    margin-right: 2%;
-    background-color: #3BDB43;
-}
-.bt22{
-    border-radius: 15px;
-    width: 50%;
-    height: 40%;
-    margin-right: 2%;
-    background-color: #3BDB43;
-}
-.areaGrafico container{
-    display: flex;
-}
-.divGraf1{
-    width: 50%;
-    height: auto;
-    display: block;
-}
-.divGraf2{
-    width: 50%;
-    height: auto;
-    display: block;
-}
-.areaKPI{
-    height: 40vh;
-
-    display: flex;
-
-    gap: 80px;
-}
-.kpi{
-    width: 200px;
-    height: 200px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-
-    background-color: #3BDB43;
-
-    color: white;
-
-    box-shadow: -9px 9px 0px 0px #0a600e;
-
-    border-radius: 33px;
-}
-.kpiRuim{
-    width: 200px;
-    height: 200px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-
-    background-color: #db3b3b;
-
-    color: white;
-
-    box-shadow: -9px 9px 0px 0px #600a0a;
-
-    border-radius: 33px;
-}
-.kpiMedia{
-    width: 200px;
-    height: 200px;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-
-    background-color: #4e3bdb;
-
-    color: white;
-
-    box-shadow: -9px 9px 0px 0px #0a0a60;
-
-    border-radius: 33px;
+.areaGrafico {
+  width: 80%;
+  margin: auto;
+  border-radius: 10px;
+  color: white;
 }
 
-.kpi h4, span{
-    text-align: center;
+#div_API {
+  height: 60vh;
+  width: 80%;
+  margin: auto;
+  padding: 15px;
+  border-radius: 10px;
+  color: white;
 
-    margin-bottom: 10px;
 }
 
-#boxAmbiente{
-height: 4vh ;
-width: 20vh;
-display: flex;
-align-items: center;
-font-size: 20px;
-border-radius: 15px;
+.div_botao {
+  width: 20%;
+  height: 10%;
+  margin-top: 50px;
+  margin-left: 50%;
+  text-align: center;
+  display: flex;
 }
 
-.perigo-frio .foto{
-  width:70px;
+.bt11 {
+  border-radius: 15px;
+  width: 50%;
+  height: 40%;
+  margin-right: 2%;
+  background-color: #3BDB43;
+}
+
+.bt22 {
+  border-radius: 15px;
+  width: 50%;
+  height: 40%;
+  margin-right: 2%;
+  background-color: #3BDB43;
+}
+
+.areaGrafico container {
+  display: flex;
+}
+
+.divGraf1 {
+  width: 50%;
+  height: auto;
+  display: block;
+}
+
+.divGraf2 {
+  width: 50%;
+  height: auto;
+  display: block;
+}
+
+.areaKPI {
+  height: 40vh;
+
+  display: flex;
+
+  gap: 80px;
+}
+
+.kpi {
+  width: 200px;
+  height: 200px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  background-color: #3BDB43;
+
+  color: white;
+
+  box-shadow: -9px 9px 0px 0px #0a600e;
+
+  border-radius: 33px;
+}
+
+.kpiRuim {
+  width: 200px;
+  height: 200px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  background-color: #db3b3b;
+
+  color: white;
+
+  box-shadow: -9px 9px 0px 0px #600a0a;
+
+  border-radius: 33px;
+}
+
+.kpiMedia {
+  width: 200px;
+  height: 200px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  background-color: #4e3bdb;
+
+  color: white;
+
+  box-shadow: -9px 9px 0px 0px #0a0a60;
+
+  border-radius: 33px;
+}
+
+.kpi h4,
+span {
+  text-align: center;
+
+  margin-bottom: 10px;
+}
+
+#boxAmbiente {
+  height: 4vh;
+  width: 20vh;
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  border-radius: 15px;
+}
+
+.perigo-frio .foto {
+  width: 70px;
   height: 70px;
   margin-left: 450px;
 }
-.perigo-frio .bola_aviso{
+
+.perigo-frio .bola_aviso {
   margin-top: 20px;
   position: absolute;
-  background-color: #ff7043;
-color: #ff7043;
-width: 50px;
-height: 50px;
-border-radius: 36px;
-
+  background-color: rgb(67, 249, 255);
+  color: rgb(67, 249, 255);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  animation: pulse-red 2s infinite normal;
 }
-.perigo-frio h3,small{
+
+.perigo-frio h3,
+small {
   color: #ff7043;
 }
 
-.perigo-quente .foto{
-  width:70px;
+.perigo-quente .foto {
+  width: 70px;
   height: 70px;
-  margin-left: 550px; 
-}
-  .perigo-quente .bola_aviso{
-    position: absolute;
-    margin-top: 20px;
-    background-color: #ff7043;
-    width: 50px;
-    height: 50px;
-    border-radius:36px ;
-  }
-  .perigo-quente h3,small{
-    color: #ff7043;
-  }
-  
-  
-  .ideal {
-    background-color: #9ccc65;
-  }
-  .cor-alerta {
-    width: 13%;
-    height: 30%;
-    border-radius: 50%;
-    display: inline-block;
-  }
-  #alerta {
-    position: absolute;
-    right: 0px;
-    padding-bottom: 20px;
- background-color: #1C1C1C;
- padding: 20px;
- border-radius: 33px;
- border: 3px solid #3BDB43; 
- z-index: 99;
- display: none;
+  margin-left: 550px;
 }
 
-.mapaCalor{
+.perigo-quente .bola_aviso {
+  position: absolute;
+  margin-top: 20px;
+  background-color: rgb(255, 112, 67);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  animation: pulse-red 2s infinite normal;
+}
+
+.perigo-quente h3,
+small {
+  color: #ff7043;
+}
+
+@keyframes pulse-red {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 112, 67, 0.7);
+  }
+  
+  70% {
+    transform: scale(1.15);
+    box-shadow: 0 0 0 10px rgba(255, 112, 67, 0);
+  }
+  
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(255, 112, 67, 0);
+  }
+}
+
+
+@keyframes pulse-blue {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(67, 249, 255, 0.7);
+  }
+  
+  70% {
+    transform: scale(1.15);
+    box-shadow: 0 0 0 10px rgba(67, 249, 255, 0);
+  }
+  
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(67, 249, 255, 0);
+  }
+}
+
+.ideal {
+  background-color: #9ccc65;
+}
+
+.cor-alerta {
+  width: 13%;
+  height: 30%;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+#alerta {
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  padding-bottom: 20px;
+  background-color: #1C1C1C;
+  padding: 20px;
+  border-radius: 33px;
+  border: 3px solid #3BDB43;
+  z-index: 99;
+  display: none;
+}
+
+.mapaCalor {
   height: 500px;
   border: 1px solid black;
   border-radius: 33px;

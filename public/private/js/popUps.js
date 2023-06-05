@@ -50,7 +50,7 @@ function alertar(resposta, idAmbiente) {
 
 function exibirAlerta(temp, idAmbiente, grauDeAviso, grauDeAvisoCor,nomeAmbiente,grauDeAvisoMensagem) {
     var indice = alertas.findIndex(item => item.idAmbiente == idAmbiente);
-    alert(nomeAmbiente)
+    //alert(nomeAmbiente)
     if (indice >= 0) {
         alertas[indice] = { idAmbiente, temp, grauDeAviso, grauDeAvisoCor,grauDeAvisoMensagem }
     } else {
