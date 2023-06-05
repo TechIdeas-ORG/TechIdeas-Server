@@ -26,10 +26,9 @@
         <div class="menu">
             <ul>
                 <li class="active"><a href="#">DashBoard</a></li>
-                <li><a href="#">Mapa de Calor</a></li>
-                <li><a href="#">Ambientes</a></li>
-                <li><a href="#">Sensores</a></li>
-                <li><a href="#">Configurações</a></li>
+                <li><a href="index.html#mapaCalor">Mapa de Calor</a></li>
+                <li><a href="crudVersaoFinal.html">Ambientes</a></li>
+                <li><a href="gerenciamentoFuncionario.html">Gerenciar Funcionarios</a></li>
             </ul>
         </div>
         <div class="account">
@@ -37,8 +36,8 @@
                 account_circle
             </span>
             <div class="perfil">
-                <h3>Nome do Usuário</h3>
-                <a href="#">Sair</a>
+                <h3 id="navbar_nmUser">Nome do Usuário</h3>
+                <a href="logout.html">Sair</a>
             </div>
         </div>
     </nav>
@@ -68,11 +67,10 @@
         </div>
 
         <div class="consultaDia">
-            <input id="primeiro_dia" placeholder="dd-MM-AAAA"><br><br>
+            <input id="primeiro_dia" onkeyup="plotar_filtro()" placeholder="dd-MM-AAAA"><br><br>
             <h1>-</h1>
-            <input id="ultimo_dia" placeholder="dd-MM-AAAA"><br>
+            <input id="ultimo_dia" onkeyup="plotar_filtro()" placeholder="dd-MM-AAAA"><br>
         </div>
-        <button onclick="plotar_filtro()">Filtrar</button>
 
         <div class="divGraf2">
 
@@ -95,22 +93,75 @@
             <h4>Aumento Relativo à Semana Passada</h4>
             <span id="span_porcent_aum_fluxo"></span>
         </div>
+
+        <div class = "div_funcionario">
+            <div class="cadastrar_funcionario">
+
+            </div>
+            <div class="consultar_funcionario">
+
+            </div>
+        </div>
+
     </div>
 
     <script>
-        /*Dados de Testes*/
-        const label_sem = ['Domingo', 'Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado'];
-        const dado_sem = [354, 540, 245, 424, 350, 348, 451];
         var soma = 0;
-        var max_pos = 0;
-        var somatotal = 0;
         var qtdeAmb = 0;
         var fluxoAmbs = [];
         var proximaAtualizacao;
         var filtroAplicado = false;
-
+        KPImedia()
+        function KPImedia(){
+            fetch("/ambiente/media_fluxo/" + sessionStorage.ID_USUARIO).then(function (resposta) {
+                console.log(resposta)    
+                if(resposta.ok){
+                        resposta.json().then((res) => {
+                            for(var i = 0; i < res.length; i++){
+                                span_med_fluxo.innerHTML = `Sua média foi: ${Number(res[i].Media).toFixed(2)} nessa semana<br>
+                                                            `
+                            }
+                        })
+                    }else{
+                        alert('algo de errado')
+                    }
+            })
+        }
         
-        obterdados()
+        KPImaximo()
+        function KPImaximo(){
+            var dias_sem = ['Domingo', 'Segunda', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado']
+            fetch("/ambiente/maior_fluxo/" + sessionStorage.ID_USUARIO).then(function (resposta) {
+                console.log(resposta)    
+                if(resposta.ok){
+                        resposta.json().then((res) => {
+                            for(var i = 0; i < res.length; i++){
+                                span_max_fluxo.innerHTML = `Seu valor máximo foi: ${Number(res[i].Maximo).toFixed(2)} na ${dias_sem[Number(res[i].dia_sem)]} <br>
+                                                            `
+                            }
+                        })
+                    }else{
+                        alert('algo de errado')
+                    }
+            })
+        }
+        KPIaumentar()
+        function KPIaumentar(){
+            fetch("/ambiente/aumento_fluxo/" + sessionStorage.ID_USUARIO).then(function (resposta) {
+                    console.log(resposta)
+                    if(resposta.ok){
+                        resposta.json().then((res) => {
+                            for(var i = 0; i < res.length; i++){
+                                span_porcent_aum_fluxo.innerHTML = `Seu aumento foi: ${Number(res[0].valores).toFixed(2)}% Comparado ao mesmo dia da semana passada <br>
+                                                            `
+                            }
+                        })
+                    }else{
+                        alert('algo de errado')
+                    }
+            })
+        }
+
         window.onload = obterDadosGraficos();
 
         function obterDadosGraficos() {
@@ -161,12 +212,12 @@
                             }*/
 
                             // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
-                            // proximaAtualizacao = setTimeout(() => atualizarGrafico(idSensor, dados, myChart), 2000);
+                            // proximaAtualizacao = setTimeout(() => atualizarGraficoAmbiente(idSensor, dados, myChart), 2000);
                         });
                     } else {
                         console.error('Nenhum dado encontrado ou erro na API');
                         // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
-                        //proximaAtualizacao = setTimeout(() => atualizarGrafico(idSensor, dados, myChart), 2000);
+                        //proximaAtualizacao = setTimeout(() => atualizarGraficoAmbiente(idSensor, dados, myChart), 2000);
                     }
                 })
 
@@ -235,9 +286,7 @@
 
             for (i = 0; i < resposta.length; i++) {
                 var registro = resposta[i];
-                myChart_global.data.labels.push(registro.horario)
-                console.log(registro.horario)
-                console.log(dados.datasets[0].data)
+                myChart_global.data.labels.push(registro.horario + 'H')
                 myChart_global.data.datasets[0].data.push(registro.soma);
             }
             
@@ -279,7 +328,7 @@
             );
 
             alert('cheguei aqui')
-            setTimeout(() => atualizarGrafico(fkAmbiente, dados, myChart_global, undefined, undefined), 2000);
+            setTimeout(() => atualizarGraficoAmbiente(fkAmbiente), 2000);
             setTimeout(() => consultarGraficoDireita(myChart2, dados2), 2000);
 
         }
@@ -312,7 +361,7 @@
                     } else {
                         console.error('Nenhum dado encontrado ou erro na API');
                         // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
-                        //proximaAtualizacao = setTimeout(() => atualizarGrafico(idSensor, dados, myChart), 2000);
+                        //proximaAtualizacao = setTimeout(() => atualizarGraficoAmbiente(idSensor, dados, myChart), 2000);
                     }
                 })
 
@@ -324,7 +373,7 @@
 
         }
         CarregarBox();
-        function atualizarGrafico(fkAmbiente, dados, myChart) {
+        function atualizarGraficoAmbiente(fkAmbiente) {
             //SAI DA FUNÇÃO E TENTA PARAR O TIMEOUT
             if(filtroAplicado){return clearTimeout(proximaAtualizacao)};
 
@@ -337,7 +386,7 @@
 
                         console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
                         console.log(`Dados atuais do gráfico:`);
-                        console.log(dados);
+                        console.log(myChart_global.data);
 
 
                         if (novoRegistro[0].horario == myChart_global.data.labels[myChart_global.data.labels.length - 1] && novoRegistro[0].soma == myChart_global.data.datasets[0].data[myChart_global.data.datasets[0].data.length - 1]) {
@@ -346,14 +395,14 @@
                             console.log("Horário do novo dado capturado:")
                             console.log(novoRegistro[0].horario)
                             console.log("Horário do último dado capturado:")
-                            console.log(myChart_global.data.labels[dados.labels.length - 1])
+                            console.log(myChart_global.data.labels[myChart_global.data.labels.length - 1])
                             console.log("---------------------------------------------------------------")
                         } else {
 
                             for (var i = 0; i < novoRegistro.length; i++) {
                                 
                                 myChart_global.data.labels.shift(); // apagar o primeiro
-                                myChart_global.data.labels.push(Number(novoRegistro[i].horario)); // incluir um novo momento
+                                myChart_global.data.labels.push(Number(novoRegistro[i].horario) + 'H'); // incluir um novo momento
 
                                 myChart_global.data.datasets[0].data.shift();  // apagar o primeiro de umidade
                                 myChart_global.data.datasets[0].data.push(Number(novoRegistro[i].soma)); // incluir uma nova medida de umidade
@@ -366,12 +415,12 @@
                         }
 
                         // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
-                        proximaAtualizacao = setTimeout(() => atualizarGrafico(fkAmbiente, dados, myChart, primeiro_dia, ultimo_dia), 2000);
+                        proximaAtualizacao = setTimeout(() => atualizarGraficoAmbiente(fkAmbiente), 2000);
                     });
                 } else {
                     console.error('Nenhum dado encontrado ou erro na API');
                     // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
-                    proximaAtualizacao = setTimeout(() => atualizarGrafico(fkAmbiente, dados, myChart, primeiro_dia, ultimo_dia), 2000);
+                    proximaAtualizacao = setTimeout(() => atualizarGraficoAmbiente(fkAmbiente), 2000);
                 }
             })
                 .catch(function (error) {
@@ -388,7 +437,7 @@
 
 
 
-            if (ultimo_dia_val.length == 10) {
+            if (ultimo_dia_val.length == 10 && primeiro_dia_val.length == 10) {
                 filtroAplicado = true;
                 myChart_global.data = {
                     labels: [],
@@ -455,7 +504,7 @@
                     } else {
                         console.error('Nenhum dado encontrado ou erro na API');
                         // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
-                        //proximaAtualizacao = setTimeout(() => atualizarGrafico(idSensor, dados, myChart), 2000);
+                        //proximaAtualizacao = setTimeout(() => atualizarGraficoAmbiente(idSensor, dados, myChart), 2000);
                     }
                 })
 
@@ -468,27 +517,23 @@
 
         function consultarGraficoDireita(Chart, dados) {
             var fkUser = sessionStorage.ID_USUARIO;
-            alert('cheguei na function')
             fetch(`/ambiente/listarDireita/${fkUser}`, { cache: 'no-store' }).then(function (response) {
-                console.log(response)
                 if (response.ok) {
-                    console.log(response)
                     response.json().then(function (novoRegistro) {
-                        alert(`Dados recebidos direita: ${JSON.stringify(novoRegistro)}`);
-
                         for (var i = 0; i < novoRegistro.length; i++) {
-                            dados.labels.push(Number(novoRegistro[i].horario)); // incluir um novo momento
+                            dados.labels.push(Number(novoRegistro[i].horario) + 'H'); // incluir um novo momento
                             dados.datasets[0].data.push(Number(novoRegistro[i].soma)); // incluir uma nova medida de umidade
 
 
                         }
 
                         Chart.update();
+                        atualizarGraficoGeral(Chart, dados);
                     });
                 } else {
                     console.error('Nenhum dado encontrado ou erro na API');
                     // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
-                    //proximaAtualizacao = setTimeout(() => atualizarGrafico(idSensor, dados, myChart), 2000);
+                    //proximaAtualizacao = setTimeout(() => atualizarGraficoAmbiente(idSensor, dados, myChart), 2000);
                 }
             })
 
@@ -496,41 +541,73 @@
                     console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
                 });
         }
+        
+        function atualizarGraficoGeral(chart, dados) {
+            //SAI DA FUNÇÃO E TENTA PARAR O TIMEOUT
+            if(filtroAplicado){return clearTimeout(proximaAtualizacao)};
+
+            var fkUser = sessionStorage.ID_USUARIO;
+
+            fetch(`/ambiente/listarDireita/${fkUser}`, { cache: 'no-store' }).then(function (response) {
+                if (response.ok) {
+                    response.json().then(function (novoRegistro) {
+
+                        console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
+                        console.log(`Dados atuais do gráfico Geral:`);
+                        console.log(chart.data);
 
 
+                        if (novoRegistro[0].horario == chart.data.labels[chart.data.labels.length - 1] && novoRegistro[0].soma == chart.data.datasets[0].data[chart.data.datasets[0].data.length - 1]) {
+                            console.log("---------------------------------------------------------------")
+                            console.log("Como não há chart.data novos para captura, o gráfico não atualizará.")
+                            console.log("Horário do novo dado capturado:")
+                            console.log(novoRegistro[0].horario)
+                            console.log("Horário do último dado capturado:")
+                            console.log(chart.data.labels[chart.data.labels.length - 1])
+                            console.log("---------------------------------------------------------------")
+                        } else {
+
+                            for (var i = 0; i < novoRegistro.length; i++) {
+                                
+                                chart.data.labels.shift(); // apagar o primeiro
+                                chart.data.labels.push(Number(novoRegistro[i].horario) + 'H'); // incluir um novo momento
+
+                                chart.data.datasets[0].data.shift();  // apagar o primeiro de umidade
+                                chart.data.datasets[0].data.push(Number(novoRegistro[i].soma)); // incluir uma nova medida de umidade
+
+
+                            }
+
+
+                            chart.update();
+                        }
+
+                        // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
+                        proximaAtualizacao = setTimeout(() => atualizarGraficoGeral(chart, dados), 2000);
+                    });
+                } else {
+                    console.error('Nenhum dado encontrado ou erro na API');
+                    // Altere aqui o valor em ms se quiser que o gráfico atualize mais rápido ou mais devagar
+                    proximaAtualizacao = setTimeout(() => atualizarGraficoGeral(chart, dados), 2000);
+                }
+            })
+                .catch(function (error) {
+                    console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+                });
+
+        }
 
         //consultarTudo()
     </script>
 </body>
 
 </html>
-<script>
-    var isCollapsed = false;
-    // Com lambda
-    /*function collapse(collapse_button){
-        navbar.style.left = isCollapsed ? '0px' : '-260px';
-        collapse_text.style.transform = isCollapsed ? 'rotate(0deg)' : 'rotate(180deg)';
-        isCollapsed = !isCollapsed;
-    }*/
 
-    // Sem lambda
-    function collapse(collapse_button) {
-        if (isCollapsed) {
-            navbar.style.left = '0px';
-            collapse_text.style.transform = 'rotate(0deg)';
-            isCollapsed = false;
-        } else {
-            navbar.style.left = '-260px';
-            collapse_text.style.transform = 'rotate(180deg)';
-            isCollapsed = true;
-        }
-    }
-    consultarTudo()
-</script>
 
 <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 
 <script src="js/jquery.mask.js"></script>
+<script src="js/navbar.js"></script>
 
 <script>
     $('#primeiro_dia').mask('00-00-0000');

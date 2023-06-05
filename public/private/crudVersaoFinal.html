@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Ideas - CRUD</title>
+    <link rel="stylesheet" href="CSS/styleCrud.css">
+    <link rel="stylesheet" href="CSS/style.css">
+</head>
+
+<body
+    style="background-image: url(https://besthqwallpapers.com/Uploads/16-4-2021/163735/thumb2-green-digital-globe-green-digital-background-global-networks-dots-globe-silhouette-digital-technology.jpg); background-size: cover;">
+
+    <nav id="navbar">
+        <div class="collapse" onclick="collapse()">
+            <span class="material-symbols-rounded" id="collapse_text">
+                chevron_left
+            </span>
+        </div>
+
+        <div class="head">
+            <img src="img/Logo.png">
+            <h3>SMFP<br><span>Sistema de Mapeamento de Fluxo de Pessoas</span></h3>
+        </div>
+        <div class="menu">
+            <ul>
+                <li><a href="index.html">DashBoard</a></li>
+                <li><a href="index.html#mapaCalor">Mapa de Calor</a></li>
+                <li class="active"><a href="#">Ambientes</a></li>
+                <li><a href="gerenciamentoFuncionario.html">Gerenciar Funcionarios</a></li>
+                <li><a target="_blank" href="https://techideas.atlassian.net/servicedesk/customer/portals">Suporte</a></li>
+            </ul>
+        </div>
+        <div class="account">
+            <span class="material-symbols-rounded">
+                account_circle
+            </span>
+            <div class="perfil">
+                <h3 id="navbar_nmUser">Nome do Usuário</h3>
+                <a href="logout.html">Sair</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="CRUD">
+
+        <div id="addAmbButton" style="display: flex;" class="Add">
+            <button title="Configurar Ambientes" onclick="abrindoForm()">
+                <img src="img/menuIcon.png" width="20px" height="20px">
+            </button>
+        </div>
+
+        <div id="searchBarButton" class="Search">
+            <input placeholder="Pesquise um card aqui..." id="ipt_searchBar">
+            <button title="Pesquisar Ambientes" onclick="pesquisar()">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                    <path
+                        d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
+                </svg>
+            </button>
+        </div>
+
+        <div id="div_button_configMetricas" class="configB_Metricas">
+            <button title="Alterar Métricas" onclick="abrirConfigForm()">
+                <img width="20px" height="20px" src="img/setting.svg" alt="">
+            </button>
+        </div>
+
+        <div id="configMetricas" style="display: none;" class="configForm">
+            <p>Insira um nível de fluxo de pessoas baixo para os próximos ambientes a serem adicionados/editados:</p>
+            <input style="background-color: black; color: white; border-color: white;" id="ipt_fluxoBaixo">
+            <br>
+            <p>Insira um nível de fluxo de pessoas ideal para os próximos ambientes a serem adicionados/editados:</p>
+            <input style="background-color: black; color: white; border-color: white;" id="ipt_fluxoNormal">
+            <br>
+            <p>Insira um nível de fluxo de pessoas acima do esperado para os próximos ambientes a serem
+                adicionados/editados:</p>
+            <input style="background-color: black; color: white; border-color: white;" id="ipt_fluxoAlto">
+            <br>
+            <div style="display: flex; justify-content: space-around; margin-bottom: 40px; display: flex;">
+                <button style="width: 50%;" onclick="alterarMetricas()">Atualizar Métrica</button>
+                <button style="width: 50%;" onclick="fecharConfigForm()">Cancelar Edição</button>
+            </div>
+        </div>
+
+        <div id="ambForm" style="display: none;" class="addForm">
+
+            <p>Insira o nome do ambiente:</p>
+            <input onkeyup="alertaDados()" onkeydown="alertaDados()"
+                style="background-color: black; color: white; border-color: white;" id="ipt_nomeAmbiente"><br>
+
+            <p style="margin-top: 0px;">Descreva o ambiente:</p>
+            <input onkeyup="alertaDados()" onkeydown="alertaDados()"
+                style="background-color: black; color: white; border-color: white;" id="ipt_descricao"><br>
+
+            <p>Diga qual é o setor desse ambiente:</p>
+            <input onkeyup="alertaDados()" onkeydown="alertaDados()"
+                style="background-color: black; color: white; border-color: white;" id="ipt_setor"><br>
+
+            <div style="display: flex; margin-bottom: 20px;align-items: center; justify-content: space-evenly;"
+                id="editBotoes">
+                <button style="width: 40%; height: 50px;" onclick="adicionandoAmbiente()">Adicionar
+                    Ambiente</button><br>
+                <button style="width: 40%; height: 50px;" onclick="editandoAmbiente()">Editar Ambiente</button>
+            </div>
+
+            <div style="display: none; margin-bottom: 20px;align-items: center; justify-content: space-evenly;"
+                id="editForm">
+                <button onclick="cancelEdit()" title="Cancelar">X</button>
+                <input
+                    style="width: 125px; background-color: black; color: greenyellow; border-color: white; font-size: smaller;"
+                    placeholder="Insira ID do ambiente" id="ipt_idEdit">
+                <button onclick="enviarEdit()" title="Confirmar Alteração">>></button>
+            </div>
+
+            <div style="display: flex; margin-bottom: 20px;align-items: center; justify-content:center;">
+                <input placeholder="Insira o ID"
+                    style="width: 137px; background-color: black; color: red; border-color: white; font-size: large;"
+                    id="iptID">
+                <button style="width: 30%; height: 60px;" onclick="removerAmb()">Remover Ambiente</button><br>
+            </div>
+            <button onclick="fecharAmbForm()">Fechar Janela</button><br>
+
+        </div>
+        <div style="display: flex; justify-content: space-around;">
+            <div id="containerCards1">
+            </div>
+
+            <div id="containerCards2">
+            </div>
+
+            <div id="containerCards3">
+            </div>
+        </div>
+        <div class="rodape">
+            <p>Tech Ideas © 2023</p>
+        </div>
+
+    </div>
+</body>
+
+</html>
+<script src="js/navbar.js"></script>
+<script>
+    // CRIACAO DOS VETORES DOS AMBIENTES
+    var vt_ambientes_nome = [];
+    var vt_ambientes_desc = [];
+    var vt_ambientes_setor = [];
+
+    var ids = [];
+
+    // CRIACAO DA VARIAVEL AMBIENTE (DEFINE ONDE OS CARDS VAO APARECER)
+    var ambientes = 1;
+
+    // ISSO AQUI É UM CONTADOR!!
+    var idAmb = 0;
+
+    // CRIACAO DAS VARIAVEIS DA METRICA DO SHOPPING COMO GLOBAL PARA PASSAR PELAS ROTAS
+    var fluxoBaixo = undefined;
+    var fluxoMedio = undefined;
+    var fluxoAlto = undefined;
+
+    function abrindoForm() {
+        ambForm.style.display = "flex";
+        addAmbButton.style.display = "none";
+        searchBarButton.style.display = "none";
+        div_button_configMetricas.style.display = "none";
+    }
+
+    fetch(`/ambientes/consultar/${sessionStorage.ID_USUARIO}`).then(function (response) {
+        if (response.ok) {
+            console.log(response)
+            response.json().then(function (novoRegistro) {
+                console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
+                for (var i = 0; i < novoRegistro.length; i++) {
+                    vt_ambientes_nome.push(novoRegistro[i].nomeAmbiente)
+                    ids.push(novoRegistro[i].idAmbiente)
+                    
+                    if(ambientes==4){
+                        ambientes = 1;
+                    }
+                    if (ambientes % 2 == 0 && ambientes != 0) {
+                        // ADIÇÃO DO CARD NA TELA DE CRUD
+                        containerCards2.innerHTML += `
+                            <div class="ambiente" id="${novoRegistro[i].idAmbiente}">
+                                <div style="display:flex; border: white 2px solid; background-color:darkgreen">Id do Ambiente:${novoRegistro[i].idAmbiente}</div>
+                                <h3>Nome: ${novoRegistro[i].nomeAmbiente}</h3>
+                                <br>
+                                <b>Descrição:</b> ${novoRegistro[i].descAmbiente}<br>
+                                <br>
+                                <b>Nome do Setor:</b> ${novoRegistro[i].setorAmbiente}<br>
+                            </div>
+                        `;
+                        ambientes++;
+                    } else if (ambientes % 3 == 0 && ambientes != 0) {
+
+                        containerCards3.innerHTML += `
+                        <div class="ambiente" id="${novoRegistro[i].idAmbiente}">
+                            <div style="display:flex; border: white 2px solid; background-color:darkgreen">Id do Ambiente:${novoRegistro[i].idAmbiente}</div>
+                            <h3>Nome: ${novoRegistro[i].nomeAmbiente}</h3>
+                            <br>
+                            <b>Descrição:</b> ${novoRegistro[i].descAmbiente}<br>
+                            <br>
+                            <b>Nome do Setor:</b> ${novoRegistro[i].setorAmbiente}<br>
+                        </div>
+                        `;
+                        ambientes++;
+                    } else {
+                        containerCards1.innerHTML += `
+                        <div class="ambiente" id="${novoRegistro[i].idAmbiente}">
+                            <div style="display:flex; border: white 2px solid; background-color:darkgreen">Id do Ambiente:${novoRegistro[i].idAmbiente}</div>
+                            <h3>Nome: ${novoRegistro[i].nomeAmbiente}</h3>
+                            <br>
+                            <b>Descrição:</b> ${novoRegistro[i].descAmbiente}<br>
+                            <br>
+                            <b>Nome do Setor:</b> ${novoRegistro[i].setorAmbiente}<br>
+                        </div>
+                        `;
+                        ambientes++;
+                    }
+
+                }
+
+            });
+        } else {
+            console.error('Nenhum dado encontrado ou erro na API')
+        }
+    })
+
+        .catch(function (error) {
+            console.error(`Erro na obtenção dos dados p/ gráfico: ${error.message}`);
+        });
+
+    function adicionandoAmbiente() {
+        // CRIACAO DAS VARIAVEIS DO VALOR DOS INPUTS
+        var erro = "não";
+        var nomeAmbiente = ipt_nomeAmbiente.value;
+        var descricao = ipt_descricao.value;
+        var setor = ipt_setor.value;
+        // CRICACAO DAS VARIAVEIS QUE GUARDAM O TAMANHO DOS VALORES DOS INPUTS
+        var caracteresNomeAmb = (nomeAmbiente).length;
+        var caracteresDesc = (descricao).length;
+        var caracteressetor = (setor).length;
+        // VERIFICACAO DOS DADOS INFORMADOS
+        if (ipt_nomeAmbiente.value == "") {
+            alert("Preencha o campo do nome do ambiente.")
+            erro = "sim"
+        }
+
+        if (ipt_descricao.value == "") {
+            alert("Preencha o campo de descrição do ambiente.")
+            erro = "sim"
+        }
+
+        if (ipt_setor.value == "") {
+            alert("Preencha o campo do nome do setor.")
+            erro = "sim"
+        }
+
+        if (caracteresNomeAmb > 20) {
+            alert("Campo de nome do ambiente muito grande! (Máximo de 20 caracteres)")
+            erro = "sim"
+        }
+
+        if (caracteresDesc > 140) {
+            alert("Campo de descrição muito grande! (Máximo de 70 caracteres)")
+            erro = "sim"
+        }
+
+        if (caracteressetor > 35) {
+            alert("Campo de nome do setor muito grande! (Máximo de 25 caracteres)")
+            erro = "sim"
+        }
+
+        if (fluxoBaixo == undefined || fluxoMedio == undefined || fluxoAlto == undefined) {
+            alert("Métricas vazias, por favor preencha esses dados antes de adicionar o ambiente")
+            erro = "sim"
+        } else if (fluxoBaixo == undefined) {
+            alert("Fluxo baixo não definido, por favor preencha esse dado antes de adicionar o ambiente")
+            erro = "sim"
+        } else if (fluxoMedio == undefined) {
+            alert("Fluxo ideal não definido, por favor preencha esse dado antes de adicionar o ambiente")
+            erro = "sim"
+        } else if (fluxoAlto == undefined) {
+            alert("Fluxo alto não definido, , por favor preencha esse dado antes de adicionar o ambiente")
+            erro = "sim"
+        }
+
+        if (ambientes == 4) {
+            ambientes = 1;
+        }
+
+        if (erro == "não") {
+            // ADIÇÃO DO CARD NA TELA DE CRUD
+            if (ambientes % 2 == 0 && ambientes != 0) {
+                vt_ambientes_nome.push(nomeAmbiente);
+                vt_ambientes_desc.push(descricao);
+                vt_ambientes_setor.push(setor);
+
+                containerCards2.innerHTML += `
+                <div class="ambiente" id="${idAmb}">
+                    <div style="display:flex; border: white 2px solid; background-color:darkgreen">Id do Ambiente:${idAmb}</div>
+                    <h3>Nome: ${nomeAmbiente}</h3>
+                    <br>
+                    <b>Descrição:</b> ${descricao}<br>
+                    <br>
+                    <b>Nome do Setor:</b> ${setor}<br>
+                </div>
+                `;
+
+                ipt_nomeAmbiente.value = "";
+                ipt_descricao.value = "";
+                ipt_setor.value = "";
+                ambientes++;
+                idAmb++;
+            } else if (ambientes % 3 == 0 && ambientes != 0) {
+                vt_ambientes_nome.push(nomeAmbiente);
+                vt_ambientes_desc.push(descricao);
+                vt_ambientes_setor.push(setor);
+
+                containerCards3.innerHTML += `
+                <div class="ambiente" id="${idAmb}">
+                    <div style="display:flex; border: white 2px solid; background-color:darkgreen">Id do Ambiente:${idAmb}</div>
+                    <h3>Nome: ${nomeAmbiente}</h3>
+                    <br>
+                    <b>Descrição:</b> ${descricao}<br>
+                    <br>
+                    <b>Nome do Setor:</b> ${setor}<br>
+                </div>
+                `;
+
+                ipt_nomeAmbiente.value = "";
+                ipt_descricao.value = "";
+                ipt_setor.value = "";
+                ambientes++;
+                idAmb++;
+            } else {
+                vt_ambientes_nome.push(nomeAmbiente);
+                vt_ambientes_desc.push(descricao);
+                vt_ambientes_setor.push(setor);
+
+                containerCards1.innerHTML += `
+                <div class="ambiente" id="${idAmb}">
+                    <div style="display:flex; border: white 2px solid; background-color:darkgreen">Id do Ambiente:${idAmb}</div>
+                    <h3>Nome: ${nomeAmbiente}</h3>
+                    <br>
+                    <b>Descrição:</b> ${descricao}<br>
+                    <br>
+                    <b>Nome do Setor:</b> ${setor}<br>
+                </div>
+                `;
+
+                ipt_nomeAmbiente.value = "";
+                ipt_descricao.value = "";
+                ipt_setor.value = "";
+                ambientes++;
+                idAmb++;
+            }
+
+            var fkEmpresa = sessionStorage.FK_EMPRESA;
+
+            // AQUI SERÁ ONDE AMBIENTES SERÃO ENVIADOS AO BANCO ++++++++++++++++++++++++++++++++++++++++++++
+            //(FEITO)
+
+            fetch("/ambientes/cadastrar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    // crie um atributo que recebe o valor recuperado aqui
+                    // Agora vá para o arquivo routes/usuario.js
+                    fkEmpresaServer: fkEmpresa,
+
+                    ambiente: nomeAmbiente,
+                    descAmbiente: descricao,
+                    setorAmbiente: setor,
+
+                    minimoPessoas: fluxoBaixo,
+                    mediaPessoas: fluxoMedio,
+                    maximoPessoas: fluxoAlto
+                })
+            }).then(function (resposta) {
+
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    alert("Cadastro realizado com sucesso!");
+
+                } else {
+                    throw ("Houve um erro ao tentar realizar o cadastro!");
+                }
+            }).catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+            return false;
+        }
+    }
+
+    function removerAmb() {
+        var identificador = Number(iptID.value);
+        var existe = false;
+
+        for(var i = 0; i < ids.length; i++){
+            if(identificador == ids[i]){
+                existe = true;
+            }
+        }
+        // Verificação do campo de input
+        if (identificador >= 0 && identificador != isNaN && existe) {
+            // Exclusão dos dados salvos nos vetores
+            delete (vt_ambientes_nome[identificador]);
+            delete (vt_ambientes_desc[identificador]);
+            delete (vt_ambientes_setor[identificador]);
+            // Nessa parte do codigo estou puxando o elemento com o id (identificador) utilizando o document.getElementById() e guardando esse elemento em uma const, o elemento seria o card de ambiente cujo id corresponde ao id fornecido no campo de input
+            const ambienteDeletado = document.getElementById(identificador);
+            // Posso remover uma classe de csss dessa minha div criada via innerHTML usando o nomeConst.classsList.remove("nome da classe")
+            ambienteDeletado.classList.remove("ambiente");
+            // Assim como posso remover, eu também posso adicionar, só que ao invés de usar "remove" basta trocar por "add"
+            ambienteDeletado.classList.add("ambienteExcluido");
+            // É possível alterar o conteúdo dessa div utilizando innerHTML, então basta colocar o nomeConst.innerHTML = `O que voce quiser colocar dentro desse elemento, nesse caso o card de ambiente, basta colocar dentro dessas aspas na onde esse texto está`
+            ambienteDeletado.innerHTML = "EXCLUIDO";
+            // Alerta para o cliente saber que o ambiente foi deletado
+            iptID.value = "";
+
+            // AQUI SERÁ FEITO A EXCLUSÃO DO AMBIENTE NO BANCO DE DADOS ++++++++++++++++++++++++++++++++++++++++++++
+            // (FEITO)
+            fetch("/ambientes/excluir", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    // crie um atributo que recebe o valor recuperado aqui
+                    // Agora vá para o arquivo routes/usuario.js
+
+                    identificadorAmbiente: Number(identificador)
+                })
+            }).then(function (resposta) {
+
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    alert("Ambiente excluído com sucesso!");
+
+                } else {
+                    throw ("Houve um erro ao tentar excluir o ambiente!");
+                }
+            }).catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+            return false;
+
+        } else {
+            alert("O valor deve ser numérico, inteiro e que exista na quantidade total de ambientes")
+        }
+    }
+
+    function fecharAmbForm() {
+        // Nada demais aqui, apenas o fechamento e abertura de telas usando o display none e flex
+        ambForm.style.display = "none";
+        addAmbButton.style.display = "flex";
+        searchBarButton.style.display = "flex";
+        div_button_configMetricas.style.display = "flex";
+    }
+
+    function alertaDados() {
+        // Essa função é ativada sempre que há uma atualizaçao nos inputs do formulário de  ambientes, ela é responsável por mudar a cor da borda para sinalizar o cliente de que ele ultrapassou o limite de caracteres
+        if ((ipt_nomeAmbiente.value).length > 20) { ipt_nomeAmbiente.style = "border-color: red; background-color: black; color:white; border-width: 3px;" }
+        else { ipt_nomeAmbiente.style = "border-color: white; background-color: black; color:white" }
+
+        if ((ipt_descricao.value).length > 140) { ipt_descricao.style = "border-color: red; background-color: black; color:white; border-width: 3px" }
+        else { ipt_descricao.style = "border-color: white; background-color: black; color:white" }
+
+        if ((ipt_setor.value).length > 35) { ipt_setor.style = "border-color: red; background-color: black; color:white; border-width: 3px" }
+        else { ipt_setor.style = "border-color: white; background-color: black; color:white" }
+    }
+
+    function pesquisar() {
+        // Aqui está sendo criado as variáveis para guardar a quantidade de cards encontrados na pesquisa e o valor pesquisado no input
+        var ambientesEncontrados = Number(0);
+        var barraPesquisa = ipt_searchBar.value;
+
+        for (var i = 0; i < vt_ambientes_nome.length; i++) {
+            // Aqui está sendo selecionado o card de ambiente com o id igual ao valor de "i" (apenas uma abreviação pra index, apenas um nome).
+            var ambiente = document.getElementById(ids[i]);
+
+            // Nessa parte estou verificando se no ambiente encontrado acima possui o valor pesquisado na barra de pesquisa, ambiente(minha variável).innerHTML(tudo que está dentro do card).includes(mesma coisa que o .contains); Caso ele encontre algo nesse card, ele será exibido na tela com o display flex e será somado +1 ao meu contador de pesquisas encontradas, caso contrário ele apenas irá esconder o card com o display none.
+            alert(ambiente)
+            if (ambiente.innerHTML.includes(barraPesquisa)) {
+                ambiente.style.display = "flex";
+                ambientesEncontrados++;
+            } else {
+                ambiente.style.display = "none";
+            }
+        }
+
+        if (ambientesEncontrados > 0) {
+            alert(`Foram encontrados ${ambientesEncontrados} ambientes`)
+        } else {
+            alert("Não foram econtrados nenhum resultado")
+        }
+
+    }
+
+    function abrirConfigForm() {
+        configMetricas.style.display = "flex";
+        div_button_configMetricas.style.display = "none";
+    }
+
+    function fecharConfigForm() {
+        div_button_configMetricas.style.display = "flex";
+        configMetricas.style.display = "none";
+    }
+
+    function alterarMetricas() {
+        fluxoBaixo = Number(ipt_fluxoBaixo.value);
+        fluxoMedio = Number(ipt_fluxoNormal.value);
+        fluxoAlto = Number(ipt_fluxoAlto.value);
+        var erro = false;
+
+        if (fluxoBaixo >= fluxoMedio || fluxoMedio >= fluxoAlto) {
+            alert("Insira os dados corretamente, o fluxo baixo deve ser menor que o fluxo ideal e o fluxo ideal deve ser menor que o fluxo alto");
+            erro = true;
+        }
+
+        if (isNaN(fluxoBaixo) || isNaN(fluxoMedio) || isNaN(fluxoAlto)) {
+            alert("Insira apenas valores numéricos no campo de entrada!");
+            erro = true;
+        }
+
+        if (erro == false) {
+            alert("Metricas alteradas com sucesso! Quando você criar novos ambientes essa será a nova métrica para eles, caso queira trocar as métricas basta atualizá-las novamente.");
+            div_button_configMetricas.style.display = "flex";
+            configMetricas.style.display = "none";
+        }
+    }
+
+    function editandoAmbiente() {
+        editBotoes.style.display = "none";
+        editForm.style.display = "flex";
+    }
+
+    function enviarEdit() {
+        var idEdicao = Number(ipt_idEdit.value);
+        var nomeAmbiente = ipt_nomeAmbiente.value;
+        var descricao = ipt_descricao.value;
+        var setor = ipt_setor.value;
+        var caracteresNomeAmb = (nomeAmbiente).length;
+        var caracteresDesc = (descricao).length;
+        var caracteressetor = (setor).length;
+        var existe = false;
+        var erro = false;
+
+        if (ipt_nomeAmbiente.value == "") {
+            alert("Preencha o campo do nome do ambiente.")
+            erro = true;
+        }
+
+        if (ipt_descricao.value == "") {
+            alert("Preencha o campo de descrição do ambiente.")
+            erro = true;
+        }
+
+        if (ipt_setor.value == "") {
+            alert("Preencha o campo de descrição do(s) sensor(es).")
+            erro = true;
+        }
+
+        if (caracteresNomeAmb > 20) {
+            alert("Campo de nome do ambiente muito grande! (Máximo de 20 caracteres)")
+            erro = true;
+        }
+
+        if (caracteresDesc > 70) {
+            alert("Campo de descrição muito grande! (Máximo de 70 caracteres)")
+            erro = true;
+        }
+
+        if (caracteressetor > 80) {
+            alert("Campo de descrição do(s) sensor(es) muito grande! (Máximo de 80 caracteres)")
+            erro = true;
+        }
+
+        if (ipt_idEdit.value == "") {
+            alert("Campo de id é abrigatório para a edição do ambiente!")
+        }
+
+        for(var i = 0; i < ids.length; i++){
+            if(idEdicao == ids[i]){
+                existe = true;
+            }
+        }
+        
+
+        if (isNaN(ipt_idEdit.value)) {
+            alert("O id do ambiente é numérico, cada ambiente possui um id referenciando cada um deles, basta olhar os cards.");
+            erro = true;
+        }
+
+        if (erro == false && existe == true) {
+            const ambienteSelecionado = document.getElementById(idEdicao);
+            ambienteSelecionado.innerHTML = `
+                <div style="display:flex; border: white 2px solid; background-color:darkgreen">Id do Ambiente:${idEdicao}</div>
+                <h3>Nome: ${nomeAmbiente}</h3>
+                <b>Descrição:</b> ${descricao}<br>
+                <br>
+                <b>Nome do Setor:</b> ${setor}<br>
+            `;
+            vt_ambientes_nome[idEdicao] = nomeAmbiente;
+            vt_ambientes_desc[idEdicao] = descricao;
+            vt_ambientes_setor[idEdicao] = setor;
+            // AQUI SERÁ FEITO A ATUALIZAÇÃO DOS AMBIENTES NO BANCO DE DADOS ++++++++++++++++++++++++++++++++++++++++++++
+            //(FEITO)
+            fetch("/ambientes/atualizar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    // crie um atributo que recebe o valor recuperado aqui
+                    // Agora vá para o arquivo routes/ambiente.js
+                    idAmbiente: idEdicao,
+                    ambiente: nomeAmbiente,
+                    descAmbiente: descricao,
+                    setorAmbiente: setor,
+
+                    minimoPessoas: fluxoBaixo,
+                    mediaPessoas: fluxoMedio,
+                    maximoPessoas: fluxoAlto
+                })
+            }).then(function (resposta) {
+
+                console.log("resposta: ", resposta);
+
+                if (resposta.ok) {
+                    alert("Atualização do ambiente realizada com sucesso!");
+
+                } else {
+                    throw ("Houve um erro ao tentar atualizar o ambiente!");
+                }
+            }).catch(function (resposta) {
+                console.log(`#ERRO: ${resposta}`);
+            });
+            return false;
+        }
+
+    }
+
+
+    function cancelEdit() {
+        editBotoes.style.display = "flex";
+        editForm.style.display = "none";
+        ipt_idEdit.value = "";
+    }
+</script>

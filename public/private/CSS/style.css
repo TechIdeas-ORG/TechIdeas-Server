@@ -20,6 +20,7 @@ nav {
 
     position: fixed;
     left: 0px;
+    top: 0px;
 
     background-color: #1f1f1f;
     box-shadow: 1px 3px 20px 0 #000000d4;
@@ -152,6 +153,8 @@ nav .head {
     padding-top: 80px;
     padding-left: 280px !important;
     padding-right: 84px;
+
+    transition: 800ms;
 }
 
 .page-title{
