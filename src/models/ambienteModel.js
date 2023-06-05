@@ -47,14 +47,15 @@ function buscarAmbientes(idUsuario) {
 function buscarTodos(idUsuario) {
     console.log("ACESSEI O AMBIENTE MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listar() \n\n " + idUsuario);
     var instrucao = `
-    SELECT count(*) as soma, fkSensor, idAmbiente, HOUR(dateMetrica) as horario, maximoPessoas, minimoPessoas FROM tbMetricas 
+    SELECT count(*) as soma, fkSensor, idAmbiente, HOUR(dateMetrica) as horario, maximoPessoas, minimoPessoas, nomeAmbiente FROM tbMetricas 
     JOIN tbSensor ON fkSensor = idSensor
     JOIN tbAmbiente ON fkAmbiente = idAmbiente
     JOIN tbEmpresa ON tbAmbiente.fkEmpresa = idEmpresa
     JOIN tbUsuario ON tbUsuario.fkEmpresa = idEmpresa
     where HOUR(dateMetrica) = HOUR(NOW()) and idUsuario = ${idUsuario}
-    GROUP BY fkSensor, HOUR(dateMetrica),idAmbiente, maximoPessoas, minimoPessoas
+    GROUP BY fkSensor, HOUR(dateMetrica),idAmbiente, maximoPessoas, minimoPessoas,nomeAmbiente
     ORDER BY HOUR(dateMetrica);
+
     `;
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);

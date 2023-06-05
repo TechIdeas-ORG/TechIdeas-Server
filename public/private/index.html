@@ -6,6 +6,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script src="http://www.chartjs.org/dist/2.7.1/Chart.js"></script>
     <script src="http://www.chartjs.org/samples/latest/utils.js"></script>
+    <script src="js/popUps.js"></script>
     <link rel="stylesheet" href="CSS/style.css">
     <link rel="stylesheet" href="CSS/dashboard.css">
 </head>
@@ -40,43 +41,52 @@
             </div>
         </div>
     </nav>
-
+    <div id="alerta"></div>
     <div class="page-title container">
         <h1>Dashboard Empresa</h1>
         <div></div>
     </div>
-
-    <div class="areaGrafico container" >
-        <div class="divGraf1">
+    <div class="container">
+        <div id="mapaCalor" class="mapaCalor">
+            
+        </div>
+    </div>
+    <div class="areaGrafico container">
+        <div style="display: flex;justify-content: space-between;align-items: center;">
             <h1 id="chave1A">
                 <select id="boxAmbiente" name="Ambiente" onchange="obterDadosGrafico()">
-
                     <option id="caixasBox" value="1">Geral</option>
                     <option id="caixasBox" value="2">
                         Ambiente 2
                     </option>
-
                 </select>
             </h1>
-            <br><br>
-            <section style="width: 90%;" id="ambiente1">
-                <h1 id="chave1B">Ambiente </h1><br><br>
-                <canvas id="chave1"></canvas>
-            </section>
+            
+            <div class="consultaDia">
+                <input id="primeiro_dia" onkeyup="plotar_filtro()" placeholder="dd-MM-AAAA"><br><br>
+                <h1>-</h1>
+                <input id="ultimo_dia" onkeyup="plotar_filtro()" placeholder="dd-MM-AAAA"><br>
+            </div>
+    
         </div>
 
-        <div class="consultaDia">
-            <input id="primeiro_dia" onkeyup="plotar_filtro()" placeholder="dd-MM-AAAA"><br><br>
-            <h1>-</h1>
-            <input id="ultimo_dia" onkeyup="plotar_filtro()" placeholder="dd-MM-AAAA"><br>
+        <div style="display: flex;justify-content: space-between;align-items: flex-start;">
+            <div class="divGraf1">
+                <section style="width: 90%;" id="ambiente1">
+                    <h1 id="chave1B">Ambiente </h1><br><br>
+                    <canvas id="chave1"></canvas>
+                </section>
+            </div>
+            <div class="divGraf2">
+    
+                <section style="width: 100%;" id="ambiente2">
+                    <h1 id="chave1B">Geral </h1><br><br>
+                    <canvas id="chave2"></canvas>
+                </section>
+            </div>
         </div>
 
-        <div class="divGraf2">
-
-            <section style="width: 100%;" id="ambiente2">
-                <canvas id="chave2"></canvas>
-            </section>
-        </div>
+        
     </div>
 
     <div class="areaKPI container" id="dv_ambientes">
@@ -89,7 +99,7 @@
             <span id="span_max_fluxo"></span>
         </div>
         <div class="kpi">
-            <h4>Aumento do Fluxo</h4>
+            <h4>Aumento Relativo à Semana Passada</h4>
             <span id="span_porcent_aum_fluxo"></span>
         </div>
 
@@ -160,7 +170,7 @@
                     }
             })
         }
-
+        obterdados()
         window.onload = obterDadosGraficos();
 
         function obterDadosGraficos() {
@@ -348,7 +358,7 @@
                             for (var i = 0; i < novoRegistro.length; i++) {
                                 console.log("entrei no for")
                                 boxAmbiente.innerHTML += ` <option id="caixasBox" value="${novoRegistro[i].idAmbiente}">${novoRegistro[i].nomeAmbiente}</option>`
-                                dv_ambientes.innerHTML += `
+                                mapaCalor.innerHTML += `
                                     <div class="kpi" id='dvAmbiente${i}'>
                                         <h4 id="ambiente${i}">${novoRegistro[i].nomeAmbiente}</h4>
                                         <span id="span_qtde_amb${i}"></span>
@@ -472,7 +482,7 @@
                 });
             }
         }
-
+        consultarTudo();
         function consultarTudo() {
             var fkUser = sessionStorage.ID_USUARIO;
             if (fkUser != null) {
