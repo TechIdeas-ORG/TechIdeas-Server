@@ -46,11 +46,13 @@
         <h1>Dashboard Empresa</h1>
         <div></div>
     </div>
-    <div id="mapaCalor" class="mapaCalor">
-        
+    <div class="container">
+        <div id="mapaCalor" class="mapaCalor">
+            
+        </div>
     </div>
     <div class="areaGrafico container">
-        <div class="divGraf1">
+        <div style="display: flex;justify-content: space-between;align-items: center;">
             <h1 id="chave1A">
                 <select id="boxAmbiente" name="Ambiente" onchange="obterDadosGrafico()">
                     <option id="caixasBox" value="1">Geral</option>
@@ -59,25 +61,32 @@
                     </option>
                 </select>
             </h1>
-            <br><br>
-            <section style="width: 90%;" id="ambiente1">
-                <h1 id="chave1B">Ambiente </h1><br><br>
-                <canvas id="chave1"></canvas>
-            </section>
+            
+            <div class="consultaDia">
+                <input id="primeiro_dia" onkeyup="plotar_filtro()" placeholder="dd-MM-AAAA"><br><br>
+                <h1>-</h1>
+                <input id="ultimo_dia" onkeyup="plotar_filtro()" placeholder="dd-MM-AAAA"><br>
+            </div>
+    
         </div>
 
-        <div class="consultaDia">
-            <input id="primeiro_dia" onkeyup="plotar_filtro()" placeholder="dd-MM-AAAA"><br><br>
-            <h1>-</h1>
-            <input id="ultimo_dia" onkeyup="plotar_filtro()" placeholder="dd-MM-AAAA"><br>
+        <div style="display: flex;justify-content: space-between;align-items: flex-start;">
+            <div class="divGraf1">
+                <section style="width: 90%;" id="ambiente1">
+                    <h1 id="chave1B">Ambiente </h1><br><br>
+                    <canvas id="chave1"></canvas>
+                </section>
+            </div>
+            <div class="divGraf2">
+    
+                <section style="width: 100%;" id="ambiente2">
+                    <h1 id="chave1B">Geral </h1><br><br>
+                    <canvas id="chave2"></canvas>
+                </section>
+            </div>
         </div>
 
-        <div class="divGraf2">
-
-            <section style="width: 100%;" id="ambiente2">
-                <canvas id="chave2"></canvas>
-            </section>
-        </div>
+        
     </div>
 
     <div class="areaKPI container" id="dv_ambientes">
@@ -161,7 +170,7 @@
                     }
             })
         }
-
+        obterdados()
         window.onload = obterDadosGraficos();
 
         function obterDadosGraficos() {
@@ -473,7 +482,7 @@
                 });
             }
         }
-
+        consultarTudo();
         function consultarTudo() {
             var fkUser = sessionStorage.ID_USUARIO;
             if (fkUser != null) {
