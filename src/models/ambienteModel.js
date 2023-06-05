@@ -163,7 +163,8 @@ function maior_fluxo(idUsuario){
         JOIN tbUsuario ON tbUsuario.fkEmpresa = idEmpresa
         WHERE WEEK(dateMetrica) = WEEK(NOW()) AND idUsuario = ${idUsuario}
         GROUP BY DAY(dateMetrica), dia_sem
-    ) AS ValMax;`
+    ) AS ValMax
+     GROUP BY dia_sem;`
 
     console.log("Executando a instrução SQl: \n" + instrucao);
     return database.executar(instrucao)
