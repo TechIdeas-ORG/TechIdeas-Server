@@ -1,6 +1,6 @@
 var alertas = [];
 
-function obterdados(idAmbiente) {
+function obterdados() {
     var fkUser = sessionStorage.ID_USUARIO;
     if (fkUser != null) {
         fetch(`/ambiente/consultaTodos/${fkUser}`, { cache: 'no-store' }).then(function (response) {
@@ -52,7 +52,7 @@ function exibirAlerta(temp, idAmbiente, grauDeAviso, grauDeAvisoCor,nomeAmbiente
     var indice = alertas.findIndex(item => item.idAmbiente == idAmbiente);
     //alert(nomeAmbiente)
     if (indice >= 0) {
-        alertas[indice] = { idAmbiente, temp, grauDeAviso, grauDeAvisoCor,grauDeAvisoMensagem }
+        alertas[indice] = { idAmbiente, temp, grauDeAviso, grauDeAvisoCor, nomeAmbiente, grauDeAvisoMensagem }
     } else {
         alertas.push({ idAmbiente, temp, grauDeAviso, grauDeAvisoCor,nomeAmbiente,grauDeAvisoMensagem });
     

@@ -108,11 +108,11 @@
   align-items: center;
   flex-direction: column;
 
-  background-color: rgb(85, 72, 255);
+  background-color: rgb(67, 249, 255);
 
   color: black;
 
-  box-shadow: -9px 9px 0px 0px #00124c;
+  box-shadow: -9px 9px 0px 0px rgb(29, 95, 97);
 
   border-radius: 33px;
 }
