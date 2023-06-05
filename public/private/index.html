@@ -512,19 +512,29 @@
                             console.log(`Dados recebidos: ${JSON.stringify(novoRegistro)}`);
                             //alert(JSON.stringify(novoRegistro))
                             console.log("Mapa de calor: " + novoRegistro)
+                            var contar = 0;
                             for (var i = 0; i < novoRegistro.length; i++) {
-                                if (novoRegistro[i].minimoPessoas > novoRegistro[i].soma) {
+                                contar = 0;
+                                for(var h = 0; h < novoRegistro.length; h++){
+                                    if(novoRegistro[i].soma > novoRegistro[h].soma){
+                                        contar++;
+                                    }
+                                }
+                
+                                
+                                if(contar == novoRegistro.length -1){
                                     document.getElementById(`dvAmbiente${i}`).classList.remove('kpi');
                                     document.getElementById(`dvAmbiente${i}`).classList.add('kpiRuim');
                                 }
-                                else if (novoRegistro[i].maximoPessoas < novoRegistro[i].soma) {
+                                else if(contar > novoRegistro.length - (novoRegistro.length/2)){
                                     document.getElementById(`dvAmbiente${i}`).classList.remove('kpi');
-                                    document.getElementById(`dvAmbiente${i}`).classList.add('kpiRuim');
+                                    document.getElementById(`dvAmbiente${i}`).classList.add('kpiMedia');
                                 }
-                                else {
+                                else{
                                     document.getElementById(`dvAmbiente${i}`).classList.remove('kpi');
-                                    document.getElementById(`dvAmbiente${i}`).classList.add('kpiMedia')
+                                    document.getElementById(`dvAmbiente${i}`).classList.add('kpiNeutra');
                                 }
+                                
                                 document.getElementById(`span_qtde_amb${i}`).innerHTML = novoRegistro[i].soma + " de total de fluxo"
                                 console.log("quantidade ambiente " + i + " " + novoRegistro[i].soma)
                             }

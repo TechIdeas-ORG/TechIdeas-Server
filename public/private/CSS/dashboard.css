@@ -99,6 +99,23 @@
 
   border-radius: 33px;
 }
+.kpiNeutra {
+  width: 200px;
+  height: 200px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  background-color: rgb(85, 72, 255);
+
+  color: black;
+
+  box-shadow: -9px 9px 0px 0px #00124c;
+
+  border-radius: 33px;
+}
 
 .kpiMedia {
   width: 200px;
@@ -109,7 +126,7 @@
   align-items: center;
   flex-direction: column;
 
-  background-color: #4e3bdb;
+  background-color: #ff661f;
 
   color: white;
 
