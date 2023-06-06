@@ -74,7 +74,7 @@ function exibirCards() {
 
     for (var i = 0; i < alertas.length; i++) {
         var mensagem = alertas[i];
-        alerta.style = 'display:block'
+        alerta.style.display = 'block';
         alerta.innerHTML += transformarEmDiv(mensagem);
     }
 }

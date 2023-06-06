@@ -262,6 +262,7 @@ span {
   display: none;
   max-height: 50%;
   overflow-y: auto;
+  transition: 1s;
 }
 
 .mapaCalor {
@@ -274,4 +275,61 @@ span {
   padding: 40px;
   margin-bottom: 50px;
   background-color: white;
+}
+.notification_container{
+  cursor: pointer;
+  border-radius: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  height: 80px;
+  position: fixed;
+  right: 20px;
+  top: 20px;
+  background-color: #db3b3b;
+  animation: notification_anim 1s infinite normal;
+}
+
+@keyframes notification_anim {
+  0%{
+    box-shadow: 0 0 0 0 rgba(255, 112, 67, 0.7);
+  }
+
+  70%{
+    box-shadow: 0 0 0 15px rgba(255, 112, 67, 0);
+
+  }
+
+  100%{
+    box-shadow: 0 0 0 0 rgba(255, 112, 67, 0);
+  }
+}
+
+.notification_container span{
+  font-size: 50px;
+  margin: 0px;
+  color: white;
+  animation: sino_anim 300ms infinite normal;
+}
+
+@keyframes sino_anim {
+  0%{
+    transform: rotate(0deg);
+  }
+
+  25%{
+    transform: rotate(20deg);
+
+  }
+
+  50%{
+   transform: rotate(0deg);
+  }
+  75%{
+    transform: rotate(-20deg);
+   }
+   100%{
+    transform: rotate(0deg);
+   }
 }
