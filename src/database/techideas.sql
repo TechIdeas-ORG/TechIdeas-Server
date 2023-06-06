@@ -1,4 +1,4 @@
--- Active: 1679521204876@@127.0.0.1@3306@bd_smfp
+-- Active: 1684423460780@@127.0.0.1@3306@bd_SMFP
 
 DROP DATABASE bd_SMFP;
 
@@ -417,8 +417,6 @@ GROUP BY
     tbHoje.valores_hoje;
 
 
-UPDATE tbambiente SET `minimoPessoas` = 900 WHERE `idAmbiente` = 2;
-
 SELECT count(*) as soma, fkSensor, idAmbiente, HOUR(dateMetrica) as horario, maximoPessoas, minimoPessoas, nomeAmbiente FROM tbMetricas 
     JOIN tbSensor ON fkSensor = idSensor
     JOIN tbAmbiente ON fkAmbiente = idAmbiente
@@ -435,4 +433,4 @@ SELECT COUNT(*) AS soma, nomeAmbiente, DATE_FORMAT(DATE(dateMetrica), '%d-%m-%Y'
     JOIN tbEmpresa ON tbAmbiente.fkEmpresa = idEmpresa
     JOIN tbUsuario ON tbUsuario.fkEmpresa = idEmpresa
     where MONTH(dateMetrica) = MONTH(NOW()) AND idUsuario = ${idUsuario} AND `idAmbiente` = 1
-    GROUP BY idAmbiente, DATE(dateMetrica), HOUR(dateMetrica);
+    GROUP BY idAmbiente, dia, hora, `nomeAmbiente`;

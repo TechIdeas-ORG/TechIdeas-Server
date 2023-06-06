@@ -51,7 +51,7 @@ function relatorio(idAmbiente, idUsuario){
     JOIN tbEmpresa ON tbAmbiente.fkEmpresa = idEmpresa
     JOIN tbUsuario ON tbUsuario.fkEmpresa = idEmpresa
     where MONTH(dateMetrica) = MONTH(NOW()) AND idUsuario = ${idUsuario} AND idAmbiente = ${idAmbiente}
-    GROUP BY idAmbiente, DATE(dateMetrica), HOUR(dateMetrica);`
+    GROUP BY idAmbiente, dia, hora, nomeAmbiente;`
 
     return database.executar(instrucao);
 
