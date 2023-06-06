@@ -1,4 +1,57 @@
 var AmbienteModel = require("../models/ambienteModel");
+const {jsPDF} = require("jspdf");
+
+
+function genDoc(resultado){
+    const doc = new jsPDF();
+
+    doc.setFontSize(22);
+    doc.text(20, 20, resultado[0].nomeAmbiente);
+
+    var temp_dia = '';
+    var linha = 20;
+    
+    resultado.forEach(dado => {
+        linha += 10;
+        if(dado.dia != temp_dia){
+            doc.setFontSize(18);
+            doc.text(20, linha+10,'Dia: ' + dado.dia);
+            temp_dia = dado.dia;
+            linha += 20;
+        }
+        console.log(linha)
+        if(linha >= 250){
+            doc.addPage()
+            linha = 20;
+        }
+
+        doc.setFontSize(12);
+        doc.text(20, linha, `Hora: ${dado.hora}:  Fluxo: ${dado.soma}`);
+    });
+    return doc;
+}
+
+function relatorio(req, res){
+    var idAmb = req.params.idAmbiente;
+    var idUser = req.params.idUsuario;
+    
+    AmbienteModel.relatorio(idAmb, idUser)
+        .then(function (resultado) {
+            if (resultado.length > 0) {
+                var pdf = genDoc(resultado);
+                res.status(200).json({pdf: pdf.output()});
+            }else{
+                res.status(204).send("Nenhum resultado encontrado!")
+            }
+        }).catch(
+            function (erro) {
+                console.log(erro);
+                console.log("Houve um erro ao realizar a consulta! Erro: ", erro.sqlMessage);
+                res.status(500).json(erro.sqlMessage);
+            }
+        );
+
+}
 
 function listar(req, res) {
     var idAmb = req.params.idAmbiente;
@@ -308,5 +361,6 @@ module.exports = {
     consultar,
     media_fluxo,
     maior_fluxo,
-    aumento_fluxo
+    aumento_fluxo,
+    relatorio
 }

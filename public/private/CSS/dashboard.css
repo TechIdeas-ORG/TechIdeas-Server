@@ -14,6 +14,15 @@
 
 }
 
+.relatorio{
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 33px;
+  border: none;
+  color: #000;
+  cursor: pointer;
+}
+
 .div_botao {
   width: 20%;
   height: 10%;

@@ -43,6 +43,19 @@ function buscarAmbientes(idUsuario) {
     return database.executar(instrucao);
 }
 
+function relatorio(idAmbiente, idUsuario){
+    console.log('Gerando relatório (MODEL)');
+    var instrucao = `SELECT COUNT(*) AS soma, nomeAmbiente, DATE_FORMAT(DATE(dateMetrica), '%d-%m-%Y') AS dia, TIME_FORMAT(dateMetrica, '%H:%i') AS hora FROM tbMetricas
+    JOIN tbSensor ON fkSensor = idSensor
+    JOIN tbAmbiente ON fkAmbiente = idAmbiente
+    JOIN tbEmpresa ON tbAmbiente.fkEmpresa = idEmpresa
+    JOIN tbUsuario ON tbUsuario.fkEmpresa = idEmpresa
+    where MONTH(dateMetrica) = MONTH(NOW()) AND idUsuario = ${idUsuario} AND idAmbiente = ${idAmbiente}
+    GROUP BY idAmbiente, DATE(dateMetrica), HOUR(dateMetrica);`
+
+    return database.executar(instrucao);
+
+}
 
 function buscarTodos(idUsuario) {
     console.log("ACESSEI O AMBIENTE MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function listar() \n\n " + idUsuario);
@@ -207,5 +220,6 @@ module.exports = {
     consultar,
     media_fluxo,
     maior_fluxo,
-    aumento_fluxo
+    aumento_fluxo,
+    relatorio
 };

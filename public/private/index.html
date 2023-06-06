@@ -67,7 +67,8 @@
                 <h1>-</h1>
                 <input id="ultimo_dia" onkeyup="plotar_filtro()" placeholder="dd-MM-AAAA"><br>
             </div>
-    
+            
+            <button class="relatorio" onclick="gerarRelatorio()">Gerar Relatório</button>
         </div>
 
         <div style="display: flex;justify-content: space-between;align-items: flex-start;">
@@ -121,6 +122,28 @@
         var proximaAtualizacao;
         var filtroAplicado = false;
         var nomes_ambientes = {};
+        var amb_atual = 0;
+
+        function gerarRelatorio(){
+            var idUser = sessionStorage.ID_USUARIO;
+
+            fetch(`/dashboard/relatorio/${amb_atual}/${idUser}`).then(function (resposta) {
+                console.log(resposta)    
+                if(resposta.ok){
+                        resposta.json().then((res) => {
+                            var pdf = res.pdf;
+                            var blobPDF =  new Blob([ pdf ], { type : 'application/pdf'});
+                            var blobUrl = URL.createObjectURL(blobPDF); 
+
+                            window.open(blobUrl, '_blank');
+
+                            URL.revokeObjectURL(blobUrl);
+                        })
+                    }else{
+                        //alert('algo de errado')
+                    }
+            })
+        }
 
         KPImedia()
         function KPImedia(){
@@ -183,6 +206,7 @@
             const queryStr = window.location.search;
             const urlParam = new URLSearchParams(queryStr);
             var fkAmbiente = boxAmbiente.value;
+            amb_atual = fkAmbiente;
             console.log(urlParam.get('idAmbiente'))
             if (urlParam.get('idAmbiente') == null) {
                 fetch(`/ambiente/listar/${fkAmbiente}`, { cache: 'no-store' }).then(function (response) {
