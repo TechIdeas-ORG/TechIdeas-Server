@@ -6,7 +6,7 @@ function genDoc(resultado){
     const doc = new jsPDF();
 
     doc.setFontSize(22);
-    doc.text(20, 20, resultado[0].nomeAmbiente);
+    doc.text(20, 20, `Relatório Mensal do ${resultado[0].nomeAmbiente}`);
 
     var temp_dia = '';
     var linha = 20;
