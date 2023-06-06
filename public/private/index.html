@@ -172,7 +172,7 @@
         
         KPImaximo()
         function KPImaximo(){
-            var dias_sem = ['Domingo', 'Segunda', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado']
+            var dias_sem = ['Domingo', 'Segunda-Feira', 'Terça-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sábado']
             fetch("/ambiente/maior_fluxo/" + sessionStorage.ID_USUARIO).then(function (resposta) {
                 console.log(resposta)    
                 if(resposta.ok){

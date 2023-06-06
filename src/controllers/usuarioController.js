@@ -97,7 +97,7 @@ function cadastrar(req, res) {
         
         bcrypt.hash(senhaUsuario, saltRounds, (err, senha_criptografada) =>{
 
-            usuarioModel.cadastrar(fkEmpresa, nomeUsuario, emailUsuario, senhaUsuario)
+            usuarioModel.cadastrar(fkEmpresa, nomeUsuario, emailUsuario, senha_criptografada)
                 .then(
                     function (resultado) {
                         res.json(resultado);
