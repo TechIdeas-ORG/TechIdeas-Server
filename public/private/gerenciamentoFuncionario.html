@@ -4,7 +4,7 @@
 <head>
     <title>Gerenciamento Funcionarios</title>
 
-    <link rel="stylesheet" href="CSS/cadastroFuncionario.css">
+    <link rel="stylesheet" href="CSS/gerenciamentoFuncionario.css">
     <link rel="stylesheet" href="CSS/style.css">
 </head>
 
@@ -25,11 +25,9 @@
                 <li><a href="index.html">DashBoard</a></li>
                 <li><a href="index.html">Mapa de Calor</a></li>
                 <li><a href="crudVersaoFinal.html">Ambientes</a></li>
-                <li class="active"><a href="gerenciamentoFuncionario.html#div_cadastro">Cadastro</a></li>
-                <li><a href="gerenciamentoFuncionario.html#div_consulta">Consulta</a></li>
-                <li><a href="gerenciamentoFuncionario.html#div_atualizacao">Atualização</a></li>
-                <li><a href="gerenciamentoFuncionario.html#div_exclusao">Exclusão</a></li>
-                <li><a target="_blank" href="https://techideas.atlassian.net/servicedesk/customer/portals">Suporte</a></li>
+                <li class="active"><a href="gerenciamentoFuncionario.html">Gerenciar Funcionarios</a></li>
+                <li><a target="_blank" href="https://techideas.atlassian.net/servicedesk/customer/portals">Suporte</a>
+                </li>
             </ul>
         </div>
         <div class="account">
@@ -37,121 +35,125 @@
                 account_circle
             </span>
             <div class="perfil">
-                <h3>Nome do Usuário</h3>
+                <h3 id="navbar_nmUser">Nome do Usuário</h3>
                 <a href="logout.html">Sair</a>
             </div>
         </div>
     </nav>
 
-    <div class="formulario">
+    <div class="containerFormulario">
 
-        <div class="centralizador">
+        <div class="formularioCadastro">
 
-            <div class="titulo">
+            <div class="centralizador">
 
-                <H1>Cadastro</H1>
+                <div class="titulo">
 
-                <div></div>
+                    <H1>Cadastro</H1>
 
-            </div>
+                    <div></div>
 
-            <div class="inputs" id="div_cadastro">
+                </div>
 
-                Nome: <input type="text" required id="ipt_nomeFuncionario"><br><br>
+                <div class="inputs" id="div_cadastro">
 
-                E-mail <input type="text" required id="ipt_emailFuncionario"><br><br>
+                    Nome: <input type="text" required id="ipt_nomeFuncionario"><br><br>
 
-                Senha <input type="password" required id="ipt_senhaFuncionario"><br><br>
+                    E-mail <input type="text" required id="ipt_emailFuncionario"><br><br>
+
+                    Senha <input type="password" required id="ipt_senhaFuncionario"><br><br>
 
 
-                <button onclick="verify()">Cadastrar</button>
+                    <button onclick="verify()">Cadastrar</button>
 
-            </div>
-
-        </div>
-
-    </div>
-
-    <div class="formulario">
-
-        <div class="centralizador">
-
-            <div class="titulo">
-
-                <H1>Consulta</H1>
-
-                <div></div>
-
-            </div>
-
-            <div class="inputs" id="div_consulta">
-
-                <button onclick="listar()">Consultar</button>
-
-                <div id="mostrar"></div>
+                </div>
 
             </div>
 
         </div>
 
-    </div>
 
-    <div class="formulario">
+        <div class="formularioConsulta">
 
-        <div class="centralizador">
+            <div class="centralizador">
 
-            <div class="titulo">
+                <div class="titulo">
 
-                <H1>Atualizar Informações</H1>
+                    <H1>Consulta</H1>
 
-                <div></div>
+                    <div></div>
 
-            </div>
+                </div>
 
-            <div class="inputs" id="div_atualizacao">
+                <div class="inputs" id="div_consulta">
 
-                <h4>Selecione o ID para Atualizar</h4>
+                    <button onclick="listar()">Consultar</button>
 
-                ID: <input type="text" required id="ipt_idFuncionarioAtualizacao"><br><br>
-                
-                Nome: <input type="text" required id="ipt_nomeFuncionarioAtualizacao"><br><br>
-                                
-                Email: <input type="text" required id="ipt_emailFuncionarioAtualizacao"><br><br>
-                
-                <button onclick="atualizar()">Atualizar</button>
+                    <div id="mostrarConsulta"></div>
 
-                <div id="mostrar"></div>
+                </div>
 
             </div>
 
         </div>
 
-    </div>
+        <div class="formularioAtualizacao">
 
-    <div class="formulario">
+            <div class="centralizador">
 
-        <div class="centralizador">
+                <div class="titulo">
 
-            <div class="titulo">
+                    <H1>Atualizar Informações</H1>
 
-                <H1>Excluir Conta</H1>
+                    <div></div>
 
-                <div></div>
+                </div>
 
-            </div>
+                <div class="inputs" id="div_atualizacao">
 
-            <div class="inputs" id="div_exclusao">
+                    <h4>Selecione o ID para Atualizar</h4>
 
-                ID: <input type="text" required id="ipt_idFuncionario"><br><br>
+                    ID: <input type="text" required id="ipt_idFuncionarioAtualizacao"><br><br>
 
-                <button onclick="excluir()">Excluir</button>
+                    Nome: <input type="text" required id="ipt_nomeFuncionarioAtualizacao"><br><br>
 
-                <div id="mostrarExclusao"></div>
+                    Email: <input type="text" required id="ipt_emailFuncionarioAtualizacao"><br><br>
+
+                    <button onclick="atualizar()">Atualizar</button>
+
+                    <div id="mostrarAtualizacao"></div>
+
+                </div>
 
             </div>
 
         </div>
 
+        <div class="formularioExclusao">
+
+            <div class="centralizador">
+
+                <div class="titulo">
+
+                    <H1>Excluir Conta</H1>
+
+                    <div></div>
+
+                </div>
+
+                <div class="inputs" id="div_exclusao">
+
+                    ID: <input type="text" required id="ipt_idFuncionario"><br><br>
+
+                    <button onclick="excluir()">Excluir</button>
+
+                    <div id="mostrarExclusao"></div>
+
+                </div>
+
+            </div>
+
+        </div>
     </div>
 
     <script>
@@ -193,13 +195,7 @@
 
             }
 
-            if (idUsuario.length < 0) {
-
-                alert("Insira um ID válido");
-
-                erro = true;
-
-            }
+         
 
             if (erro == false) {
 
@@ -279,78 +275,87 @@
 
             }
 
+            ipt_emailFuncionario = ""
+            ipt_nomeFuncionario = ""
+            ipt_senhaFuncionario = ""
+
         }
-      
+        // CONSULTA
         function listar() {
             return new Promise((resolve, reject) => {
 
                 fetch("/usuario/consultar/" + sessionStorage.FK_EMPRESA).then(function (resposta) {
-                    if(resposta.ok){
+                    if (resposta.ok) {
                         resposta.json().then((res) => {
-                            //alert(JSON.stringify(res))
-                            for(var i = 0; i < res.length; i++){
-                                mostrar.innerHTML += `ID: ${res[i].idUsuario} <br>
-                                                    Nome: ${res[i].nomeUsuario} <br>
-                                                    Email: ${res[i].emailUsuario} <br>
+                            //ert(JSON.stringify(res))
+                            for (var i = 0; i < res.length; i++) {
+                                mostrarConsulta.innerHTML = `ID: ${res[i].idUsuario}<br><br>
+                                                    Nome: ${res[i].nomeUsuario}<br><br>
+                                                    Email: ${res[i].emailUsuario}<br>
                                                     `
                             }
                         })
-                    }else{
+                    } else {
                         alert('algo de errado')
                     }
                 })
 
-                .catch(function (resposta) {
+                    .catch(function (resposta) {
 
-                    reject(resposta);
+                        reject(resposta);
 
-                });
+                    });
 
-        });
+            });
 
-        idEmpresa = sessionStorage.idEmpresa
-        console.log(idEmpresa === resposta[0].fkEmpresa)
-    }
-
-    function excluir(){
-        idUsuario = ipt_idFuncionario.value;
-
-        fetch("/usuario/excluir/" + idUsuario).then(function (resposta) {
-                    if(resposta.ok){
-                        alert(`Conta excluída com sucesso!`)
-                    }else{
-                        alert('algo de errado')
-                    }
-                })
-
-                .catch(function (resposta) {
-
-                    reject(resposta);
-
-                });
+            idEmpresa = sessionStorage.idEmpresa
+            console.log(idEmpresa === resposta[0].fkEmpresa)
         }
 
-        function atualizar(){
-        idUsuario = ipt_idFuncionarioAtualizacao.value;
-        emailUsuario = ipt_emailFuncionarioAtualizacao.value;
-        nomeUsuario = ipt_nomeFuncionarioAtualizacao.value;
+        function excluir() {
+            idUsuario = ipt_idFuncionario.value;
 
-        fetch("/usuario/atualizar/" + idUsuario + "/" + emailUsuario + "/" + nomeUsuario).then(function (resposta) {
-                    if(resposta.ok){
-                        alert(`Conta atualizada com sucesso!`)
-                    }else{
-                        alert('algo de errado')
-                    }
-                })
+            fetch("/usuario/excluir/" + idUsuario).then(function (resposta) {
+                if (resposta.ok) {
+                    alert(`Conta excluída com sucesso!`)
+                } else {
+                    alert('algo de errado')
+                }
+            })
 
                 .catch(function (resposta) {
 
                     reject(resposta);
 
                 });
+
+            ipt_idFuncionario = ""
+        }
+
+        function atualizar() {
+            idUsuario = ipt_idFuncionarioAtualizacao.value;
+            emailUsuario = ipt_emailFuncionarioAtualizacao.value;
+            nomeUsuario = ipt_nomeFuncionarioAtualizacao.value;
+
+            fetch("/usuario/atualizar/" + idUsuario + "/" + emailUsuario + "/" + nomeUsuario).then(function (resposta) {
+                if (resposta.ok) {
+                    alert(`Conta atualizada com sucesso!`)
+                } else {
+                    alert('algo de errado')
+                }
+            })
+
+                .catch(function (resposta) {
+
+                    reject(resposta);
+
+                });
+            ipt_emailFuncionarioAtualizacao = ""
+            ipt_idFuncionarioAtualizacao = ""
+            ipt_nomeFuncionarioAtualizacao = ""
         }
     </script>
-<script src="js/navbar.js"></script>
+    <script src="js/navbar.js"></script>
 </body>
 
 </html>

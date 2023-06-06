@@ -1,5 +1,6 @@
 var usuarioModel = require("../models/usuarioModel");
 const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 function listar(req, res) {
     usuarioModel.listar()
