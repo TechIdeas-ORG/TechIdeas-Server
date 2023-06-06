@@ -515,10 +515,21 @@
         configMetricas.style.display = "none";
     }
 
+    if(sessionStorage.FLUXO_BAIXO != undefined){
+        ipt_fluxoBaixo.value = sessionStorage.FLUXO_BAIXO;
+        ipt_fluxoNormal.value = sessionStorage.FLUXO_MEDIO;
+        ipt_fluxoAlto.value = sessionStorage.FLUXO_ALTO;
+    }
+
     function alterarMetricas() {
         fluxoBaixo = Number(ipt_fluxoBaixo.value);
         fluxoMedio = Number(ipt_fluxoNormal.value);
         fluxoAlto = Number(ipt_fluxoAlto.value);
+
+        sessionStorage.FLUXO_BAIXO = fluxoBaixo;
+        sessionStorage.FLUXO_MEDIO = fluxoMedio;
+        sessionStorage.FLUXO_ALTO = fluxoAlto;
+
         var erro = false;
 
         if (fluxoBaixo >= fluxoMedio || fluxoMedio >= fluxoAlto) {
