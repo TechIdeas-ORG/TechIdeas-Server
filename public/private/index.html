@@ -41,7 +41,14 @@
             </div>
         </div>
     </nav>
-    <div id="alerta"></div>
+
+    <div id = 'notification_container' class="notification_container" onclick="mostrarPop()">
+        <span class="material-symbols-rounded">
+            notification_important
+            </span>
+    </div>
+    <div  onclick="sumirPop(this)" id="alerta"></div>
+
     <div class="page-title container">
         <h1>Dashboard Empresa</h1>
         <div></div>
@@ -676,4 +683,21 @@
 <script>
     $('#primeiro_dia').mask('00-00-0000');
     $('#ultimo_dia').mask('00-00-0000');
+</script>
+
+<script>
+    notification_container.style.display = 'none';
+    function sumirPop(element){
+        element.style.top = '-280px';
+        notification_container.style.display = 'flex';
+    
+
+    }
+    function mostrarPop(){
+        alerta.style.top ='20px' 
+        setTimeout(()=>{
+            notification_container.style.display = 'none';
+        }, 500)
+    }
+
 </script>
