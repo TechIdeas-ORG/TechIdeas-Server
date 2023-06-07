@@ -12,7 +12,9 @@ var indexRouter = require("./src/routes/index");
 var usuarioRouter = require("./src/routes/usuario");
 var dashboardRouter = require("./src/routes/dashboard");
 const ambienteRouter = require("./src/routes/ambiente")
-const emailRouter = require("./src/routes/email")
+const emailRouter = require("./src/routes/email");
+const tokenRouter = require("./src/routes/token");
+const empresaRouter = require("./src/routes/empresa");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -28,6 +30,9 @@ app.use("/ambiente", ambienteRouter);
 app.use("/excluir", ambienteRouter);
 app.use("/atualizar", ambienteRouter);
 app.use("/email", emailRouter);
+app.use("/token", tokenRouter);
+app.use("/empresa", empresaRouter);
+
 
 app.listen(PORTA, function () {
     console.log(`Servidor Rodando Em: http://localhost:${PORTA} \n

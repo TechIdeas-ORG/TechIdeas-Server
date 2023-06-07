@@ -9,7 +9,7 @@ function listar1(idAmbiente) {
     join tbAmbiente on fkAmbiente = idAmbiente
     where idAmbiente =  ${idAmbiente} and DAY(dateMetrica) = DAY(NOW())
     GROUP BY HOUR(dateMetrica)
-    order by HOUR(dateMetrica) asc;
+    order by horario asc;
 
     `;
     console.log("Executando a instrução SQL: \n" + instrucao);
@@ -24,7 +24,8 @@ function listarDireita(idUsuario) {
     join tbEmpresa on tbAmbiente.fkEmpresa = idEmpresa
     JOIN tbUsuario on tbUsuario.fkEmpresa = idEmpresa
     WHERE idUsuario = ${Number(idUsuario)} and DAY(dateMetrica) = DAY(NOW())
-    group by hour(dateMetrica);
+    group by hour(dateMetrica)
+    order by horario;
     `;
     console.log("Executando a instrução SQL: \n" + instrucao);
     return database.executar(instrucao);
@@ -51,7 +52,8 @@ function relatorio(idAmbiente, idUsuario){
     JOIN tbEmpresa ON tbAmbiente.fkEmpresa = idEmpresa
     JOIN tbUsuario ON tbUsuario.fkEmpresa = idEmpresa
     where MONTH(dateMetrica) = MONTH(NOW()) AND idUsuario = ${idUsuario} AND idAmbiente = ${idAmbiente}
-    GROUP BY idAmbiente, dia, hora, nomeAmbiente;`
+    GROUP BY idAmbiente, dia, hora, nomeAmbiente
+    ORDER BY dia DESC;`
 
     return database.executar(instrucao);
 

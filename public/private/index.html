@@ -383,6 +383,10 @@
             chave2B.innerHTML = `Geral <br> <span style='color: gray;'>${date}<span>`;
         }
 
+        setInterval(()=>{
+            CarregarBox()
+        }, 5000);
+
         function CarregarBox() {
             var fkUser = sessionStorage.ID_USUARIO;
             if (fkUser != null) {
@@ -396,7 +400,8 @@
 
 
 
-                            boxAmbiente.innerHTML = ""
+                            boxAmbiente.innerHTML = "";
+                            mapaCalor.innerHTML = '';
                             for (var i = 0; i < novoRegistro.length; i++) {
                                 console.log("entrei no for")
                                 boxAmbiente.innerHTML += ` <option id="caixasBox" value="${novoRegistro[i].idAmbiente}">${novoRegistro[i].nomeAmbiente}</option>`
