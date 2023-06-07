@@ -24,8 +24,8 @@ function entrar(email) {
     return database.executar(instrucao);
 }
 
-function cadastrar(fkEmpresa, nomeUsuario, emailUsuario, senhaUsuario) {
-    var instrucao = `INSERT INTO tbUsuario (fkEmpresa, nomeUsuario, emailUsuario, senhaUsuario) VALUES (${fkEmpresa}, '${nomeUsuario}', '${emailUsuario}', '${senhaUsuario}');`;
+function cadastrar(fkEmpresa, nomeUsuario, emailUsuario, senhaUsuario, fkAdmin) {
+    var instrucao = `INSERT INTO tbUsuario (fkEmpresa, nomeUsuario, emailUsuario, senhaUsuario, fkAdministrador) VALUES (${fkEmpresa}, '${nomeUsuario}', '${emailUsuario}', '${senhaUsuario}', ${fkAdmin});`;
 
     
     console.log("Executando a instrução SQL: \n" + instrucao);

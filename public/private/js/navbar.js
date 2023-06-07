@@ -1,5 +1,6 @@
 var isCollapsed = false;
 const navbar = document.getElementById('navbar');
+const menu = document.getElementById('menu');
 const collapseText = document.getElementById('collapse_text');
 const nmUser = document.getElementById('navbar_nmUser');
 const containers = document.getElementsByClassName('container');
@@ -31,4 +32,8 @@ function collapse(collapse_button){
 //VERIFICAR SESSION 
 if(sessionStorage.ID_USUARIO == undefined){
     window.location = '../login.html';
+}
+
+if(sessionStorage.FK_ADMIN != 'null'){
+    menu.removeChild(menu.children[3]);
 }

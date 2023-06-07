@@ -21,7 +21,7 @@
             <h3>SMFP<br><span>Sistema de Mapeamento de Fluxo de Pessoas</span></h3>
         </div>
         <div class="menu">
-            <ul>
+            <ul id="menu">
                 <li><a href="index.html">DashBoard</a></li>
                 <li><a href="index.html">Mapa de Calor</a></li>
                 <li><a href="crudVersaoFinal.html">Ambientes</a></li>
@@ -257,7 +257,9 @@
 
                 senhaServer: senha,
 
-                fkEmpresaServer: fkEmpresa
+                fkEmpresaServer: fkEmpresa,
+
+                fkAdminServer: sessionStorage.ID_USUARIO
 
             };
 

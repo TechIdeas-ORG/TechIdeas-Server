@@ -115,7 +115,8 @@
             cnpjServer: cnpj,
             emailServer: email,
             senhaServer: senha,
-            tokenServer: token
+            tokenServer: token,
+            fkAdminServer: null
         };
 
         var req_verifToken = await requisicao('/token', dados);
