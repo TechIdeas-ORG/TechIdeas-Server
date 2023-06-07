@@ -87,6 +87,7 @@ function cadastrar(req, res) {
     var emailUsuario = req.body.emailServer;
     var senhaUsuario = req.body.senhaServer;
     var fkEmpresa = req.body.fkEmpresaServer;
+    var fkAdmin = req.body.fkAdminServer;
 
     // Faça as validações dos valores
     if (emailUsuario == undefined) {
@@ -97,7 +98,7 @@ function cadastrar(req, res) {
         
         bcrypt.hash(senhaUsuario, saltRounds, (err, senha_criptografada) =>{
 
-            usuarioModel.cadastrar(fkEmpresa, nomeUsuario, emailUsuario, senhaUsuario)
+            usuarioModel.cadastrar(fkEmpresa, nomeUsuario, emailUsuario, senha_criptografada, fkAdmin)
                 .then(
                     function (resultado) {
                         res.json(resultado);
